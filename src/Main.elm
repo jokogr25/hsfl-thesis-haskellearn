@@ -39,6 +39,7 @@ init =
 type Msg
     = Increment
     | Decrement
+    | NewGame
 
 
 update : Msg -> Model -> Model
@@ -56,6 +57,9 @@ update msg model =
                     model
                         - 1
 
+        NewGame ->
+            10
+
 
 
 -- VIEW
@@ -70,29 +74,43 @@ view model =
 
 card : Model -> Html Msg
 card model =
-    div
-        [ classList [ ( "card", True ) ]
-        , style "width" "18rem"
-        , style "margin" "auto"
-        ]
-        [ img [ classList [ ( "card-img-top", True ) ] ] []
-        , div [ classList [ ( "card-body", True ) ] ]
-            [ Html.h5
-                [ classList [ ( "card-title", True ) ] ]
-                [ text "Counter" ]
-            , Html.h1
-                [ classList [ ( "card-text", True ) ]
+    case model of
+        0 ->
+            div []
+                [ Html.h5 []
+                    [ text "VERLOREN"
+                    , button
+                        [ onClick NewGame
+                        , classList [ ( "btn btn-secondary btn-sm", True ) ]
+                        ]
+                        [ text "NEUES SPIEL" ]
+                    ]
                 ]
-                [ text (String.fromInt model) ]
-            , button
-                [ onClick Decrement
-                , classList [ ( "btn btn-primary btn-sm", True ) ]
+
+        _ ->
+            div
+                [ classList [ ( "card", True ) ]
+                , style "width" "18rem"
+                , style "margin" "auto"
                 ]
-                [ text "RUNTER" ]
-            , button
-                [ onClick Increment
-                , classList [ ( "btn btn-secondary btn-sm", True ) ]
+                [ img [ classList [ ( "card-img-top", True ) ] ] []
+                , div [ classList [ ( "card-body", True ) ] ]
+                    [ Html.h5
+                        [ classList [ ( "card-title", True ) ] ]
+                        [ text "Counter" ]
+                    , Html.h1
+                        [ classList [ ( "card-text", True ) ]
+                        ]
+                        [ text (String.fromInt model) ]
+                    , button
+                        [ onClick Decrement
+                        , classList [ ( "btn btn-primary btn-sm", True ) ]
+                        ]
+                        [ text "RUNTER" ]
+                    , button
+                        [ onClick Increment
+                        , classList [ ( "btn btn-secondary btn-sm", True ) ]
+                        ]
+                        [ text "RAUF" ]
+                    ]
                 ]
-                [ text "RAUF" ]
-            ]
-        ]
