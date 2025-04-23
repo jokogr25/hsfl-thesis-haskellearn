@@ -39,7 +39,11 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { page = Landing, username = Nothing }, Cmd.none )
+    ( { page = Landing
+      , username = Nothing
+      }
+    , Cmd.none
+    )
 
 
 type Msg
@@ -84,21 +88,16 @@ update msg model =
         EnteringNameDone ->
             case model.page of
                 Landing ->
-                    case model.username of
-                        Just username ->
-                            if String.length username > 2 then
-                                ( { model
-                                    | page = Start
-                                    , username = model.username
-                                  }
-                                , Cmd.none
-                                )
+                    if checkUsername model.username then
+                        ( { model
+                            | page = Start
+                            , username = model.username
+                          }
+                        , Cmd.none
+                        )
 
-                            else
-                                ( model, Cmd.none )
-
-                        Nothing ->
-                            ( model, Cmd.none )
+                    else
+                        ( model, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -139,13 +138,17 @@ landingPage model =
             ]
         , button
             [ onClick EnteringNameDone
-            , Html.Attributes.class "btn btn-primary"
+            , Html.Attributes.classList
+                [ ( "btn", True )
+                , ( "btn-primary", checkUsername model.username )
+                , ( "btn-secondary", not (checkUsername model.username) )
+                , ( "btn-lg", True )
+                , ( "btn-block", True )
+                ]
             , Html.Attributes.disabled
                 (case model.page of
                     Landing ->
-                        String.length
-                            (Maybe.withDefault "" model.username)
-                            < 3
+                        not (checkUsername model.username)
 
                     _ ->
                         False
@@ -153,6 +156,16 @@ landingPage model =
             ]
             [ text "Start" ]
         ]
+
+
+checkUsername : Maybe String -> Bool
+checkUsername name =
+    case name of
+        Just n ->
+            String.length n > 2
+
+        Nothing ->
+            False
 
 
 type Key

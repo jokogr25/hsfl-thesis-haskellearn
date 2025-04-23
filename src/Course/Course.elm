@@ -1,7 +1,5 @@
 module Course.Course exposing (..)
 
-import Lecture.Lecture exposing (Lecture)
-
 
 type alias Course =
     { id : String
