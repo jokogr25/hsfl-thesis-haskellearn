@@ -42,6 +42,12 @@ init _ =
     ( { page = Landing, username = Nothing }, Cmd.none )
 
 
+type Msg
+    = EnteringName String
+    | EnteringNameDone
+    | NoOp
+
+
 
 -- SUBSCRIPTIONS
 
@@ -64,12 +70,6 @@ subscriptions _ =
 
 
 -- UPDATE
-
-
-type Msg
-    = EnteringName String
-    | EnteringNameDone
-    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
