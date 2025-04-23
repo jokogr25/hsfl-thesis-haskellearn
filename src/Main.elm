@@ -1,9 +1,9 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, button, div, img, text)
-import Html.Attributes exposing (classList, style)
-import Html.Events exposing (onClick)
+import Html exposing (Html, button, div, h1, img, text)
+import Html.Attributes exposing (classList, lang, placeholder, style, type_)
+import Html.Events exposing (onClick, onInput)
 
 
 
@@ -23,13 +23,18 @@ main =
 -- MODEL
 
 
-type alias Model =
-    Int
+type alias Username =
+    String
+
+
+type Model
+    = Landing Username
+    | Start Username
 
 
 init : Model
 init =
-    1
+    Landing ""
 
 
 
@@ -37,28 +42,25 @@ init =
 
 
 type Msg
-    = Increment
-    | Decrement
-    | NewGame
+    = EnteringName String
+    | EnteringNameDone
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Increment ->
-            model + 1
+        EnteringName name ->
+            Landing name
 
-        Decrement ->
-            case model of
-                0 ->
-                    model
+        EnteringNameDone ->
+            Start
+                (case model of
+                    Landing name ->
+                        name
 
-                _ ->
-                    model
-                        - 1
-
-        NewGame ->
-            10
+                    _ ->
+                        ""
+                )
 
 
 
@@ -67,50 +69,35 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ card model
-        ]
-
-
-card : Model -> Html Msg
-card model =
     case model of
-        0 ->
+        Landing _ ->
+            landingPage model
+
+        Start name ->
             div []
-                [ Html.h5 []
-                    [ text "VERLOREN"
-                    , button
-                        [ onClick NewGame
-                        , classList [ ( "btn btn-secondary btn-sm", True ) ]
-                        ]
-                        [ text "NEUES SPIEL" ]
-                    ]
+                [ text ("Hallo " ++ name ++ "!")
                 ]
 
-        _ ->
-            div
-                [ classList [ ( "card", True ) ]
-                , style "width" "18rem"
-                , style "margin" "auto"
+
+landingPage : Model -> Html Msg
+landingPage _ =
+    div [ Html.Attributes.class "container" ]
+        [ h1 []
+            [ text "earn you a haskell"
+            ]
+        , div
+            [ Html.Attributes.class "mb-3" ]
+            [ Html.input
+                [ onInput EnteringName
+                , placeholder "Gib deinen Namen ein"
+                , type_ "text"
+                , Html.Attributes.class "form-control"
                 ]
-                [ img [ classList [ ( "card-img-top", True ) ] ] []
-                , div [ classList [ ( "card-body", True ) ] ]
-                    [ Html.h5
-                        [ classList [ ( "card-title", True ) ] ]
-                        [ text "Counter" ]
-                    , Html.h1
-                        [ classList [ ( "card-text", True ) ]
-                        ]
-                        [ text (String.fromInt model) ]
-                    , button
-                        [ onClick Decrement
-                        , classList [ ( "btn btn-primary btn-sm", True ) ]
-                        ]
-                        [ text "RUNTER" ]
-                    , button
-                        [ onClick Increment
-                        , classList [ ( "btn btn-secondary btn-sm", True ) ]
-                        ]
-                        [ text "RAUF" ]
-                    ]
-                ]
+                []
+            ]
+        , button
+            [ onClick EnteringNameDone
+            , Html.Attributes.class "btn btn-primary"
+            ]
+            [ text "Start" ]
+        ]
