@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, button, div, h1, img, text)
 import Html.Attributes exposing (classList, lang, placeholder, style, type_)
 import Html.Events exposing (onClick, onInput)
+import List exposing (length)
 
 
 
@@ -53,14 +54,16 @@ update msg model =
             Landing name
 
         EnteringNameDone ->
-            Start
-                (case model of
-                    Landing name ->
-                        name
+            case model of
+                Landing name ->
+                    if String.length name > 2 then
+                        Start name
 
-                    _ ->
-                        ""
-                )
+                    else
+                        model
+
+                _ ->
+                    model
 
 
 
@@ -80,7 +83,7 @@ view model =
 
 
 landingPage : Model -> Html Msg
-landingPage _ =
+landingPage model =
     div [ Html.Attributes.class "container" ]
         [ h1 []
             [ text "earn you a haskell"
@@ -98,6 +101,14 @@ landingPage _ =
         , button
             [ onClick EnteringNameDone
             , Html.Attributes.class "btn btn-primary"
+            , Html.Attributes.disabled
+                (case model of
+                    Landing name ->
+                        String.length name < 3
+
+                    _ ->
+                        False
+                )
             ]
             [ text "Start" ]
         ]
