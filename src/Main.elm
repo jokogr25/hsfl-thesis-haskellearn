@@ -1,10 +1,11 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, button, div, h1, img, text)
-import Html.Attributes exposing (classList, lang, placeholder, style, type_)
+import Browser.Events
+import Html exposing (Html, button, div, h1, text)
+import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
-import List exposing (length)
+import Json.Decode as Decode
 
 
 
@@ -13,11 +14,32 @@ import List exposing (length)
 
 main : Program () Model Msg
 main =
-    Browser.sandbox
+    Browser.element
         { init = init
         , update = update
         , view = view
+        , subscriptions = subscriptions
         }
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.batch
+        [ Sub.map
+            (\key ->
+                case key of
+                    Enter ->
+                        EnteringNameDone
+
+                    _ ->
+                        NoOp
+            )
+            (Browser.Events.onKeyDown keyDecoder)
+        ]
 
 
 
@@ -33,9 +55,9 @@ type Model
     | Start Username
 
 
-init : Model
-init =
-    Landing ""
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Landing "", Cmd.none )
 
 
 
@@ -45,25 +67,29 @@ init =
 type Msg
     = EnteringName String
     | EnteringNameDone
+    | NoOp
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        NoOp ->
+            ( model, Cmd.none )
+
         EnteringName name ->
-            Landing name
+            ( Landing name, Cmd.none )
 
         EnteringNameDone ->
             case model of
                 Landing name ->
                     if String.length name > 2 then
-                        Start name
+                        ( Start name, Cmd.none )
 
                     else
-                        model
+                        ( model, Cmd.none )
 
                 _ ->
-                    model
+                    ( model, Cmd.none )
 
 
 
@@ -112,3 +138,23 @@ landingPage model =
             ]
             [ text "Start" ]
         ]
+
+
+type Key
+    = Enter
+    | Other
+
+
+keyDecoder : Decode.Decoder Key
+keyDecoder =
+    Decode.map toKey (Decode.field "key" Decode.string)
+
+
+toKey : String -> Key
+toKey key =
+    case key of
+        "Enter" ->
+            Enter
+
+        _ ->
+            Other
