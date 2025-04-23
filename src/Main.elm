@@ -23,6 +23,26 @@ main =
 
 
 
+-- MODEL
+
+
+type Page
+    = Landing
+    | Start
+
+
+type alias Model =
+    { page : Page
+    , username : Maybe String
+    }
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( { page = Landing, username = Nothing }, Cmd.none )
+
+
+
 -- SUBSCRIPTIONS
 
 
@@ -43,24 +63,6 @@ subscriptions _ =
 
 
 
--- MODEL
-
-
-type alias Username =
-    String
-
-
-type Model
-    = Landing Username
-    | Start Username
-
-
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( Landing "", Cmd.none )
-
-
-
 -- UPDATE
 
 
@@ -77,16 +79,26 @@ update msg model =
             ( model, Cmd.none )
 
         EnteringName name ->
-            ( Landing name, Cmd.none )
+            ( { model | username = Just name }, Cmd.none )
 
         EnteringNameDone ->
-            case model of
-                Landing name ->
-                    if String.length name > 2 then
-                        ( Start name, Cmd.none )
+            case model.page of
+                Landing ->
+                    case model.username of
+                        Just username ->
+                            if String.length username > 2 then
+                                ( { model
+                                    | page = Start
+                                    , username = model.username
+                                  }
+                                , Cmd.none
+                                )
 
-                    else
-                        ( model, Cmd.none )
+                            else
+                                ( model, Cmd.none )
+
+                        Nothing ->
+                            ( model, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -98,13 +110,14 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    case model of
-        Landing _ ->
+    case model.page of
+        Landing ->
             landingPage model
 
-        Start name ->
+        Start ->
             div []
-                [ text ("Hallo " ++ name ++ "!")
+                [ text
+                    ("Hallo " ++ Maybe.withDefault "Guest" model.username ++ "!")
                 ]
 
 
@@ -128,9 +141,11 @@ landingPage model =
             [ onClick EnteringNameDone
             , Html.Attributes.class "btn btn-primary"
             , Html.Attributes.disabled
-                (case model of
-                    Landing name ->
-                        String.length name < 3
+                (case model.page of
+                    Landing ->
+                        String.length
+                            (Maybe.withDefault "" model.username)
+                            < 3
 
                     _ ->
                         False
