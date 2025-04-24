@@ -27,20 +27,23 @@ main =
 -- MODEL
 
 
+type alias User =
+    { name : String
+    }
+
+
 type alias LandingPageModel =
     { username : Maybe String
     }
 
 
 type alias CourseOverviewPageModel =
-    { username : String
-    , courses : List Course
+    { courses : List Course
     }
 
 
 type alias CoursePageModel =
-    { username : String
-    , lectures : List Lecture
+    { lectures : List Lecture
     }
 
 
@@ -52,12 +55,14 @@ type Page
 
 type alias Model =
     { page : Page
+    , user : Maybe User
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { page = Landing { username = Nothing }
+      , user = Nothing
       }
     , Cmd.none
     )
@@ -117,12 +122,13 @@ update msg model =
                     if checkUsername l.username then
                         ( { model
                             | page =
-                                case l.username of
-                                    Just username ->
-                                        CourseOverview { username = username, courses = [ course1, course2 ] }
-
-                                    Nothing ->
-                                        Landing { l | username = l.username }
+                                CourseOverview
+                                    { courses =
+                                        [ course1, course2 ]
+                                    }
+                            , user =
+                                Just
+                                    { name = Maybe.withDefault "Guest" l.username }
                           }
                         , Cmd.none
                         )
@@ -142,6 +148,12 @@ view : Model -> Html Msg
 view model =
     div []
         [ header
+        , case model.user of
+            Just user ->
+                appHeader user.name
+
+            Nothing ->
+                text ""
         , case model.page of
             Landing l ->
                 landingPage l
@@ -186,8 +198,7 @@ landingPage l =
 startPage : CourseOverviewPageModel -> Html Msg
 startPage s =
     div []
-        [ pageHeader s.username
-        , div
+        [ div
             [ Html.Attributes.class "album py-5 bg-light" ]
             (List.map
                 (\course ->
@@ -229,8 +240,8 @@ foot =
     div [] []
 
 
-pageHeader : String -> Html Msg
-pageHeader username =
+appHeader : String -> Html Msg
+appHeader username =
     div [ Html.Attributes.class "m-1" ]
         [ h1 []
             [ text ("Hallo " ++ username ++ "!")
