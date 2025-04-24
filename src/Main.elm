@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Browser.Events
 import Course.Course as Course exposing (Course, Lecture, course1, course2)
-import Html exposing (Html, a, button, div, h1, nav, text)
+import Html exposing (Html, a, button, div, h1, h6, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
@@ -106,7 +106,7 @@ update msg model =
 
         EnteringName name ->
             case model.page of
-                Landing l ->
+                Landing _ ->
                     ( { model
                         | page =
                             Landing { username = Just name }
@@ -120,22 +120,18 @@ update msg model =
         EnteringNameDone ->
             case model.page of
                 Landing l ->
-                    if checkUsername l.username then
-                        ( { model
-                            | page =
-                                CourseOverview
-                                    { courses =
-                                        [ course1, course2 ]
-                                    }
-                            , user =
-                                Just
-                                    { name = Maybe.withDefault "Guest" l.username }
-                          }
-                        , Cmd.none
-                        )
-
-                    else
-                        ( model, Cmd.none )
+                    ( { model
+                        | page =
+                            CourseOverview
+                                { courses =
+                                    [ course1, course2 ]
+                                }
+                        , user =
+                            Just
+                                { name = Maybe.withDefault "Guest" l.username }
+                      }
+                    , Cmd.none
+                    )
 
                 _ ->
                     ( model, Cmd.none )
@@ -160,19 +156,18 @@ view model =
                 landingPage l
 
             CourseOverview s ->
-                startPage s
+                courseOverview s
 
             Course c ->
                 coursePage c
-        , foot
         ]
 
 
 landingPage : LandingPageModel -> Html Msg
 landingPage l =
-    div []
+    div [ Html.Attributes.class "container fixed-bottom mb-2" ]
         [ div
-            [ Html.Attributes.class "mb-3" ]
+            [ Html.Attributes.class "mb-1" ]
             [ Html.input
                 [ onInput EnteringName
                 , placeholder "Gib deinen Namen ein"
@@ -196,15 +191,20 @@ landingPage l =
         ]
 
 
-startPage : CourseOverviewPageModel -> Html Msg
-startPage s =
-    div []
-        [ div
-            [ Html.Attributes.class "album py-5 bg-light" ]
+courseOverview : CourseOverviewPageModel -> Html Msg
+courseOverview c =
+    div [ Html.Attributes.class "container" ]
+        [ h6
+            [ Html.Attributes.class "m-1" ]
+            [ text
+                ("Dir stehen " ++ String.fromInt (List.length c.courses) ++ " Kurse zur Verfügung: ")
+            ]
+        , div
+            [ Html.Attributes.class "album p-1 bg-light" ]
             (List.map
                 (\course ->
                     div
-                        [ Html.Attributes.class "card mb-4 ml-2 mr-2" ]
+                        [ Html.Attributes.class "card m-2" ]
                         [ div
                             [ Html.Attributes.class "card-title text-center" ]
                             [ text course.title
@@ -217,8 +217,9 @@ startPage s =
                             ]
                         ]
                 )
-                s.courses
+                c.courses
             )
+        , foot
         ]
 
 
@@ -238,7 +239,9 @@ header =
 
 foot : Html Msg
 foot =
-    div [] []
+    div
+        [ Html.Attributes.class "footer fixed-bottom text-center" ]
+        [ text "Copyright © 2025" ]
 
 
 appHeader : String -> Html Msg
