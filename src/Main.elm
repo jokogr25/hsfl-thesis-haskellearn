@@ -32,7 +32,7 @@ type alias LandingPageModel =
     }
 
 
-type alias StartPageModel =
+type alias CourseOverviewPageModel =
     { username : String
     , courses : List Course
     }
@@ -46,7 +46,7 @@ type alias CoursePageModel =
 
 type Page
     = Landing LandingPageModel
-    | Start StartPageModel
+    | CourseOverview CourseOverviewPageModel
     | Course CoursePageModel
 
 
@@ -119,7 +119,7 @@ update msg model =
                             | page =
                                 case l.username of
                                     Just username ->
-                                        Start { username = username, courses = [ course1, course2 ] }
+                                        CourseOverview { username = username, courses = [ course1, course2 ] }
 
                                     Nothing ->
                                         Landing { l | username = l.username }
@@ -146,7 +146,7 @@ view model =
             Landing l ->
                 landingPage l
 
-            Start s ->
+            CourseOverview s ->
                 startPage s
 
             Course c ->
@@ -183,7 +183,7 @@ landingPage l =
         ]
 
 
-startPage : StartPageModel -> Html Msg
+startPage : CourseOverviewPageModel -> Html Msg
 startPage s =
     div []
         [ pageHeader s.username
