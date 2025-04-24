@@ -157,7 +157,7 @@ view model =
 
 landingPage : LandingPageModel -> Html Msg
 landingPage l =
-    div [ Html.Attributes.class "container" ]
+    div []
         [ div
             [ Html.Attributes.class "mb-3" ]
             [ Html.input
@@ -192,7 +192,7 @@ startPage s =
             (List.map
                 (\course ->
                     div
-                        [ Html.Attributes.class "card mb-4" ]
+                        [ Html.Attributes.class "card mb-4 ml-2 mr-2" ]
                         [ div
                             [ Html.Attributes.class "card-title text-center" ]
                             [ text course.title
@@ -231,7 +231,7 @@ foot =
 
 pageHeader : String -> Html Msg
 pageHeader username =
-    div []
+    div [ Html.Attributes.class "m-1" ]
         [ h1 []
             [ text ("Hallo " ++ username ++ "!")
             ]
