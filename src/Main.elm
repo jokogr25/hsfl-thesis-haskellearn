@@ -2,7 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events
-import Html exposing (Html, button, div, h1, text)
+import Course.Course as Course exposing (Course, Lecture, course1, course2)
+import Html exposing (Html, a, button, div, h1, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
@@ -26,21 +27,37 @@ main =
 -- MODEL
 
 
+type alias LandingPageModel =
+    { username : Maybe String
+    }
+
+
+type alias StartPageModel =
+    { username : String
+    , courses : List Course
+    }
+
+
+type alias CoursePageModel =
+    { username : String
+    , lectures : List Lecture
+    }
+
+
 type Page
-    = Landing
-    | Start
+    = Landing LandingPageModel
+    | Start StartPageModel
+    | Course CoursePageModel
 
 
 type alias Model =
     { page : Page
-    , username : Maybe String
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { page = Landing
-      , username = Nothing
+    ( { page = Landing { username = Nothing }
       }
     , Cmd.none
     )
@@ -83,15 +100,29 @@ update msg model =
             ( model, Cmd.none )
 
         EnteringName name ->
-            ( { model | username = Just name }, Cmd.none )
+            case model.page of
+                Landing l ->
+                    ( { model
+                        | page = Landing { l | username = Just name }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         EnteringNameDone ->
             case model.page of
-                Landing ->
-                    if checkUsername model.username then
+                Landing l ->
+                    if checkUsername l.username then
                         ( { model
-                            | page = Start
-                            , username = model.username
+                            | page =
+                                case l.username of
+                                    Just username ->
+                                        Start { username = username, courses = [ course1, course2 ] }
+
+                                    Nothing ->
+                                        Landing { l | username = l.username }
                           }
                         , Cmd.none
                         )
@@ -109,24 +140,25 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    case model.page of
-        Landing ->
-            landingPage model
+    div []
+        [ header
+        , case model.page of
+            Landing l ->
+                landingPage l
 
-        Start ->
-            div []
-                [ text
-                    ("Hallo " ++ Maybe.withDefault "Guest" model.username ++ "!")
-                ]
+            Start s ->
+                startPage s
+
+            Course c ->
+                coursePage c
+        , foot
+        ]
 
 
-landingPage : Model -> Html Msg
-landingPage model =
+landingPage : LandingPageModel -> Html Msg
+landingPage l =
     div [ Html.Attributes.class "container" ]
-        [ h1 []
-            [ text "earn you a haskell"
-            ]
-        , div
+        [ div
             [ Html.Attributes.class "mb-3" ]
             [ Html.input
                 [ onInput EnteringName
@@ -140,21 +172,69 @@ landingPage model =
             [ onClick EnteringNameDone
             , Html.Attributes.classList
                 [ ( "btn", True )
-                , ( "btn-primary", checkUsername model.username )
-                , ( "btn-secondary", not (checkUsername model.username) )
+                , ( "btn-primary", checkUsername l.username )
+                , ( "btn-secondary", not (checkUsername l.username) )
                 , ( "btn-lg", True )
                 , ( "btn-block", True )
                 ]
-            , Html.Attributes.disabled
-                (case model.page of
-                    Landing ->
-                        not (checkUsername model.username)
-
-                    _ ->
-                        False
-                )
+            , Html.Attributes.disabled (not (checkUsername l.username))
             ]
             [ text "Start" ]
+        ]
+
+
+startPage : StartPageModel -> Html Msg
+startPage s =
+    div []
+        [ pageHeader s.username
+        , div
+            [ Html.Attributes.class "album py-5 bg-light" ]
+            (List.map
+                (\course ->
+                    div
+                        [ Html.Attributes.class "card mb-4" ]
+                        [ div
+                            [ Html.Attributes.class "card-title text-center" ]
+                            [ text course.title
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-body" ]
+                            [ div
+                                [ Html.Attributes.class "card-text" ]
+                                [ text course.description ]
+                            ]
+                        ]
+                )
+                s.courses
+            )
+        ]
+
+
+coursePage : CoursePageModel -> Html Msg
+coursePage _ =
+    div [] []
+
+
+header : Html Msg
+header =
+    nav [ Html.Attributes.class "navbar" ]
+        [ a [ Html.Attributes.class "navbar-brand" ]
+            [ text "earn you a haskell"
+            ]
+        ]
+
+
+foot : Html Msg
+foot =
+    div [] []
+
+
+pageHeader : String -> Html Msg
+pageHeader username =
+    div []
+        [ h1 []
+            [ text ("Hallo " ++ username ++ "!")
+            ]
         ]
 
 
@@ -166,6 +246,10 @@ checkUsername name =
 
         Nothing ->
             False
+
+
+
+-- KEY DECODER
 
 
 type Key
