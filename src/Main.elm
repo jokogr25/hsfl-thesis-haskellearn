@@ -108,7 +108,8 @@ update msg model =
             case model.page of
                 Landing l ->
                     ( { model
-                        | page = Landing { l | username = Just name }
+                        | page =
+                            Landing { username = Just name }
                       }
                     , Cmd.none
                     )
