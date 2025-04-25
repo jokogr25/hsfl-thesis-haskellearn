@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events
-import Course.Course as Course exposing (Course, Lecture, course1, course2)
+import Course.Course as Course exposing (Course, course1)
 import Html exposing (Html, a, button, div, h1, h6, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
@@ -42,19 +42,19 @@ type alias LandingPageModel =
     }
 
 
-type alias CourseOverviewPageModel =
+type alias CoursesOverviewPageModel =
     { courses : List Course
     }
 
 
 type alias CoursePageModel =
-    { lectures : List Lecture
+    { course : Course
     }
 
 
 type Page
     = Landing LandingPageModel
-    | CourseOverview CourseOverviewPageModel
+    | CoursesOverview CoursesOverviewPageModel
     | Course CoursePageModel
 
 
@@ -64,6 +64,13 @@ type alias Model =
     }
 
 
+type Msg
+    = EnteringName String
+    | EnteringNameDone
+    | SelectCourse Course
+    | NoOp
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { page = Landing { username = Nothing, error = Nothing }
@@ -71,12 +78,6 @@ init _ =
       }
     , Cmd.none
     )
-
-
-type Msg
-    = EnteringName String
-    | EnteringNameDone
-    | NoOp
 
 
 
@@ -137,9 +138,9 @@ update msg model =
                         Just username ->
                             ( { model
                                 | page =
-                                    CourseOverview
+                                    CoursesOverview
                                         { courses =
-                                            [ course1, course2 ]
+                                            [ course1 ]
                                         }
                                 , user =
                                     Just
@@ -157,6 +158,9 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
+
+        SelectCourse course ->
+            ( { model | page = Course { course = course } }, Cmd.none )
 
 
 
@@ -177,8 +181,8 @@ view model =
             Landing l ->
                 landingPage l
 
-            CourseOverview s ->
-                courseOverview s
+            CoursesOverview s ->
+                coursesOverview s
 
             Course c ->
                 coursePage c
@@ -228,8 +232,8 @@ landingPage l =
         ]
 
 
-courseOverview : CourseOverviewPageModel -> Html Msg
-courseOverview c =
+coursesOverview : CoursesOverviewPageModel -> Html Msg
+coursesOverview c =
     div [ Html.Attributes.class "container" ]
         [ h6
             [ Html.Attributes.class "m-1" ]
@@ -241,7 +245,7 @@ courseOverview c =
             (List.map
                 (\course ->
                     div
-                        [ Html.Attributes.class "card m-2" ]
+                        [ Html.Attributes.class "card m-2", onClick (SelectCourse course) ]
                         [ div
                             [ Html.Attributes.class "card-title text-center" ]
                             [ text course.title
@@ -261,8 +265,29 @@ courseOverview c =
 
 
 coursePage : CoursePageModel -> Html Msg
-coursePage _ =
-    div [] []
+coursePage c =
+    div [ Html.Attributes.class "container" ]
+        (h1
+            []
+            [ text c.course.title ]
+            :: List.map
+                (\lecture ->
+                    div
+                        [ Html.Attributes.class "card m-2" ]
+                        [ div
+                            [ Html.Attributes.class "card-title text-center" ]
+                            [ text lecture.title
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-body" ]
+                            [ div
+                                [ Html.Attributes.class "card-text" ]
+                                [ text lecture.description ]
+                            ]
+                        ]
+                )
+                c.course.lectures
+        )
 
 
 header : Html Msg
