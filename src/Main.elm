@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Browser.Events
 import Course.Course as Course exposing (Course, Lecture, course1)
-import Html exposing (Html, a, button, div, h1, h4, h6, nav, text)
+import Html exposing (Html, a, button, div, h3, h4, h6, img, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
@@ -285,7 +285,7 @@ coursesOverview c =
 coursePage : CoursePageModel -> Html Msg
 coursePage c =
     div [ Html.Attributes.class "container" ]
-        [ h1
+        [ h3
             []
             [ text c.course.title ]
         , case c.selectedLecture of
@@ -338,7 +338,13 @@ header : Html Msg
 header =
     nav [ Html.Attributes.class "navbar" ]
         [ a [ Html.Attributes.class "navbar-brand" ]
-            [ text "earn you a haskell"
+            [ img
+                [ Html.Attributes.src "img/logo.svg"
+                , Html.Attributes.alt "earn you a haskell"
+                , Html.Attributes.width 32
+                , Html.Attributes.height 32
+                ]
+                []
             ]
         ]
 
@@ -352,8 +358,8 @@ foot =
 
 appHeader : String -> Html Msg
 appHeader username =
-    div [ Html.Attributes.class "m-1" ]
-        [ h1 []
+    div [ Html.Attributes.class "ml-1" ]
+        [ h3 []
             [ text ("Hallo " ++ username ++ "!")
             ]
         ]
