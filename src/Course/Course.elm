@@ -17,16 +17,21 @@ type alias Lecture =
     }
 
 
-type alias Exercise =
+type alias SingleExpressionModel =
     { id : Int
     , title : String
-    , description : String
-    , solution : List ExerciseSolution
+    , description : Maybe String
+    , expression : String
+    , solutions : List Answer
     }
 
 
-type alias ExerciseSolution =
-    { description : String
+type Exercise
+    = SingleExpression SingleExpressionModel
+
+
+type alias Answer =
+    { description : Maybe String
     , code : String
     , isCorrect : Bool
     }
@@ -39,17 +44,8 @@ type alias ExerciseSolution =
 course1 : Course
 course1 =
     { id = 1
-    , title = "Introduction to Elm"
-    , description = "Learn how to get started with Elm"
-    , lectures = [ lecture1 ]
-    }
-
-
-course2 : Course
-course2 =
-    { id = 2
-    , title = "Introduction to Haskell"
-    , description = "Learn how to get started with Haskell"
+    , title = "Expressions"
+    , description = "Learn about expressions in Haskell"
     , lectures = [ lecture1 ]
     }
 
@@ -57,24 +53,50 @@ course2 =
 lecture1 : Lecture
 lecture1 =
     { id = 1
-    , title = "Getting Started"
-    , description = "Learn how to get started with Elm"
+    , title = "Unary Expressions"
+    , description = "Lecture on unary expressions"
     , exercises = [ exercise1 ]
     }
 
 
 exercise1 : Exercise
 exercise1 =
-    { id = 1
-    , title = "Hello World"
-    , description = "Write a program that prints 'Hello World'"
-    , solution = [ solution1 ]
+    SingleExpression
+        { id = 1
+        , title = "Number Expression"
+        , description = Just "What type does this expression have?"
+        , expression = "1"
+        , solutions = [ solution1 ]
+        }
+
+
+solution1 : Answer
+solution1 =
+    { description = Nothing
+    , code = "Int"
+    , isCorrect = True
     }
 
 
-solution1 : ExerciseSolution
-solution1 =
-    { description = "Print 'Hello World'"
-    , code = "main = text \"Hello World\""
-    , isCorrect = True
+solution2 : Answer
+solution2 =
+    { description = Nothing
+    , code = "String"
+    , isCorrect = False
+    }
+
+
+solution3 : Answer
+solution3 =
+    { description = Nothing
+    , code = "Float"
+    , isCorrect = False
+    }
+
+
+solution4 : Answer
+solution4 =
+    { description = Nothing
+    , code = "SomeType"
+    , isCorrect = False
     }
