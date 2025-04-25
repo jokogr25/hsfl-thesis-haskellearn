@@ -32,8 +32,13 @@ type alias User =
     }
 
 
+type Error
+    = UsernameIncorrect
+
+
 type alias LandingPageModel =
     { username : Maybe String
+    , error : Maybe Error
     }
 
 
@@ -61,7 +66,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { page = Landing { username = Nothing }
+    ( { page = Landing { username = Nothing, error = Nothing }
       , user = Nothing
       }
     , Cmd.none
@@ -109,7 +114,15 @@ update msg model =
                 Landing _ ->
                     ( { model
                         | page =
-                            Landing { username = Just name }
+                            Landing
+                                { username = Just name
+                                , error =
+                                    if xor (checkUsername (Just name)) (String.length name == 0) then
+                                        Nothing
+
+                                    else
+                                        Just UsernameIncorrect
+                                }
                       }
                     , Cmd.none
                     )
@@ -120,18 +133,27 @@ update msg model =
         EnteringNameDone ->
             case model.page of
                 Landing l ->
-                    ( { model
-                        | page =
-                            CourseOverview
-                                { courses =
-                                    [ course1, course2 ]
-                                }
-                        , user =
-                            Just
-                                { name = Maybe.withDefault "Guest" l.username }
-                      }
-                    , Cmd.none
-                    )
+                    case l.username of
+                        Just username ->
+                            ( { model
+                                | page =
+                                    CourseOverview
+                                        { courses =
+                                            [ course1, course2 ]
+                                        }
+                                , user =
+                                    Just
+                                        { name = username }
+                              }
+                            , Cmd.none
+                            )
+
+                        Nothing ->
+                            ( { model
+                                | page = Landing { l | error = Just UsernameIncorrect }
+                              }
+                            , Cmd.none
+                            )
 
                 _ ->
                     ( model, Cmd.none )
@@ -167,6 +189,21 @@ landingPage : LandingPageModel -> Html Msg
 landingPage l =
     div [ Html.Attributes.class "container fixed-bottom mb-2" ]
         [ div
+            [ Html.Attributes.class "alert alert-danger mt-2"
+            , Html.Attributes.hidden
+                (case l.error of
+                    Just error ->
+                        case error of
+                            UsernameIncorrect ->
+                                False
+
+                    Nothing ->
+                        True
+                )
+            ]
+            [ text "Dein Name muss mindestens drei Zeichen lang sein."
+            ]
+        , div
             [ Html.Attributes.class "mb-1" ]
             [ Html.input
                 [ onInput EnteringName
