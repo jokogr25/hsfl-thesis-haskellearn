@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events
-import Course.Course as Course exposing (Course, course1)
-import Html exposing (Html, a, button, div, h1, h6, nav, text)
+import Course.Course as Course exposing (Course, Lecture, course1)
+import Html exposing (Html, a, button, div, h1, h4, h6, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
@@ -49,6 +49,7 @@ type alias CoursesOverviewPageModel =
 
 type alias CoursePageModel =
     { course : Course
+    , selectedLecture : Maybe Lecture
     }
 
 
@@ -68,6 +69,7 @@ type Msg
     = EnteringName String
     | EnteringNameDone
     | SelectCourse Course
+    | SelectLecture Lecture
     | NoOp
 
 
@@ -160,7 +162,23 @@ update msg model =
                     ( model, Cmd.none )
 
         SelectCourse course ->
-            ( { model | page = Course { course = course } }, Cmd.none )
+            ( { model | page = Course { course = course, selectedLecture = Nothing } }, Cmd.none )
+
+        SelectLecture lecture ->
+            case model.page of
+                Course course ->
+                    ( { model
+                        | page =
+                            Course
+                                { course
+                                    | selectedLecture = Just lecture
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
 
 
@@ -267,27 +285,53 @@ coursesOverview c =
 coursePage : CoursePageModel -> Html Msg
 coursePage c =
     div [ Html.Attributes.class "container" ]
-        (h1
+        [ h1
             []
             [ text c.course.title ]
-            :: List.map
-                (\lecture ->
-                    div
-                        [ Html.Attributes.class "card m-2" ]
-                        [ div
-                            [ Html.Attributes.class "card-title text-center" ]
-                            [ text lecture.title
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-body" ]
-                            [ div
-                                [ Html.Attributes.class "card-text" ]
-                                [ text lecture.description ]
-                            ]
-                        ]
-                )
-                c.course.lectures
-        )
+        , case c.selectedLecture of
+            Just l ->
+                lectureView l
+
+            Nothing ->
+                div []
+                    (List.map
+                        (\lecture ->
+                            div
+                                [ Html.Attributes.class "card m-2"
+                                , onClick (SelectLecture lecture)
+                                ]
+                                [ div
+                                    [ Html.Attributes.class "card-title text-center" ]
+                                    [ text lecture.title
+                                    ]
+                                , div
+                                    [ Html.Attributes.class "card-body" ]
+                                    [ div
+                                        [ Html.Attributes.class "card-text" ]
+                                        [ text lecture.description ]
+                                    ]
+                                ]
+                        )
+                        c.course.lectures
+                    )
+        ]
+
+
+lectureView : Lecture -> Html Msg
+lectureView l =
+    div [ Html.Attributes.class "container" ]
+        [ h4 []
+            [ text l.title
+            ]
+        , div
+            [ Html.Attributes.class "card-body" ]
+            [ div
+                [ Html.Attributes.class "card-text" ]
+                [ text
+                    ("Diese Lektion beinhaltet " ++ String.fromInt (List.length l.exercises) ++ " Übung(en).")
+                ]
+            ]
+        ]
 
 
 header : Html Msg
