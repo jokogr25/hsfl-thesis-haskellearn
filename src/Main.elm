@@ -188,13 +188,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ header
-        , case model.user of
-            Just user ->
-                appHeader user.name
-
-            Nothing ->
-                text ""
+        [ header model.user
         , case model.page of
             Landing l ->
                 landingPage l
@@ -334,10 +328,11 @@ lectureView l =
         ]
 
 
-header : Html Msg
-header =
+header : Maybe User -> Html Msg
+header user =
     nav [ Html.Attributes.class "navbar" ]
-        [ a [ Html.Attributes.class "navbar-brand" ]
+        (a
+            [ Html.Attributes.class "navbar-brand" ]
             [ img
                 [ Html.Attributes.src "img/logo.svg"
                 , Html.Attributes.alt "earn you a haskell"
@@ -346,7 +341,14 @@ header =
                 ]
                 []
             ]
-        ]
+            :: (case user of
+                    Just u ->
+                        [ text (u.name ++ " le(a)rnt grad") ]
+
+                    Nothing ->
+                        []
+               )
+        )
 
 
 foot : Html Msg
