@@ -358,17 +358,16 @@ lectureView l =
         [ h4 []
             [ text l.title
             ]
-        , div
-            [ Html.Attributes.class "card-body" ]
+        , div [ Html.Attributes.class "card text-center" ]
             [ div
-                [ Html.Attributes.class "card-text" ]
+                [ Html.Attributes.class "card-title" ]
                 [ text
                     ("Diese Lektion beinhaltet " ++ String.fromInt (List.length l.exercises) ++ " Übung(en).")
                 ]
             ]
         , button
             [ onClick StartLecture
-            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom m-2"
+            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom ml-3 mr-3 mb-2"
             ]
             [ text "Lektion starten"
             ]
@@ -391,9 +390,9 @@ runningLectureView l maybeExercise =
                 div [] []
         , button
             [ onClick StopLecture
-            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom m-2"
+            , Html.Attributes.class "btn btn-danger btn-lg fixed-bottom m-2"
             ]
-            [ text "Lektion stoppen"
+            [ text "Lektion beenden"
             ]
         ]
 
