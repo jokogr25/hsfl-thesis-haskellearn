@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events
-import Course.Course as Course exposing (Course, Lecture, course1)
+import Course.Course as Course exposing (Course, Exercise, Lecture, course1)
 import Html exposing (Html, a, button, div, h3, h4, h6, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
@@ -52,6 +52,7 @@ type alias CoursesOverviewPageModel =
 type alias CoursePageModel =
     { course : Course
     , selectedLecture : Maybe Lecture
+    , lectureIsRunning : Bool
     }
 
 
@@ -72,6 +73,8 @@ type Msg
     | EnteringNameDone
     | SelectCourse Course
     | SelectLecture Lecture
+    | StartLecture
+    | StopLecture
     | NoOp
 
 
@@ -164,7 +167,7 @@ update msg model =
                     ( model, Cmd.none )
 
         SelectCourse course ->
-            ( { model | page = Course { course = course, selectedLecture = Nothing } }, Cmd.none )
+            ( { model | page = Course { course = course, selectedLecture = Nothing, lectureIsRunning = False } }, Cmd.none )
 
         SelectLecture lecture ->
             case model.page of
@@ -174,6 +177,38 @@ update msg model =
                             Course
                                 { course
                                     | selectedLecture = Just lecture
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        StartLecture ->
+            case model.page of
+                Course course ->
+                    ( { model
+                        | page =
+                            Course
+                                { course
+                                    | lectureIsRunning = True
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        StopLecture ->
+            case model.page of
+                Course course ->
+                    ( { model
+                        | page =
+                            Course
+                                { course
+                                    | lectureIsRunning = False
                                 }
                       }
                     , Cmd.none
@@ -248,7 +283,7 @@ landingPage l =
 
 coursesOverview : CoursesOverviewPageModel -> Html Msg
 coursesOverview c =
-    div [ Html.Attributes.class "container" ]
+    div [ Html.Attributes.class "container mb-2" ]
         [ h6
             [ Html.Attributes.class "m-1" ]
             [ text
@@ -280,13 +315,17 @@ coursesOverview c =
 
 coursePage : CoursePageModel -> Html Msg
 coursePage c =
-    div [ Html.Attributes.class "container" ]
+    div [ Html.Attributes.class "container mb-2" ]
         [ h3
             []
             [ text c.course.title ]
         , case c.selectedLecture of
             Just l ->
-                lectureView l
+                if c.lectureIsRunning then
+                    runningLectureView l Nothing
+
+                else
+                    lectureView l
 
             Nothing ->
                 div []
@@ -326,6 +365,35 @@ lectureView l =
                 [ text
                     ("Diese Lektion beinhaltet " ++ String.fromInt (List.length l.exercises) ++ " Übung(en).")
                 ]
+            ]
+        , button
+            [ onClick StartLecture
+            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom m-2"
+            ]
+            [ text "Lektion starten"
+            ]
+        ]
+
+
+runningLectureView : Lecture -> Maybe Exercise -> Html Msg
+runningLectureView l maybeExercise =
+    div [ Html.Attributes.class "container" ]
+        [ h4 []
+            [ text l.title
+            ]
+        , case maybeExercise of
+            Just exercise ->
+                case exercise of
+                    Course.SingleExpression model ->
+                        div [] [ text ("Aktuelle Übung: " ++ model.title) ]
+
+            Nothing ->
+                div [] []
+        , button
+            [ onClick StopLecture
+            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom m-2"
+            ]
+            [ text "Lektion stoppen"
             ]
         ]
 

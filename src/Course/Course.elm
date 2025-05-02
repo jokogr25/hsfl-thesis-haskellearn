@@ -17,6 +17,10 @@ type alias Lecture =
     }
 
 
+type Exercise
+    = SingleExpression SingleExpressionModel
+
+
 type alias SingleExpressionModel =
     { id : Int
     , title : String
@@ -24,10 +28,6 @@ type alias SingleExpressionModel =
     , expression : String
     , solutions : List Answer
     }
-
-
-type Exercise
-    = SingleExpression SingleExpressionModel
 
 
 type alias Answer =
