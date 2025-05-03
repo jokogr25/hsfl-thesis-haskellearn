@@ -26,7 +26,7 @@ type alias SingleExpressionModel =
     , title : String
     , description : Maybe String
     , expression : String
-    , solutions : List Answer
+    , answers : List Answer
     }
 
 
@@ -66,36 +66,41 @@ exercise1 =
         , title = "Number Expression"
         , description = Just "What type does this expression have?"
         , expression = "1"
-        , solutions = [ solution1 ]
+        , answers =
+            [ answer1
+            , answer2
+            , answer3
+            , answer4
+            ]
         }
 
 
-solution1 : Answer
-solution1 =
+answer1 : Answer
+answer1 =
     { description = Nothing
     , code = "Int"
     , isCorrect = True
     }
 
 
-solution2 : Answer
-solution2 =
+answer2 : Answer
+answer2 =
     { description = Nothing
     , code = "String"
     , isCorrect = False
     }
 
 
-solution3 : Answer
-solution3 =
+answer3 : Answer
+answer3 =
     { description = Nothing
     , code = "Float"
     , isCorrect = False
     }
 
 
-solution4 : Answer
-solution4 =
+answer4 : Answer
+answer4 =
     { description = Nothing
     , code = "SomeType"
     , isCorrect = False
