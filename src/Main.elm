@@ -75,7 +75,7 @@ type Msg
     | SelectLecture Lecture
     | StartLecture
     | StopLecture
-    | SendAnswer Course.Answer
+    | SelectAnswer
     | NoOp
 
 
@@ -218,8 +218,44 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        SendAnswer _ ->
-            ( model, Cmd.none )
+        SelectAnswer ->
+            case model.page of
+                Course course ->
+                    ( { model
+                        | page =
+                            Course
+                                { course
+                                    | lectureIsRunning =
+                                        case course.selectedLecture of
+                                            Just lecture ->
+                                                case List.head lecture.exercises of
+                                                    Just _ ->
+                                                        True
+
+                                                    _ ->
+                                                        False
+
+                                            Nothing ->
+                                                False
+                                    , selectedLecture =
+                                        case course.selectedLecture of
+                                            Just lecture ->
+                                                Just
+                                                    { lecture
+                                                        | exercises =
+                                                            List.tail lecture.exercises
+                                                                |> Maybe.withDefault []
+                                                    }
+
+                                            _ ->
+                                                Nothing
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
 
 
@@ -326,7 +362,14 @@ coursePage c =
         , case c.selectedLecture of
             Just l ->
                 if c.lectureIsRunning then
-                    runningLectureView l
+                    case List.head l.exercises of
+                        Just e ->
+                            runningLectureView l e
+
+                        Nothing ->
+                            div []
+                                [ text "Die Lektion enthält keine Aufgaben."
+                                ]
 
                 else
                     lectureView l
@@ -378,74 +421,67 @@ lectureView l =
         ]
 
 
-runningLectureView : Lecture -> Html Msg
-runningLectureView l =
+runningLectureView : Lecture -> Exercise -> Html Msg
+runningLectureView l e =
     div [ Html.Attributes.class "container" ]
         [ h4 []
             [ text l.title
             ]
         , div
             []
-            (List.map
-                (\exercise ->
-                    case exercise of
-                        Course.SingleExpression e ->
-                            div
-                                [ Html.Attributes.class "card m-2 fixed-bottom"
-                                ]
-                                [ div
-                                    [ Html.Attributes.class "card-header text-center" ]
-                                    [ text e.title
-                                    ]
-                                , div
-                                    [ Html.Attributes.class "card-body" ]
-                                    [ div
-                                        [ Html.Attributes.class "card-title" ]
-                                        [ text
-                                            (case e.description of
-                                                Just d ->
-                                                    d
-
-                                                Nothing ->
-                                                    ""
-                                            )
-                                        ]
-                                    , div
-                                        [ Html.Attributes.class "card-content" ]
-                                        [ Html.code
-                                            []
-                                            [ text e.expression ]
-                                        ]
-                                    ]
-                                , div
-                                    [ Html.Attributes.class "card-footer btn-toolbar" ]
-                                    (List.map
-                                        (\answer ->
-                                            div
-                                                [ Html.Attributes.class "btn-group"
-                                                , onClick (SendAnswer answer)
-                                                ]
-                                                [ div
-                                                    [ Html.Attributes.class "btn btn-dark m-1" ]
-                                                    [ Html.code
-                                                        []
-                                                        [ text answer.code ]
-                                                    ]
-                                                , case answer.description of
-                                                    Just d ->
-                                                        text d
-
-                                                    Nothing ->
-                                                        text ""
-                                                ]
-                                        )
-                                        e.answers
-                                    )
-                                ]
-                )
-                l.exercises
-            )
+            [ excerciseView e
+            ]
         ]
+
+
+excerciseView : Exercise -> Html Msg
+excerciseView exercise =
+    case exercise of
+        Course.SingleExpression e ->
+            div
+                [ Html.Attributes.class "card m-2 fixed-bottom"
+                ]
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text e.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case e.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
+                            )
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        [ Html.code
+                            []
+                            [ text e.expression ]
+                        ]
+                    ]
+                , div
+                    [ Html.Attributes.class "card-footer btn-toolbar" ]
+                    (List.map
+                        (\answer ->
+                            div
+                                [ Html.Attributes.class "btn btn-dark m-1"
+                                , onClick SelectAnswer
+                                ]
+                                [ Html.code
+                                    []
+                                    [ text answer.code
+                                    ]
+                                ]
+                        )
+                        e.answers
+                    )
+                ]
 
 
 header : Maybe User -> Html Msg
