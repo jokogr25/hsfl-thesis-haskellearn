@@ -53,8 +53,8 @@ course1 =
 lecture1 : Lecture
 lecture1 =
     { id = 1
-    , title = "Einstellige Ausdrücke"
-    , description = "Lektion über einstellige Ausdrücke"
+    , title = "Typen von einfachen Ausdrücken"
+    , description = "Lektion über einfache Ausdrücke"
     , exercises = [ exercise1 ]
     }
 
@@ -64,7 +64,7 @@ exercise1 =
     SingleExpression
         { id = 1
         , title = "Zahlenausdruck"
-        , description = Just "Welchen Type hat der folgende Ausdruck?"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "1"
         , answers =
             [ answer1

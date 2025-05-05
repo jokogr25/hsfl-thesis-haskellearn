@@ -385,13 +385,13 @@ runningLectureView l =
             [ text l.title
             ]
         , div
-            [ Html.Attributes.class "album p-1 bg-light" ]
+            []
             (List.map
                 (\exercise ->
                     case exercise of
                         Course.SingleExpression e ->
                             div
-                                [ Html.Attributes.class "card m-2"
+                                [ Html.Attributes.class "card m-2 fixed-bottom"
                                 ]
                                 [ div
                                     [ Html.Attributes.class "card-header text-center" ]
@@ -445,12 +445,6 @@ runningLectureView l =
                 )
                 l.exercises
             )
-        , button
-            [ onClick StopLecture
-            , Html.Attributes.class "btn btn-danger btn-lg fixed-bottom m-2"
-            ]
-            [ text "Lektion beenden"
-            ]
         ]
 
 
