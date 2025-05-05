@@ -75,6 +75,7 @@ type Msg
     | SelectLecture Lecture
     | StartLecture
     | StopLecture
+    | SendAnswer Course.Answer
     | NoOp
 
 
@@ -217,6 +218,9 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        SendAnswer _ ->
+            ( model, Cmd.none )
+
 
 
 -- VIEW
@@ -322,7 +326,7 @@ coursePage c =
         , case c.selectedLecture of
             Just l ->
                 if c.lectureIsRunning then
-                    runningLectureView l Nothing
+                    runningLectureView l
 
                 else
                     lectureView l
@@ -358,7 +362,7 @@ lectureView l =
         [ h4 []
             [ text l.title
             ]
-        , div [ Html.Attributes.class "card text-center" ]
+        , div [ Html.Attributes.class "card text-center m-2" ]
             [ div
                 [ Html.Attributes.class "card-title" ]
                 [ text
@@ -367,27 +371,80 @@ lectureView l =
             ]
         , button
             [ onClick StartLecture
-            , Html.Attributes.class "btn btn-primary btn-lg fixed-bottom ml-3 mr-3 mb-2"
+            , Html.Attributes.class "btn btn-success btn-lg m-2"
             ]
             [ text "Lektion starten"
             ]
         ]
 
 
-runningLectureView : Lecture -> Maybe Exercise -> Html Msg
-runningLectureView l maybeExercise =
+runningLectureView : Lecture -> Html Msg
+runningLectureView l =
     div [ Html.Attributes.class "container" ]
         [ h4 []
             [ text l.title
             ]
-        , case maybeExercise of
-            Just exercise ->
-                case exercise of
-                    Course.SingleExpression model ->
-                        div [] [ text ("Aktuelle Übung: " ++ model.title) ]
+        , div
+            [ Html.Attributes.class "album p-1 bg-light" ]
+            (List.map
+                (\exercise ->
+                    case exercise of
+                        Course.SingleExpression e ->
+                            div
+                                [ Html.Attributes.class "card m-2"
+                                ]
+                                [ div
+                                    [ Html.Attributes.class "card-header text-center" ]
+                                    [ text e.title
+                                    ]
+                                , div
+                                    [ Html.Attributes.class "card-body" ]
+                                    [ div
+                                        [ Html.Attributes.class "card-title" ]
+                                        [ text
+                                            (case e.description of
+                                                Just d ->
+                                                    d
 
-            Nothing ->
-                div [] []
+                                                Nothing ->
+                                                    ""
+                                            )
+                                        ]
+                                    , div
+                                        [ Html.Attributes.class "card-content" ]
+                                        [ Html.code
+                                            []
+                                            [ text e.expression ]
+                                        ]
+                                    ]
+                                , div
+                                    [ Html.Attributes.class "card-footer btn-toolbar" ]
+                                    (List.map
+                                        (\answer ->
+                                            div
+                                                [ Html.Attributes.class "btn-group"
+                                                , onClick (SendAnswer answer)
+                                                ]
+                                                [ div
+                                                    [ Html.Attributes.class "btn btn-secondary m-1" ]
+                                                    [ Html.code
+                                                        []
+                                                        [ text answer.code ]
+                                                    ]
+                                                , case answer.description of
+                                                    Just d ->
+                                                        text d
+
+                                                    Nothing ->
+                                                        text ""
+                                                ]
+                                        )
+                                        e.answers
+                                    )
+                                ]
+                )
+                l.exercises
+            )
         , button
             [ onClick StopLecture
             , Html.Attributes.class "btn btn-danger btn-lg fixed-bottom m-2"
