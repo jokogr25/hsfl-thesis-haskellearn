@@ -426,7 +426,7 @@ runningLectureView l =
                                                 , onClick (SendAnswer answer)
                                                 ]
                                                 [ div
-                                                    [ Html.Attributes.class "btn btn-secondary m-1" ]
+                                                    [ Html.Attributes.class "btn btn-dark m-1" ]
                                                     [ Html.code
                                                         []
                                                         [ text answer.code ]
