@@ -55,7 +55,7 @@ lecture1 =
     { id = 1
     , title = "Typen von einfachen Ausdrücken"
     , description = "Lektion über einfache Ausdrücke"
-    , exercises = [ exercise1 ]
+    , exercises = [ exercise1, exercise2, exercise3 ]
     }
 
 
@@ -67,41 +67,77 @@ exercise1 =
         , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "1"
         , answers =
-            [ answer1
-            , answer2
-            , answer3
-            , answer4
+            [ { description = Nothing
+              , code = "Int"
+              , isCorrect = True
+              }
+            , { description = Nothing
+              , code = "String"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "Float"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "SomeType"
+              , isCorrect = False
+              }
             ]
         }
 
 
-answer1 : Answer
-answer1 =
-    { description = Nothing
-    , code = "Int"
-    , isCorrect = True
-    }
+exercise2 : Exercise
+exercise2 =
+    SingleExpression
+        { id = 2
+        , title = "Stringausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "\"Hallo\""
+        , answers =
+            [ { description = Nothing
+              , code = "Int"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "String"
+              , isCorrect = True
+              }
+            , { description = Nothing
+              , code = "Float"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "SomeType"
+              , isCorrect = False
+              }
+            ]
+        }
 
 
-answer2 : Answer
-answer2 =
-    { description = Nothing
-    , code = "String"
-    , isCorrect = False
-    }
-
-
-answer3 : Answer
-answer3 =
-    { description = Nothing
-    , code = "Float"
-    , isCorrect = False
-    }
-
-
-answer4 : Answer
-answer4 =
-    { description = Nothing
-    , code = "SomeType"
-    , isCorrect = False
-    }
+exercise3 : Exercise
+exercise3 =
+    SingleExpression
+        { id = 3
+        , title = "Boolausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "True"
+        , answers =
+            [ { description = Nothing
+              , code = "Int"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "String"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "Float"
+              , isCorrect = False
+              }
+            , { description = Nothing
+              , code = "Bool"
+              , isCorrect = True
+              }
+            ]
+        }
