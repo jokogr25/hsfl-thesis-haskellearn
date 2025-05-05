@@ -31,8 +31,7 @@ type alias SingleExpressionModel =
 
 
 type alias Answer =
-    { description : Maybe String
-    , code : String
+    { code : String
     , isCorrect : Bool
     }
 
@@ -67,20 +66,16 @@ exercise1 =
         , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "1"
         , answers =
-            [ { description = Nothing
-              , code = "Int"
+            [ { code = "Int"
               , isCorrect = True
               }
-            , { description = Nothing
-              , code = "String"
+            , { code = "String"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "Float"
+            , { code = "Float"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "SomeType"
+            , { code = "SomeType"
               , isCorrect = False
               }
             ]
@@ -95,20 +90,16 @@ exercise2 =
         , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "\"Hallo\""
         , answers =
-            [ { description = Nothing
-              , code = "Int"
+            [ { code = "Int"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "String"
+            , { code = "String"
               , isCorrect = True
               }
-            , { description = Nothing
-              , code = "Float"
+            , { code = "Float"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "SomeType"
+            , { code = "SomeType"
               , isCorrect = False
               }
             ]
@@ -123,20 +114,16 @@ exercise3 =
         , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "True"
         , answers =
-            [ { description = Nothing
-              , code = "Int"
+            [ { code = "Int"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "String"
+            , { code = "String"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "Float"
+            , { code = "Float"
               , isCorrect = False
               }
-            , { description = Nothing
-              , code = "Bool"
+            , { code = "Bool"
               , isCorrect = True
               }
             ]
