@@ -54,7 +54,14 @@ lecture1 =
     { id = 1
     , title = "Typen von einfachen Ausdrücken"
     , description = "Lektion über einfache Ausdrücke"
-    , exercises = [ exercise1, exercise2, exercise3 ]
+    , exercises =
+        [ exercise1
+        , exercise2
+        , exercise3
+        , exercise4
+        , exercise5
+        , exercise6
+        ]
     }
 
 
@@ -125,6 +132,102 @@ exercise3 =
               }
             , { code = "Bool"
               , isCorrect = True
+              }
+            ]
+        }
+
+
+exercise4 : Exercise
+exercise4 =
+    SingleExpression
+        { id = 4
+        , title = "Listenausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "[1, 2, 3]"
+        , answers =
+            [ { code = "[Int]"
+              , isCorrect = True
+              }
+            , { code = "String"
+              , isCorrect = False
+              }
+            , { code = "Float"
+              , isCorrect = False
+              }
+            , { code = "SomeType"
+              , isCorrect = False
+              }
+            ]
+        }
+
+
+exercise5 : Exercise
+exercise5 =
+    SingleExpression
+        { id = 5
+        , title = "Tupleausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "(1, \"Hallo\")"
+        , answers =
+            [ { code = "(Int, String)"
+              , isCorrect = True
+              }
+            , { code = "String"
+              , isCorrect = False
+              }
+            , { code = "Float"
+              , isCorrect = False
+              }
+            , { code = "SomeType"
+              , isCorrect = False
+              }
+            ]
+        }
+
+
+exercise6 : Exercise
+exercise6 =
+    SingleExpression
+        { id = 6
+        , title = "Maybeausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "Just 1"
+        , answers =
+            [ { code = "Maybe Int"
+              , isCorrect = True
+              }
+            , { code = "String"
+              , isCorrect = False
+              }
+            , { code = "Float"
+              , isCorrect = False
+              }
+            , { code = "SomeType"
+              , isCorrect = False
+              }
+            ]
+        }
+
+
+exercise7 : Exercise
+exercise7 =
+    SingleExpression
+        { id = 7
+        , title = "Maybeausdruck"
+        , description = Just "Welchen Typ hat der folgende Ausdruck?"
+        , expression = "Nothing"
+        , answers =
+            [ { code = "Maybe Int"
+              , isCorrect = True
+              }
+            , { code = "String"
+              , isCorrect = False
+              }
+            , { code = "Float"
+              , isCorrect = False
+              }
+            , { code = "SomeType"
+              , isCorrect = False
               }
             ]
         }
