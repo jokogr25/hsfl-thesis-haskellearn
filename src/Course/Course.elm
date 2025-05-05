@@ -44,8 +44,8 @@ type alias Answer =
 course1 : Course
 course1 =
     { id = 1
-    , title = "Expressions"
-    , description = "Learn about expressions in Haskell"
+    , title = "Ausdrücke"
+    , description = "Lerne etwas zu Ausdrücken in Haskell"
     , lectures = [ lecture1 ]
     }
 
@@ -53,8 +53,8 @@ course1 =
 lecture1 : Lecture
 lecture1 =
     { id = 1
-    , title = "Unary Expressions"
-    , description = "Lecture on unary expressions"
+    , title = "Einstellige Ausdrücke"
+    , description = "Lektion über einstellige Ausdrücke"
     , exercises = [ exercise1 ]
     }
 
@@ -63,8 +63,8 @@ exercise1 : Exercise
 exercise1 =
     SingleExpression
         { id = 1
-        , title = "Number Expression"
-        , description = Just "What type does this expression have?"
+        , title = "Zahlenausdruck"
+        , description = Just "Welchen Type hat der folgende Ausdruck?"
         , expression = "1"
         , answers =
             [ answer1
