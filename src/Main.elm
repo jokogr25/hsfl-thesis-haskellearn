@@ -51,7 +51,8 @@ type alias CoursesOverviewPageModel =
 type alias CoursePageModel =
     { course : Course
     , selectedLecture : Maybe Lecture
-    , lectureIsRunning : Bool
+    , lectureState : LectureState
+    , answeredExercices : List ( Exercise, Course.Answer )
     }
 
 
@@ -67,6 +68,12 @@ type alias Model =
     }
 
 
+type LectureState
+    = NotStarted
+    | Running
+    | Finished
+
+
 type Msg
     = EnteringName String
     | EnteringNameDone
@@ -74,13 +81,17 @@ type Msg
     | SelectLecture Lecture
     | StartLecture
     | StopLecture
-    | SelectAnswer
+    | SelectAnswer Course.Exercise Course.Answer
     | NoOp
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { page = Landing { username = Nothing, error = Nothing }
+    ( { page =
+            Landing
+                { username = Nothing
+                , error = Nothing
+                }
       , user = Nothing
       }
     , Cmd.none
@@ -158,7 +169,11 @@ update msg model =
 
                         Nothing ->
                             ( { model
-                                | page = Landing { l | error = Just UsernameIncorrect }
+                                | page =
+                                    Landing
+                                        { l
+                                            | error = Just UsernameIncorrect
+                                        }
                               }
                             , Cmd.none
                             )
@@ -167,7 +182,17 @@ update msg model =
                     ( model, Cmd.none )
 
         SelectCourse course ->
-            ( { model | page = Course { course = course, selectedLecture = Nothing, lectureIsRunning = False } }, Cmd.none )
+            ( { model
+                | page =
+                    Course
+                        { course = course
+                        , selectedLecture = Nothing
+                        , lectureState = NotStarted
+                        , answeredExercices = []
+                        }
+              }
+            , Cmd.none
+            )
 
         SelectLecture lecture ->
             case model.page of
@@ -192,7 +217,7 @@ update msg model =
                         | page =
                             Course
                                 { course
-                                    | lectureIsRunning = True
+                                    | lectureState = Running
                                 }
                       }
                     , Cmd.none
@@ -208,7 +233,7 @@ update msg model =
                         | page =
                             Course
                                 { course
-                                    | lectureIsRunning = False
+                                    | lectureState = NotStarted
                                 }
                       }
                     , Cmd.none
@@ -217,25 +242,26 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        SelectAnswer ->
+        SelectAnswer exercise answer ->
             case model.page of
                 Course course ->
                     ( { model
                         | page =
                             Course
                                 { course
-                                    | lectureIsRunning =
+                                    | lectureState =
                                         case course.selectedLecture of
                                             Just lecture ->
-                                                case List.head lecture.exercises of
-                                                    Just _ ->
-                                                        True
+                                                if List.length lecture.exercises == 1 then
+                                                    Debug.log "MOIN"
+                                                        Finished
 
-                                                    _ ->
-                                                        False
+                                                else
+                                                    Debug.log (String.fromInt (List.length lecture.exercises))
+                                                        Running
 
                                             Nothing ->
-                                                False
+                                                NotStarted
                                     , selectedLecture =
                                         case course.selectedLecture of
                                             Just lecture ->
@@ -248,6 +274,8 @@ update msg model =
 
                                             _ ->
                                                 Nothing
+                                    , answeredExercices =
+                                        ( exercise, answer ) :: course.answeredExercices
                                 }
                       }
                     , Cmd.none
@@ -360,18 +388,30 @@ coursePage c =
             [ text c.course.title ]
         , case c.selectedLecture of
             Just l ->
-                if c.lectureIsRunning then
-                    case List.head l.exercises of
-                        Just e ->
-                            runningLectureView l e
+                case c.lectureState of
+                    NotStarted ->
+                        lectureView l
 
-                        Nothing ->
-                            div []
-                                [ text "Die Lektion enthält keine Aufgaben."
+                    Running ->
+                        case List.head l.exercises of
+                            Just e ->
+                                runningLectureView l e
+
+                            Nothing ->
+                                div []
+                                    [ text "Hier stimmt was nicht!"
+                                    ]
+
+                    Finished ->
+                        div []
+                            [ h4 []
+                                [ text
+                                    ("Du hast "
+                                        ++ String.fromInt (List.length c.answeredExercices)
+                                        ++ " Aufgaben abgeschlossen!"
+                                    )
                                 ]
-
-                else
-                    lectureView l
+                            ]
 
             Nothing ->
                 div []
@@ -470,7 +510,7 @@ excerciseView exercise =
                         (\answer ->
                             div
                                 [ Html.Attributes.class "btn btn-dark m-1"
-                                , onClick SelectAnswer
+                                , onClick (SelectAnswer exercise answer)
                                 ]
                                 [ Html.code
                                     []

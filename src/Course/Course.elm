@@ -61,6 +61,7 @@ lecture1 =
         , exercise4
         , exercise5
         , exercise6
+        , exercise7
         ]
     }
 
