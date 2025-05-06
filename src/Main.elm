@@ -253,12 +253,10 @@ update msg model =
                                         case course.selectedLecture of
                                             Just lecture ->
                                                 if List.length lecture.exercises == 1 then
-                                                    Debug.log "MOIN"
-                                                        Finished
+                                                    Finished
 
                                                 else
-                                                    Debug.log (String.fromInt (List.length lecture.exercises))
-                                                        Running
+                                                    Running
 
                                             Nothing ->
                                                 NotStarted
