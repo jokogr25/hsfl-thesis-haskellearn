@@ -327,7 +327,7 @@ landingPage l =
                 [ onInput EnteringName
                 , placeholder "Gib deinen Namen ein"
                 , type_ "text"
-                , Html.Attributes.class "form-control"
+                , Html.Attributes.class "form-control form-control-lg"
                 ]
                 []
             ]
