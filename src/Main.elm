@@ -82,6 +82,7 @@ type Msg
     | StartLecture
     | StopLecture
     | SelectAnswer Course.Exercise Course.Answer
+    | GoToCourseOverview
     | NoOp
 
 
@@ -127,6 +128,17 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        GoToCourseOverview ->
+            ( { model
+                | page =
+                    CoursesOverview
+                        { courses =
+                            [ course1 ]
+                        }
+              }
+            , Cmd.none
+            )
 
         EnteringName name ->
             case model.page of
@@ -290,7 +302,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ header model.user
+        [ header model
         , case model.page of
             Landing l ->
                 landingPage l
@@ -307,7 +319,7 @@ landingPage : LandingPageModel -> Html Msg
 landingPage l =
     div [ Html.Attributes.class "container fixed-bottom mb-2" ]
         [ div
-            [ Html.Attributes.class "alert alert-danger mt-2"
+            [ Html.Attributes.class "alert bg-danger-subtle"
             , Html.Attributes.hidden
                 (case l.error of
                     Just error ->
@@ -349,7 +361,11 @@ landingPage l =
 coursesOverview : CoursesOverviewPageModel -> Html Msg
 coursesOverview c =
     div [ Html.Attributes.class "container mb-2" ]
-        [ h6
+        [ Html.h1
+            [ Html.Attributes.class "display-5" ]
+            [ text "Kursübersicht"
+            ]
+        , Html.p
             [ Html.Attributes.class "m-1" ]
             [ text
                 ("Dir stehen " ++ String.fromInt (List.length c.courses) ++ " Kurse zur Verfügung: ")
@@ -382,7 +398,7 @@ coursePage : CoursePageModel -> Html Msg
 coursePage c =
     div [ Html.Attributes.class "container mb-2" ]
         [ h3
-            []
+            [ Html.Attributes.class "display-5 text-center" ]
             [ text c.course.title ]
         , case c.selectedLecture of
             Just l ->
@@ -501,16 +517,28 @@ lectureView l =
         [ h4 []
             [ text l.title
             ]
-        , div [ Html.Attributes.class "card text-center m-2" ]
+        , div []
             [ div
-                [ Html.Attributes.class "card-title" ]
-                [ text
-                    ("Diese Lektion beinhaltet " ++ String.fromInt (List.length l.exercises) ++ " Übung(en).")
+                []
+                [ Html.p [] [ text l.description ]
+                , Html.p []
+                    [ text
+                        ("Diese Lektion beinhaltet "
+                            ++ String.fromInt (List.length l.exercises)
+                            ++ " "
+                            ++ (if List.length l.exercises == 1 then
+                                    "Aufgabe"
+
+                                else
+                                    "Aufgaben"
+                               )
+                        )
+                    ]
                 ]
             ]
         , button
             [ onClick StartLecture
-            , Html.Attributes.class "btn btn-dark btn-lg m-2"
+            , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
             ]
             [ text "Lektion starten"
             ]
@@ -580,15 +608,16 @@ excerciseView exercise =
                 ]
 
 
-header : Maybe User -> Html Msg
-header user =
-    nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary m-2" ]
+header : Model -> Html Msg
+header m =
+    nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
         [ div
             [ Html.Attributes.class "container-fluid" ]
             [ a
                 [ Html.Attributes.class "navbar-brand" ]
                 [ Img.logo
                 ]
+            , h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
             , button
                 [ Html.Attributes.class "navbar-toggler"
                 , Html.Attributes.attribute "data-bs-toggle" "collapse"
@@ -609,8 +638,20 @@ header user =
                         [ Html.Attributes.class "nav-item" ]
                         [ a
                             [ Html.Attributes.class "nav-link"
+                            , Html.Attributes.classList
+                                [ ( "nav-link", True )
+                                , ( "active"
+                                  , case m.page of
+                                        CoursesOverview _ ->
+                                            True
+
+                                        _ ->
+                                            False
+                                  )
+                                ]
+                            , onClick GoToCourseOverview
                             ]
-                            [ text "Startseite"
+                            [ text "Kursübersicht"
                             ]
                         ]
                     ]
@@ -624,15 +665,6 @@ foot =
     div
         [ Html.Attributes.class "footer fixed-bottom text-center" ]
         [ text "Copyright © 2025" ]
-
-
-appHeader : String -> Html Msg
-appHeader username =
-    div [ Html.Attributes.class "ml-1" ]
-        [ h3 []
-            [ text ("Hallo " ++ username ++ "!")
-            ]
-        ]
 
 
 checkUsername : Maybe String -> Bool

@@ -53,7 +53,7 @@ lecture1 : Lecture
 lecture1 =
     { id = 1
     , title = "Typen von einfachen Ausdrücken"
-    , description = "Lektion über einfache Ausdrücke"
+    , description = "In dieser Lektion wird dein Wissen über Typen von einfachen Ausdrücken getestet."
     , exercises =
         [ exercise1
         , exercise2
