@@ -335,10 +335,10 @@ landingPage l =
             [ onClick EnteringNameDone
             , Html.Attributes.classList
                 [ ( "btn", True )
+                , ( "btn-lg", True )
+                , ( "w-100", True )
                 , ( "btn-dark", checkUsername l.username )
                 , ( "disabled", not (checkUsername l.username) )
-                , ( "btn-lg", True )
-                , ( "btn-block", True )
                 ]
             , Html.Attributes.disabled (not (checkUsername l.username))
             ]
@@ -452,7 +452,7 @@ coursePage c =
                                                                     div
                                                                         [ Html.Attributes.classList
                                                                             [ ( "btn m-1", True )
-                                                                            , ( "btn-dark", not a.isCorrect )
+                                                                            , ( "btn-outline-dark", not a.isCorrect )
                                                                             , ( "btn-outline-success", a.isCorrect )
                                                                             ]
                                                                         ]
