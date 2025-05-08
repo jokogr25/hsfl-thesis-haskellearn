@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Browser.Events
 import Course.Course as Course exposing (Course, Exercise, Lecture, course1)
-import Html exposing (Html, a, button, div, h3, h4, h6, nav, text)
+import Html exposing (Html, a, button, div, h3, h4, h5, h6, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Images.Images as Img
@@ -273,7 +273,7 @@ update msg model =
                                             _ ->
                                                 Nothing
                                     , answeredExercices =
-                                        ( exercise, answer ) :: course.answeredExercices
+                                        course.answeredExercices ++ [ ( exercise, answer ) ]
                                 }
                       }
                     , Cmd.none
@@ -402,14 +402,73 @@ coursePage c =
 
                     Finished ->
                         div []
-                            [ h4 []
-                                [ text
-                                    ("Du hast "
-                                        ++ String.fromInt (List.length c.answeredExercices)
-                                        ++ " Aufgaben abgeschlossen!"
-                                    )
-                                ]
-                            ]
+                            (List.map
+                                (\( exercise, answer ) ->
+                                    case exercise of
+                                        Course.SingleExpression singleExpressionModel ->
+                                            div
+                                                [ Html.Attributes.class "card m-2" ]
+                                                [ div
+                                                    [ Html.Attributes.class "card-title text-center" ]
+                                                    [ h5
+                                                        []
+                                                        [ text singleExpressionModel.title
+                                                        ]
+                                                    ]
+                                                , div
+                                                    [ Html.Attributes.class "card-body" ]
+                                                    [ case singleExpressionModel.description of
+                                                        Just d ->
+                                                            div
+                                                                [ Html.Attributes.class "card-text"
+                                                                ]
+                                                                [ text d ]
+
+                                                        Nothing ->
+                                                            text ""
+                                                    , Html.code
+                                                        []
+                                                        [ text singleExpressionModel.expression
+                                                        ]
+                                                    , div
+                                                        [ Html.Attributes.class "card-footer btn-toolbar" ]
+                                                        (List.map
+                                                            (\a ->
+                                                                if a == answer then
+                                                                    div
+                                                                        [ Html.Attributes.class "btn m-1"
+                                                                        , Html.Attributes.classList
+                                                                            [ ( "btn-outline-success", a.isCorrect )
+                                                                            , ( "btn-outline-danger", not a.isCorrect )
+                                                                            ]
+                                                                        ]
+                                                                        [ Html.code
+                                                                            []
+                                                                            [ text a.code
+                                                                            ]
+                                                                        ]
+
+                                                                else
+                                                                    div
+                                                                        [ Html.Attributes.classList
+                                                                            [ ( "btn m-1", True )
+                                                                            , ( "btn-dark", not a.isCorrect )
+                                                                            , ( "btn-outline-success", a.isCorrect )
+                                                                            ]
+                                                                        ]
+                                                                        [ Html.code
+                                                                            []
+                                                                            [ text a.code
+                                                                            ]
+                                                                        ]
+                                                            )
+                                                            singleExpressionModel.answers
+                                                        )
+                                                    ]
+                                                ]
+                                )
+                                c.answeredExercices
+                            )
 
             Nothing ->
                 div []
