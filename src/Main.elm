@@ -452,7 +452,7 @@ coursePage c =
                                                                     div
                                                                         [ Html.Attributes.classList
                                                                             [ ( "btn m-1", True )
-                                                                            , ( "btn-outline-dark", not a.isCorrect )
+                                                                            , ( "btn-dark opacity-50", not a.isCorrect )
                                                                             , ( "btn-outline-success", a.isCorrect )
                                                                             ]
                                                                         ]
@@ -582,19 +582,41 @@ excerciseView exercise =
 
 header : Maybe User -> Html Msg
 header user =
-    nav [ Html.Attributes.class "navbar" ]
-        (a
-            [ Html.Attributes.class "navbar-brand" ]
-            [ Img.logo
+    nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary m-2" ]
+        [ div
+            [ Html.Attributes.class "container-fluid" ]
+            [ a
+                [ Html.Attributes.class "navbar-brand" ]
+                [ Img.logo
+                ]
+            , button
+                [ Html.Attributes.class "navbar-toggler"
+                , Html.Attributes.attribute "data-bs-toggle" "collapse"
+                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
+                ]
+                [ Html.span
+                    [ Html.Attributes.class "navbar-toggler-icon"
+                    ]
+                    []
+                ]
+            , div
+                [ Html.Attributes.class "collapse navbar-collapse"
+                , Html.Attributes.id "navbarNav"
+                ]
+                [ Html.ul
+                    [ Html.Attributes.class "navbar-nav" ]
+                    [ Html.li
+                        [ Html.Attributes.class "nav-item" ]
+                        [ a
+                            [ Html.Attributes.class "nav-link"
+                            ]
+                            [ text "Startseite"
+                            ]
+                        ]
+                    ]
+                ]
             ]
-            :: (case user of
-                    Just u ->
-                        [ text (u.name ++ " le(a)rnt grad") ]
-
-                    Nothing ->
-                        []
-               )
-        )
+        ]
 
 
 foot : Html Msg
