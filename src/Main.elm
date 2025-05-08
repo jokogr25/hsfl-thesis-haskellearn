@@ -335,8 +335,8 @@ landingPage l =
             [ onClick EnteringNameDone
             , Html.Attributes.classList
                 [ ( "btn", True )
-                , ( "btn-primary", checkUsername l.username )
-                , ( "btn-secondary", not (checkUsername l.username) )
+                , ( "btn-dark", checkUsername l.username )
+                , ( "disabled", not (checkUsername l.username) )
                 , ( "btn-lg", True )
                 , ( "btn-block", True )
                 ]
@@ -451,7 +451,7 @@ lectureView l =
             ]
         , button
             [ onClick StartLecture
-            , Html.Attributes.class "btn btn-success btn-lg m-2"
+            , Html.Attributes.class "btn btn-dark btn-lg m-2"
             ]
             [ text "Lektion starten"
             ]
