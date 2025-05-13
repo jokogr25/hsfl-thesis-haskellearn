@@ -20,6 +20,7 @@ type alias Lecture =
 type Exercise
     = SingleExpression SingleExpressionModel
     | BinaryExpression BinaryExpressionModel
+    | FunctionExpression FunctionExpressionModel
 
 
 type alias SingleExpressionModel =
@@ -42,6 +43,16 @@ type alias BinaryExpressionModel =
     }
 
 
+type alias FunctionExpressionModel =
+    { id : Int
+    , title : String
+    , description : Maybe String
+    , answers : List Answer
+    , functionName : String
+    , arguments : List String
+    }
+
+
 type alias Answer =
     { code : String
     , isCorrect : Bool
@@ -57,7 +68,7 @@ course1 =
     { id = 1
     , title = "Ausdrücke"
     , description = "Lerne etwas zu Ausdrücken in Haskell"
-    , lectures = [ lecture1, lecture2 ]
+    , lectures = [ lecture1, lecture2, lecture3 ]
     }
 
 
@@ -176,6 +187,37 @@ lecture2 =
             , leftExpression = "[(1, \"Joscha\"), (4, \"Test\")]"
             , rightExpression = "[(5, \"Noch\"), (2, \"Konstantin\")]"
             , operator = "++"
+            }
+        ]
+    }
+
+
+lecture3 : Lecture
+lecture3 =
+    { id = 3
+    , title = "Funktionen"
+    , description = "In dieser Lektion wird dein Wissen über Funktionen getestet."
+    , exercises =
+        [ FunctionExpression
+            { id = 13
+            , title = "Funktion"
+            , description = Just "Welchen Typ hat der folgende Funktionsaufruf?"
+            , answers =
+                [ { code = "add :: Int -> Int -> Int"
+                  , isCorrect = True
+                  }
+                , { code = "add :: Int -> Int -> String"
+                  , isCorrect = True
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , functionName = "add"
+            , arguments = [ "x", "y" ]
             }
         ]
     }

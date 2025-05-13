@@ -590,6 +590,52 @@ excerciseView exercise =
                     )
                 ]
 
+        Course.FunctionExpression e ->
+            div
+                [ Html.Attributes.class "card m-2 fixed-bottom"
+                ]
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text e.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case e.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
+                            )
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        [ Html.code
+                            []
+                            [ text (e.functionName ++ " " ++ String.join " " e.arguments) ]
+                        ]
+                    ]
+                , div
+                    [ Html.Attributes.class "card-footer btn-toolbar" ]
+                    (List.map
+                        (\answer ->
+                            div
+                                [ Html.Attributes.class "btn btn-dark m-1"
+                                , onClick (SelectAnswer exercise answer)
+                                ]
+                                [ Html.code
+                                    []
+                                    [ text answer.code
+                                    ]
+                                ]
+                        )
+                        e.answers
+                    )
+                ]
+
 
 finishedExerciseView : Exercise -> Course.Answer -> Html Msg
 finishedExerciseView exercise answer =
@@ -715,6 +761,70 @@ finishedExerciseView exercise answer =
                             )
                             binaryExpressionModel.answers
                         )
+                    ]
+                ]
+
+        Course.FunctionExpression functionExpressionModel ->
+            div []
+                [ div
+                    [ Html.Attributes.class "card m-2" ]
+                    [ div
+                        [ Html.Attributes.class "card-title text-center" ]
+                        [ h5
+                            []
+                            [ text functionExpressionModel.title
+                            ]
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ case functionExpressionModel.description of
+                            Just d ->
+                                div
+                                    [ Html.Attributes.class "card-text"
+                                    ]
+                                    [ text d ]
+
+                            Nothing ->
+                                text ""
+                        , Html.code
+                            []
+                            [ text (functionExpressionModel.functionName ++ " " ++ (functionExpressionModel.arguments |> String.join " "))
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-footer btn-toolbar" ]
+                            (List.map
+                                (\a ->
+                                    if a == answer then
+                                        div
+                                            [ Html.Attributes.class "btn m-1"
+                                            , Html.Attributes.classList
+                                                [ ( "btn-outline-success", a.isCorrect )
+                                                , ( "btn-outline-danger", not a.isCorrect )
+                                                ]
+                                            ]
+                                            [ Html.code
+                                                []
+                                                [ text a.code
+                                                ]
+                                            ]
+
+                                    else
+                                        div
+                                            [ Html.Attributes.classList
+                                                [ ( "btn m-1", True )
+                                                , ( "btn-dark opacity-50", not a.isCorrect )
+                                                , ( "btn-outline-success", a.isCorrect )
+                                                ]
+                                            ]
+                                            [ Html.code
+                                                []
+                                                [ text a.code
+                                                ]
+                                            ]
+                                )
+                                functionExpressionModel.answers
+                            )
+                        ]
                     ]
                 ]
 
