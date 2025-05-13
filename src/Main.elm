@@ -8,6 +8,7 @@ import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Images.Images as Img
 import Json.Decode as Decode
+import SyntaxHighlight as Highlight
 
 
 
@@ -636,6 +637,76 @@ excerciseView exercise =
                     )
                 ]
 
+        Course.GuardExpression e ->
+            div
+                [ Html.Attributes.class "card m-2 fixed-bottom"
+                ]
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text e.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case e.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
+                            )
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        [ Highlight.useTheme Highlight.oneDark
+                        , Highlight.elm
+                            (e.functionName
+                                ++ " "
+                                ++ String.join " " e.arguments
+                                ++ "\n | "
+                                ++ String.join "\n | " e.guards
+                                ++ "\n | otherwise = "
+                                ++ e.otherwise
+                            )
+                            |> Result.map (Highlight.toBlockHtml (Just 0))
+                            |> Result.withDefault
+                                (Html.pre []
+                                    [ Html.code
+                                        [ Html.Attributes.class "bg-light p-3 rounded d-block" ]
+                                        [ text
+                                            (e.functionName
+                                                ++ " "
+                                                ++ String.join " " e.arguments
+                                                ++ "\n | "
+                                                ++ String.join "\n | " e.guards
+                                                ++ "\n | otherwise = "
+                                                ++ e.otherwise
+                                            )
+                                        ]
+                                    ]
+                                )
+                        ]
+                    ]
+                , div
+                    [ Html.Attributes.class "card-footer btn-toolbar" ]
+                    (List.map
+                        (\answer ->
+                            div
+                                [ Html.Attributes.class "btn btn-dark m-1"
+                                , onClick (SelectAnswer exercise answer)
+                                ]
+                                [ Html.code
+                                    []
+                                    [ text answer.code
+                                    ]
+                                ]
+                        )
+                        e.answers
+                    )
+                ]
+
 
 finishedExerciseView : Exercise -> Course.Answer -> Html Msg
 finishedExerciseView exercise answer =
@@ -829,6 +900,9 @@ finishedExerciseView exercise answer =
                         )
                     ]
                 ]
+
+        Course.GuardExpression _ ->
+            div [] []
 
 
 header : Model -> Html Msg

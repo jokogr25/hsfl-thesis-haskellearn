@@ -21,6 +21,7 @@ type Exercise
     = SingleExpression SingleExpressionModel
     | BinaryExpression BinaryExpressionModel
     | FunctionExpression FunctionExpressionModel
+    | GuardExpression GuardExpressionModel
 
 
 type alias SingleExpressionModel =
@@ -53,6 +54,18 @@ type alias FunctionExpressionModel =
     }
 
 
+type alias GuardExpressionModel =
+    { id : Int
+    , title : String
+    , description : Maybe String
+    , answers : List Answer
+    , functionName : String
+    , guards : List String
+    , arguments : List String
+    , otherwise : String
+    }
+
+
 type alias Answer =
     { code : String
     , isCorrect : Bool
@@ -68,7 +81,7 @@ course1 =
     { id = 1
     , title = "Ausdrücke"
     , description = "Lerne etwas zu Ausdrücken in Haskell"
-    , lectures = [ lecture1, lecture2, lecture3 ]
+    , lectures = [ lecture1, lecture2, lecture3, lecture4 ]
     }
 
 
@@ -218,6 +231,42 @@ lecture3 =
                 ]
             , functionName = "add"
             , arguments = [ "x", "y" ]
+            }
+        ]
+    }
+
+
+lecture4 : Lecture
+lecture4 =
+    { id = 4
+    , title = "Guard-Ausdrücke"
+    , description = "In dieser Lektion wird dein Wissen über Guard-Ausdrücke getestet."
+    , exercises =
+        [ GuardExpression
+            { id = 14
+            , title = "Guard-Ausdruck"
+            , description = Just "Welchen Typ hat der folgende Guard-Ausdruck?"
+            , answers =
+                [ { code = "guardFunction :: Int -> String"
+                  , isCorrect = True
+                  }
+                , { code = "guardFunction :: String"
+                  , isCorrect = False
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , functionName = "guardFunction"
+            , guards =
+                [ "x > 0 = \"größer 0\""
+                , "x < 0 = \"kleiner 0\""
+                ]
+            , arguments = [ "x" ]
+            , otherwise = "\"gleich 0\""
             }
         ]
     }
