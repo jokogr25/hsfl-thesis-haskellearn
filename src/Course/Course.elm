@@ -35,8 +35,10 @@ type alias BinaryExpressionModel =
     { id : Int
     , title : String
     , description : Maybe String
-    , expression : String
     , answers : List Answer
+    , leftExpression : String
+    , rightExpression : String
+    , operator : String
     }
 
 
@@ -55,7 +57,127 @@ course1 =
     { id = 1
     , title = "Ausdrücke"
     , description = "Lerne etwas zu Ausdrücken in Haskell"
-    , lectures = [ lecture1 ]
+    , lectures = [ lecture1, lecture2 ]
+    }
+
+
+lecture2 : Lecture
+lecture2 =
+    { id = 2
+    , title = "Typen von zweistelligen Ausdrücken"
+    , description = "Diese Lektion beinhaltet Aufgaben mit zweistelligen Ausdrücken, die über einfache Operatoren miteinander verbunden sind."
+    , exercises =
+        [ BinaryExpression
+            { id = 8
+            , title = "Zahlenausdruck"
+            , description = Just "Welchen Typ hat der folgende Ausdruck?"
+            , answers =
+                [ { code = "Int"
+                  , isCorrect = True
+                  }
+                , { code = "String"
+                  , isCorrect = False
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , leftExpression = "1"
+            , rightExpression = "2"
+            , operator = "+"
+            }
+        , BinaryExpression
+            { id = 9
+            , title = "Stringausdruck"
+            , description = Just "Welchen Typ hat der folgende Ausdruck?"
+            , answers =
+                [ { code = "Int"
+                  , isCorrect = False
+                  }
+                , { code = "String"
+                  , isCorrect = True
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , leftExpression = "\"Hallo\""
+            , rightExpression = "\"Welt\""
+            , operator = "++"
+            }
+        , BinaryExpression
+            { id = 10
+            , title = "Boolausdruck"
+            , description = Just "Welchen Typ hat der folgende Ausdruck?"
+            , answers =
+                [ { code = "Int"
+                  , isCorrect = False
+                  }
+                , { code = "String"
+                  , isCorrect = False
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "Bool"
+                  , isCorrect = True
+                  }
+                ]
+            , leftExpression = "True"
+            , rightExpression = "False"
+            , operator = "&&"
+            }
+        , BinaryExpression
+            { id = 11
+            , title = "Listenausdruck"
+            , description = Just "Welchen Typ hat der folgende Ausdruck?"
+            , answers =
+                [ { code = "[Int]"
+                  , isCorrect = True
+                  }
+                , { code = "String"
+                  , isCorrect = False
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , leftExpression = "[1, 2]"
+            , rightExpression = "[3, 4]"
+            , operator = "++"
+            }
+        , BinaryExpression
+            { id = 12
+            , title = "Listenausdruck"
+            , description = Just "Welchen Typ hat der folgende Ausdruck?"
+            , answers =
+                [ { code = "[(1, String)]"
+                  , isCorrect = True
+                  }
+                , { code = "(1, String)"
+                  , isCorrect = False
+                  }
+                , { code = "Float"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            , leftExpression = "[(1, \"Joscha\"), (4, \"Test\")]"
+            , rightExpression = "[(5, \"Noch\"), (2, \"Konstantin\")]"
+            , operator = "++"
+            }
+        ]
     }
 
 

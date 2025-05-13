@@ -569,7 +569,7 @@ excerciseView exercise =
                         [ Html.Attributes.class "card-content" ]
                         [ Html.code
                             []
-                            [ text e.expression ]
+                            [ text (e.leftExpression ++ " " ++ e.operator ++ " " ++ e.rightExpression) ]
                         ]
                     ]
                 , div
@@ -656,8 +656,67 @@ finishedExerciseView exercise answer =
                     ]
                 ]
 
-        Course.BinaryExpression _ ->
-            div [] []
+        Course.BinaryExpression binaryExpressionModel ->
+            div
+                [ Html.Attributes.class "card m-2" ]
+                [ div
+                    [ Html.Attributes.class "card-title text-center" ]
+                    [ h5
+                        []
+                        [ text binaryExpressionModel.title
+                        ]
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ case binaryExpressionModel.description of
+                        Just d ->
+                            div
+                                [ Html.Attributes.class "card-text"
+                                ]
+                                [ text d ]
+
+                        Nothing ->
+                            text ""
+                    , Html.code
+                        []
+                        [ text (binaryExpressionModel.leftExpression ++ " " ++ binaryExpressionModel.operator ++ " " ++ binaryExpressionModel.rightExpression)
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-footer btn-toolbar" ]
+                        (List.map
+                            (\a ->
+                                if a == answer then
+                                    div
+                                        [ Html.Attributes.class "btn m-1"
+                                        , Html.Attributes.classList
+                                            [ ( "btn-outline-success", a.isCorrect )
+                                            , ( "btn-outline-danger", not a.isCorrect )
+                                            ]
+                                        ]
+                                        [ Html.code
+                                            []
+                                            [ text a.code
+                                            ]
+                                        ]
+
+                                else
+                                    div
+                                        [ Html.Attributes.classList
+                                            [ ( "btn m-1", True )
+                                            , ( "btn-dark opacity-50", not a.isCorrect )
+                                            , ( "btn-outline-success", a.isCorrect )
+                                            ]
+                                        ]
+                                        [ Html.code
+                                            []
+                                            [ text a.code
+                                            ]
+                                        ]
+                            )
+                            binaryExpressionModel.answers
+                        )
+                    ]
+                ]
 
 
 header : Model -> Html Msg
