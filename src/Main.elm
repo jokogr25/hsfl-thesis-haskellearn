@@ -660,7 +660,7 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        [ Highlight.useTheme Highlight.oneDark
+                        [ Highlight.useTheme Highlight.gitHub
                         , Highlight.elm
                             (e.functionName
                                 ++ " "
