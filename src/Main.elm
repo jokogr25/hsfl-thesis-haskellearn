@@ -665,50 +665,58 @@ header m =
     nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
         [ div
             [ Html.Attributes.class "container-fluid" ]
-            [ a
+            ([ a
                 [ Html.Attributes.class "navbar-brand" ]
                 [ Img.logo
                 ]
-            , h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
-            , button
-                [ Html.Attributes.class "navbar-toggler"
-                , Html.Attributes.attribute "data-bs-toggle" "collapse"
-                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
-                ]
-                [ Html.span
-                    [ Html.Attributes.class "navbar-toggler-icon"
-                    ]
-                    []
-                ]
-            , div
-                [ Html.Attributes.class "collapse navbar-collapse"
-                , Html.Attributes.id "navbarNav"
-                ]
-                [ Html.ul
-                    [ Html.Attributes.class "navbar-nav" ]
-                    [ Html.li
-                        [ Html.Attributes.class "nav-item" ]
-                        [ a
-                            [ Html.Attributes.class "nav-link"
-                            , Html.Attributes.classList
-                                [ ( "nav-link", True )
-                                , ( "active"
-                                  , case m.page of
-                                        CoursesOverview _ ->
-                                            True
+             , h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
+             ]
+                ++ (case m.page of
+                        Landing _ ->
+                            []
 
-                                        _ ->
-                                            False
-                                  )
+                        _ ->
+                            [ button
+                                [ Html.Attributes.class "navbar-toggler"
+                                , Html.Attributes.attribute "data-bs-toggle" "collapse"
+                                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
                                 ]
-                            , onClick GoToCourseOverview
+                                [ Html.span
+                                    [ Html.Attributes.class "navbar-toggler-icon"
+                                    ]
+                                    []
+                                ]
+                            , div
+                                [ Html.Attributes.class "collapse navbar-collapse"
+                                , Html.Attributes.id "navbarNav"
+                                ]
+                                [ Html.ul
+                                    [ Html.Attributes.class "navbar-nav" ]
+                                    [ Html.li
+                                        [ Html.Attributes.class "nav-item" ]
+                                        [ a
+                                            [ Html.Attributes.class "nav-link"
+                                            , Html.Attributes.classList
+                                                [ ( "nav-link", True )
+                                                , ( "active"
+                                                  , case m.page of
+                                                        CoursesOverview _ ->
+                                                            True
+
+                                                        _ ->
+                                                            False
+                                                  )
+                                                ]
+                                            , onClick GoToCourseOverview
+                                            ]
+                                            [ text "Kursübersicht"
+                                            ]
+                                        ]
+                                    ]
+                                ]
                             ]
-                            [ text "Kursübersicht"
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                   )
+            )
         ]
 
 
