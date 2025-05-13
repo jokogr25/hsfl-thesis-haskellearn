@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Browser.Events
 import Course.Course as Course exposing (Course, Exercise, Lecture, course1)
-import Html exposing (Html, a, button, div, h3, h4, h5, h6, nav, text)
+import Html exposing (Html, a, button, div, h3, h4, h5, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Images.Images as Img
