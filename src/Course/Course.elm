@@ -19,9 +19,19 @@ type alias Lecture =
 
 type Exercise
     = SingleExpression SingleExpressionModel
+    | BinaryExpression BinaryExpressionModel
 
 
 type alias SingleExpressionModel =
+    { id : Int
+    , title : String
+    , description : Maybe String
+    , expression : String
+    , answers : List Answer
+    }
+
+
+type alias BinaryExpressionModel =
     { id : Int
     , title : String
     , description : Maybe String
