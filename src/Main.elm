@@ -665,18 +665,17 @@ header m =
     nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
         [ div
             [ Html.Attributes.class "container-fluid" ]
-            ([ a
+            (a
                 [ Html.Attributes.class "navbar-brand" ]
                 [ Img.logo
                 ]
-             , h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
-             ]
-                ++ (case m.page of
+                :: (case m.page of
                         Landing _ ->
                             []
 
                         _ ->
-                            [ button
+                            [ h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
+                            , button
                                 [ Html.Attributes.class "navbar-toggler"
                                 , Html.Attributes.attribute "data-bs-toggle" "collapse"
                                 , Html.Attributes.attribute "data-bs-target" "#navbarNav"
