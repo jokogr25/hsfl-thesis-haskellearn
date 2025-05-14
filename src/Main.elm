@@ -372,7 +372,7 @@ coursesOverview c =
                 ("Dir stehen " ++ String.fromInt (List.length c.courses) ++ " Kurse zur Verfügung: ")
             ]
         , div
-            [ Html.Attributes.class "album p-1 bg-light" ]
+            [ Html.Attributes.class "album p-1" ]
             (List.map
                 (\course ->
                     div
@@ -694,13 +694,21 @@ excerciseView exercise =
                     (List.map
                         (\answer ->
                             div
-                                [ Html.Attributes.class "btn btn-dark m-1"
+                                [ Html.Attributes.class "btn bg-white btn-outline-dark m-1"
                                 , onClick (SelectAnswer exercise answer)
                                 ]
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
+                                [ Highlight.useTheme Highlight.gitHub
+                                , Highlight.elm
+                                    answer.code
+                                    |> Result.map Highlight.toInlineHtml
+                                    |> Result.withDefault
+                                        (Html.pre []
+                                            [ Html.code
+                                                [ Html.Attributes.class "bg-light p-3 rounded d-block" ]
+                                                [ text answer.code
+                                                ]
+                                            ]
+                                        )
                                 ]
                         )
                         e.answers
