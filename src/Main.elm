@@ -444,7 +444,9 @@ coursePage c =
                     Finished ->
                         div []
                             (List.map
-                                (\( exercise, answer ) -> finishedExerciseView exercise answer)
+                                (\( exercise, answer ) ->
+                                    finishedExerciseView exercise answer
+                                )
                                 c.answeredExercices
                             )
 
@@ -729,7 +731,7 @@ finishedExerciseAnswerView answers studentAnswer =
         (List.map
             (\answer ->
                 div
-                    [ Html.Attributes.class "btn bg-white m-1"
+                    [ Html.Attributes.class "btn bg-white m-1 pe-none"
                     , if answer == studentAnswer then
                         Html.Attributes.classList
                             [ ( "btn-outline-success", answer.isCorrect )
@@ -768,14 +770,14 @@ finishedExerciseView exercise answer =
                 [ Html.Attributes.class "card m-2" ]
                 [ div
                     [ Html.Attributes.class "card-title text-center" ]
-                    [ h5
+                    [ Html.h5
                         []
                         [ text singleExpressionModel.title
                         ]
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
-                    [ case singleExpressionModel.description of
+                    ((case singleExpressionModel.description of
                         Just d ->
                             div
                                 [ Html.Attributes.class "card-text"
@@ -784,14 +786,13 @@ finishedExerciseView exercise answer =
 
                         Nothing ->
                             text ""
-                    , Html.code
-                        []
-                        [ text singleExpressionModel.expression
-                        ]
-                    , finishedExerciseAnswerView
-                        singleExpressionModel.answers
-                        answer
-                    ]
+                     )
+                        :: highlightedExpressionView
+                            singleExpressionModel.expression
+                    )
+                , finishedExerciseAnswerView
+                    singleExpressionModel.answers
+                    answer
                 ]
 
         Course.BinaryExpression binaryExpressionModel ->
