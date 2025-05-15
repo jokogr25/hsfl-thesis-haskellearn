@@ -361,29 +361,30 @@ landingPage l =
 
 coursesOverview : CoursesOverviewPageModel -> Html Msg
 coursesOverview c =
-    div [ Html.Attributes.class "container" ]
+    div [ Html.Attributes.class "m-1" ]
         [ Html.h1
-            [ Html.Attributes.class "display-5" ]
+            [ Html.Attributes.class "display-5 text-center" ]
             [ text "Kursübersicht"
             ]
         , Html.p
-            [ Html.Attributes.class "m-1" ]
+            [ Html.Attributes.class "text-center" ]
             [ text
                 ("Dir stehen " ++ String.fromInt (List.length c.courses) ++ " Kurse zur Verfügung: ")
             ]
         , div
-            [ Html.Attributes.class "album p-1" ]
+            [ Html.Attributes.class "album" ]
             [ div
                 [ Html.Attributes.class "container" ]
                 [ div
                     [ Html.Attributes.class
-                        "row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                        "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
                     ]
-                    [ div [ Html.Attributes.class "row" ]
+                    [ div
+                        [ Html.Attributes.class "col" ]
                         (List.map
                             (\course ->
                                 div
-                                    [ Html.Attributes.class "card", onClick (SelectCourse course) ]
+                                    [ Html.Attributes.class "card shadow-sm", onClick (SelectCourse course) ]
                                     [ div
                                         [ Html.Attributes.class "card-title text-center" ]
                                         [ text course.title
@@ -393,6 +394,19 @@ coursesOverview c =
                                         [ div
                                             [ Html.Attributes.class "card-text" ]
                                             [ text course.description ]
+                                        , div
+                                            [ Html.Attributes.class
+                                                "d-flex justify-content-between align-items-center"
+                                            ]
+                                            [ div [] []
+                                            , Html.small
+                                                [ Html.Attributes.class "muted" ]
+                                                [ text
+                                                    (String.fromInt (List.length course.lectures)
+                                                        ++ " Lektionen"
+                                                    )
+                                                ]
+                                            ]
                                         ]
                                     ]
                             )
@@ -435,27 +449,57 @@ coursePage c =
                             )
 
             Nothing ->
-                div [ Html.Attributes.class "container" ]
-                    (List.map
-                        (\lecture ->
-                            div
-                                [ Html.Attributes.class "card m-2"
-                                , onClick (SelectLecture lecture)
-                                ]
-                                [ div
-                                    [ Html.Attributes.class "card-title text-center" ]
-                                    [ text lecture.title
-                                    ]
-                                , div
-                                    [ Html.Attributes.class "card-body" ]
-                                    [ div
-                                        [ Html.Attributes.class "card-text" ]
-                                        [ text lecture.description ]
-                                    ]
-                                ]
-                        )
-                        c.course.lectures
-                    )
+                div [ Html.Attributes.class "album" ]
+                    [ div
+                        [ Html.Attributes.class "container" ]
+                        [ div
+                            [ Html.Attributes.class
+                                "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                            ]
+                            [ div
+                                [ Html.Attributes.class "col" ]
+                                (List.map
+                                    (\lecture ->
+                                        div
+                                            [ Html.Attributes.class
+                                                "card shadow-sm m-1"
+                                            , onClick (SelectLecture lecture)
+                                            ]
+                                            [ div
+                                                [ Html.Attributes.class
+                                                    "card-title text-center"
+                                                ]
+                                                [ text lecture.title
+                                                ]
+                                            , div
+                                                [ Html.Attributes.class
+                                                    "card-body"
+                                                ]
+                                                [ div
+                                                    [ Html.Attributes.class
+                                                        "card-text"
+                                                    ]
+                                                    [ text lecture.description
+                                                    , div
+                                                        [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
+                                                        [ div [] []
+                                                        , Html.small
+                                                            [ Html.Attributes.class "muted" ]
+                                                            [ text
+                                                                (String.fromInt (List.length lecture.exercises)
+                                                                    ++ " Aufgaben"
+                                                                )
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                    )
+                                    c.course.lectures
+                                )
+                            ]
+                        ]
+                    ]
         ]
 
 
