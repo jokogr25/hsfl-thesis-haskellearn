@@ -361,7 +361,7 @@ landingPage l =
 
 coursesOverview : CoursesOverviewPageModel -> Html Msg
 coursesOverview c =
-    div [ Html.Attributes.class "container mb-2" ]
+    div [ Html.Attributes.class "container" ]
         [ Html.h1
             [ Html.Attributes.class "display-5" ]
             [ text "Kursübersicht"
@@ -373,31 +373,41 @@ coursesOverview c =
             ]
         , div
             [ Html.Attributes.class "album p-1" ]
-            (List.map
-                (\course ->
-                    div
-                        [ Html.Attributes.class "card m-2", onClick (SelectCourse course) ]
-                        [ div
-                            [ Html.Attributes.class "card-title text-center" ]
-                            [ text course.title
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-body" ]
-                            [ div
-                                [ Html.Attributes.class "card-text" ]
-                                [ text course.description ]
-                            ]
-                        ]
-                )
-                c.courses
-            )
+            [ div
+                [ Html.Attributes.class "container" ]
+                [ div
+                    [ Html.Attributes.class
+                        "row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                    ]
+                    [ div [ Html.Attributes.class "row" ]
+                        (List.map
+                            (\course ->
+                                div
+                                    [ Html.Attributes.class "card", onClick (SelectCourse course) ]
+                                    [ div
+                                        [ Html.Attributes.class "card-title text-center" ]
+                                        [ text course.title
+                                        ]
+                                    , div
+                                        [ Html.Attributes.class "card-body" ]
+                                        [ div
+                                            [ Html.Attributes.class "card-text" ]
+                                            [ text course.description ]
+                                        ]
+                                    ]
+                            )
+                            c.courses
+                        )
+                    ]
+                ]
+            ]
         , foot
         ]
 
 
 coursePage : CoursePageModel -> Html Msg
 coursePage c =
-    div [ Html.Attributes.class "container mb-2" ]
+    div []
         [ h3
             [ Html.Attributes.class "display-5 text-center" ]
             [ text c.course.title ]
@@ -425,7 +435,7 @@ coursePage c =
                             )
 
             Nothing ->
-                div []
+                div [ Html.Attributes.class "container" ]
                     (List.map
                         (\lecture ->
                             div
