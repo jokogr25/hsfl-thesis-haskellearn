@@ -527,22 +527,7 @@ excerciseView exercise =
                             [ text e.expression ]
                         ]
                     ]
-                , div
-                    [ Html.Attributes.class "card-footer btn-toolbar" ]
-                    (List.map
-                        (\answer ->
-                            div
-                                [ Html.Attributes.class "btn btn-dark m-1"
-                                , onClick (SelectAnswer exercise answer)
-                                ]
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
-                                ]
-                        )
-                        e.answers
-                    )
+                , runningExerciseAnswerView exercise e.answers
                 ]
 
         Course.BinaryExpression e ->
@@ -573,22 +558,7 @@ excerciseView exercise =
                             [ text (e.leftExpression ++ " " ++ e.operator ++ " " ++ e.rightExpression) ]
                         ]
                     ]
-                , div
-                    [ Html.Attributes.class "card-footer btn-toolbar" ]
-                    (List.map
-                        (\answer ->
-                            div
-                                [ Html.Attributes.class "btn btn-dark m-1"
-                                , onClick (SelectAnswer exercise answer)
-                                ]
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
-                                ]
-                        )
-                        e.answers
-                    )
+                , runningExerciseAnswerView exercise e.answers
                 ]
 
         Course.FunctionExpression e ->
@@ -619,22 +589,7 @@ excerciseView exercise =
                             [ text (e.functionName ++ " " ++ String.join " " e.arguments) ]
                         ]
                     ]
-                , div
-                    [ Html.Attributes.class "card-footer btn-toolbar" ]
-                    (List.map
-                        (\answer ->
-                            div
-                                [ Html.Attributes.class "btn btn-dark m-1"
-                                , onClick (SelectAnswer exercise answer)
-                                ]
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
-                                ]
-                        )
-                        e.answers
-                    )
+                , runningExerciseAnswerView exercise e.answers
                 ]
 
         Course.GuardExpression e ->
@@ -683,31 +638,76 @@ excerciseView exercise =
                                 )
                         ]
                     ]
-                , div
-                    [ Html.Attributes.class "card-footer btn-toolbar" ]
-                    (List.map
-                        (\answer ->
-                            div
-                                [ Html.Attributes.class "btn bg-white btn-outline-dark m-1"
-                                , onClick (SelectAnswer exercise answer)
-                                ]
-                                [ Highlight.useTheme Highlight.gitHub
-                                , Highlight.elm
-                                    answer.code
-                                    |> Result.map Highlight.toInlineHtml
-                                    |> Result.withDefault
-                                        (Html.pre []
-                                            [ Html.code
-                                                [ Html.Attributes.class "bg-light p-3 rounded d-block" ]
-                                                [ text answer.code
-                                                ]
-                                            ]
-                                        )
-                                ]
-                        )
-                        e.answers
-                    )
+                , runningExerciseAnswerView exercise e.answers
                 ]
+
+
+runningExerciseAnswerView : Course.Exercise -> List Course.Answer -> Html Msg
+runningExerciseAnswerView exercise answers =
+    div
+        [ Html.Attributes.class "card-footer btn-toolbar" ]
+        (List.map
+            (\answer ->
+                div
+                    [ Html.Attributes.class "btn bg-white btn-outline-dark m-1"
+                    , onClick (SelectAnswer exercise answer)
+                    ]
+                    [ Highlight.useTheme Highlight.gitHub
+                    , Highlight.elm
+                        answer.code
+                        |> Result.map Highlight.toInlineHtml
+                        |> Result.withDefault
+                            (Html.pre []
+                                [ Html.code
+                                    []
+                                    [ text answer.code
+                                    ]
+                                ]
+                            )
+                    ]
+            )
+            answers
+        )
+
+
+finishedExerciseAnswerView : List Course.Answer -> Course.Answer -> Html Msg
+finishedExerciseAnswerView answers studentAnswer =
+    div
+        [ Html.Attributes.class
+            "card-footer btn-toolbar"
+        ]
+        (List.map
+            (\answer ->
+                div
+                    [ Html.Attributes.class "btn bg-white m-1"
+                    , if answer == studentAnswer then
+                        Html.Attributes.classList
+                            [ ( "btn-outline-success", answer.isCorrect )
+                            , ( "btn-outline-danger", not answer.isCorrect )
+                            ]
+
+                      else
+                        Html.Attributes.classList
+                            [ ( "btn-outline-success", answer.isCorrect )
+                            , ( "btn-outline-dark opacity-50", not answer.isCorrect )
+                            ]
+                    ]
+                    [ Highlight.useTheme Highlight.gitHub
+                    , Highlight.elm
+                        answer.code
+                        |> Result.map Highlight.toInlineHtml
+                        |> Result.withDefault
+                            (Html.pre []
+                                [ Html.code
+                                    []
+                                    [ text answer.code
+                                    ]
+                                ]
+                            )
+                    ]
+            )
+            answers
+        )
 
 
 finishedExerciseView : Exercise -> Course.Answer -> Html Msg
@@ -738,40 +738,9 @@ finishedExerciseView exercise answer =
                         []
                         [ text singleExpressionModel.expression
                         ]
-                    , div
-                        [ Html.Attributes.class "card-footer btn-toolbar" ]
-                        (List.map
-                            (\a ->
-                                if a == answer then
-                                    div
-                                        [ Html.Attributes.class "btn m-1"
-                                        , Html.Attributes.classList
-                                            [ ( "btn-outline-success", a.isCorrect )
-                                            , ( "btn-outline-danger", not a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-
-                                else
-                                    div
-                                        [ Html.Attributes.classList
-                                            [ ( "btn m-1", True )
-                                            , ( "btn-dark opacity-50", not a.isCorrect )
-                                            , ( "btn-outline-success", a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-                            )
-                            singleExpressionModel.answers
-                        )
+                    , finishedExerciseAnswerView
+                        singleExpressionModel.answers
+                        answer
                     ]
                 ]
 
@@ -800,40 +769,9 @@ finishedExerciseView exercise answer =
                         []
                         [ text (binaryExpressionModel.leftExpression ++ " " ++ binaryExpressionModel.operator ++ " " ++ binaryExpressionModel.rightExpression)
                         ]
-                    , div
-                        [ Html.Attributes.class "card-footer btn-toolbar" ]
-                        (List.map
-                            (\a ->
-                                if a == answer then
-                                    div
-                                        [ Html.Attributes.class "btn m-1"
-                                        , Html.Attributes.classList
-                                            [ ( "btn-outline-success", a.isCorrect )
-                                            , ( "btn-outline-danger", not a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-
-                                else
-                                    div
-                                        [ Html.Attributes.classList
-                                            [ ( "btn m-1", True )
-                                            , ( "btn-dark opacity-50", not a.isCorrect )
-                                            , ( "btn-outline-success", a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-                            )
-                            binaryExpressionModel.answers
-                        )
+                    , finishedExerciseAnswerView
+                        binaryExpressionModel.answers
+                        answer
                     ]
                 ]
 
@@ -864,42 +802,9 @@ finishedExerciseView exercise answer =
                             [ text (functionExpressionModel.functionName ++ " " ++ (functionExpressionModel.arguments |> String.join " "))
                             ]
                         ]
-                    , div
-                        [ Html.Attributes.class
-                            "card-footer btn-toolbar"
-                        ]
-                        (List.map
-                            (\a ->
-                                if a == answer then
-                                    div
-                                        [ Html.Attributes.class "btn m-1"
-                                        , Html.Attributes.classList
-                                            [ ( "btn-outline-success", a.isCorrect )
-                                            , ( "btn-outline-danger", not a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-
-                                else
-                                    div
-                                        [ Html.Attributes.classList
-                                            [ ( "btn m-1", True )
-                                            , ( "btn-dark opacity-50", not a.isCorrect )
-                                            , ( "btn-outline-success", a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-                            )
-                            functionExpressionModel.answers
-                        )
+                    , finishedExerciseAnswerView
+                        functionExpressionModel.answers
+                        answer
                     ]
                 ]
 
@@ -930,42 +835,9 @@ finishedExerciseView exercise answer =
                             [ text (guardExpressionModel.functionName ++ " " ++ (guardExpressionModel.arguments |> String.join " "))
                             ]
                         ]
-                    , div
-                        [ Html.Attributes.class
-                            "card-footer btn-toolbar"
-                        ]
-                        (List.map
-                            (\a ->
-                                if a == answer then
-                                    div
-                                        [ Html.Attributes.class "btn m-1"
-                                        , Html.Attributes.classList
-                                            [ ( "btn-outline-success", a.isCorrect )
-                                            , ( "btn-outline-danger", not a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-
-                                else
-                                    div
-                                        [ Html.Attributes.classList
-                                            [ ( "btn m-1", True )
-                                            , ( "btn-dark opacity-50", not a.isCorrect )
-                                            , ( "btn-outline-success", a.isCorrect )
-                                            ]
-                                        ]
-                                        [ Html.code
-                                            []
-                                            [ text a.code
-                                            ]
-                                        ]
-                            )
-                            guardExpressionModel.answers
-                        )
+                    , finishedExerciseAnswerView
+                        guardExpressionModel.answers
+                        answer
                     ]
                 ]
 
