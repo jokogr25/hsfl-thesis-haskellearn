@@ -498,21 +498,19 @@ runningLectureView l e =
 
 excerciseView : Exercise -> Html Msg
 excerciseView exercise =
-    case exercise of
-        Course.SingleExpression e ->
-            div
-                [ Html.Attributes.class "card m-2 fixed-bottom"
-                ]
+    div [ Html.Attributes.class "card m-2 fixed-bottom" ]
+        (case exercise of
+            Course.SingleExpression singleExpression ->
                 [ div
                     [ Html.Attributes.class "card-header text-center" ]
-                    [ text e.title
+                    [ text singleExpression.title
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
                     [ div
                         [ Html.Attributes.class "card-title" ]
                         [ text
-                            (case e.description of
+                            (case singleExpression.description of
                                 Just d ->
                                     d
 
@@ -524,26 +522,23 @@ excerciseView exercise =
                         [ Html.Attributes.class "card-content" ]
                         [ Html.code
                             []
-                            [ text e.expression ]
+                            [ text singleExpression.expression ]
                         ]
                     ]
-                , runningExerciseAnswerView exercise e.answers
+                , runningExerciseAnswerView exercise singleExpression.answers
                 ]
 
-        Course.BinaryExpression e ->
-            div
-                [ Html.Attributes.class "card m-2 fixed-bottom"
-                ]
+            Course.BinaryExpression binaryExpression ->
                 [ div
                     [ Html.Attributes.class "card-header text-center" ]
-                    [ text e.title
+                    [ text binaryExpression.title
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
                     [ div
                         [ Html.Attributes.class "card-title" ]
                         [ text
-                            (case e.description of
+                            (case binaryExpression.description of
                                 Just d ->
                                     d
 
@@ -555,26 +550,23 @@ excerciseView exercise =
                         [ Html.Attributes.class "card-content" ]
                         [ Html.code
                             []
-                            [ text (e.leftExpression ++ " " ++ e.operator ++ " " ++ e.rightExpression) ]
+                            [ text (binaryExpression.leftExpression ++ " " ++ binaryExpression.operator ++ " " ++ binaryExpression.rightExpression) ]
                         ]
                     ]
-                , runningExerciseAnswerView exercise e.answers
+                , runningExerciseAnswerView exercise binaryExpression.answers
                 ]
 
-        Course.FunctionExpression e ->
-            div
-                [ Html.Attributes.class "card m-2 fixed-bottom"
-                ]
+            Course.FunctionExpression functionExpression ->
                 [ div
                     [ Html.Attributes.class "card-header text-center" ]
-                    [ text e.title
+                    [ text functionExpression.title
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
                     [ div
                         [ Html.Attributes.class "card-title" ]
                         [ text
-                            (case e.description of
+                            (case functionExpression.description of
                                 Just d ->
                                     d
 
@@ -586,26 +578,23 @@ excerciseView exercise =
                         [ Html.Attributes.class "card-content" ]
                         [ Html.code
                             []
-                            [ text (e.functionName ++ " " ++ String.join " " e.arguments) ]
+                            [ text (functionExpression.functionName ++ " " ++ String.join " " functionExpression.arguments) ]
                         ]
                     ]
-                , runningExerciseAnswerView exercise e.answers
+                , runningExerciseAnswerView exercise functionExpression.answers
                 ]
 
-        Course.GuardExpression e ->
-            div
-                [ Html.Attributes.class "card m-2 fixed-bottom"
-                ]
+            Course.GuardExpression guardExpression ->
                 [ div
                     [ Html.Attributes.class "card-header text-center" ]
-                    [ text e.title
+                    [ text guardExpression.title
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
                     [ div
                         [ Html.Attributes.class "card-title" ]
                         [ text
-                            (case e.description of
+                            (case guardExpression.description of
                                 Just d ->
                                     d
 
@@ -617,10 +606,10 @@ excerciseView exercise =
                         [ Html.Attributes.class "card-content" ]
                         [ Highlight.useTheme Highlight.gitHub
                         , Highlight.elm
-                            (e.functionName
+                            (guardExpression.functionName
                                 ++ " "
-                                ++ String.join " " e.arguments
-                                ++ e.expression
+                                ++ String.join " " guardExpression.arguments
+                                ++ guardExpression.expression
                             )
                             |> Result.map (Highlight.toBlockHtml (Just 0))
                             |> Result.withDefault
@@ -628,18 +617,19 @@ excerciseView exercise =
                                     [ Html.code
                                         [ Html.Attributes.class "bg-light p-3 rounded d-block" ]
                                         [ text
-                                            (e.functionName
+                                            (guardExpression.functionName
                                                 ++ " "
-                                                ++ String.join " " e.arguments
-                                                ++ e.expression
+                                                ++ String.join " " guardExpression.arguments
+                                                ++ guardExpression.expression
                                             )
                                         ]
                                     ]
                                 )
                         ]
                     ]
-                , runningExerciseAnswerView exercise e.answers
+                , runningExerciseAnswerView exercise guardExpression.answers
                 ]
+        )
 
 
 runningExerciseAnswerView : Course.Exercise -> List Course.Answer -> Html Msg
