@@ -665,10 +665,8 @@ excerciseView exercise =
                             (e.functionName
                                 ++ " "
                                 ++ String.join " " e.arguments
-                                ++ "\n | "
-                                ++ String.join "\n | " e.guards
-                                ++ "\n | otherwise = "
-                                ++ e.otherwise
+                                ++ "\n"
+                                ++ e.expression
                             )
                             |> Result.map (Highlight.toBlockHtml (Just 0))
                             |> Result.withDefault
@@ -679,10 +677,7 @@ excerciseView exercise =
                                             (e.functionName
                                                 ++ " "
                                                 ++ String.join " " e.arguments
-                                                ++ "\n | "
-                                                ++ String.join "\n | " e.guards
-                                                ++ "\n | otherwise = "
-                                                ++ e.otherwise
+                                                ++ e.expression
                                             )
                                         ]
                                     ]
@@ -909,8 +904,71 @@ finishedExerciseView exercise answer =
                     ]
                 ]
 
-        Course.GuardExpression _ ->
-            div [] []
+        Course.GuardExpression guardExpressionModel ->
+            div []
+                [ div
+                    [ Html.Attributes.class "card m-2" ]
+                    [ div
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ h5
+                            []
+                            [ text guardExpressionModel.title
+                            ]
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ case guardExpressionModel.description of
+                            Just d ->
+                                div
+                                    [ Html.Attributes.class "card-text"
+                                    ]
+                                    [ text d ]
+
+                            Nothing ->
+                                text ""
+                        , Html.code
+                            []
+                            [ text (guardExpressionModel.functionName ++ " " ++ (guardExpressionModel.arguments |> String.join " "))
+                            ]
+                        ]
+                    , div
+                        [ Html.Attributes.class
+                            "card-footer btn-toolbar"
+                        ]
+                        (List.map
+                            (\a ->
+                                if a == answer then
+                                    div
+                                        [ Html.Attributes.class "btn m-1"
+                                        , Html.Attributes.classList
+                                            [ ( "btn-outline-success", a.isCorrect )
+                                            , ( "btn-outline-danger", not a.isCorrect )
+                                            ]
+                                        ]
+                                        [ Html.code
+                                            []
+                                            [ text a.code
+                                            ]
+                                        ]
+
+                                else
+                                    div
+                                        [ Html.Attributes.classList
+                                            [ ( "btn m-1", True )
+                                            , ( "btn-dark opacity-50", not a.isCorrect )
+                                            , ( "btn-outline-success", a.isCorrect )
+                                            ]
+                                        ]
+                                        [ Html.code
+                                            []
+                                            [ text a.code
+                                            ]
+                                        ]
+                            )
+                            guardExpressionModel.answers
+                        )
+                    ]
+                ]
 
 
 header : Model -> Html Msg

@@ -60,9 +60,8 @@ type alias GuardExpressionModel =
     , description : Maybe String
     , answers : List Answer
     , functionName : String
-    , guards : List String
+    , expression : String
     , arguments : List String
-    , otherwise : String
     }
 
 
@@ -246,6 +245,12 @@ lecture4 =
             { id = 14
             , title = "Guard-Ausdruck"
             , description = Just "Welchen Typ hat der folgende Guard-Ausdruck?"
+            , functionName = "guardFunction"
+            , arguments = [ "x" ]
+            , expression =
+                "\n\t | x > 0 = \"größer 0\""
+                    ++ "\n\t | x < 0 = \"kleiner 0\""
+                    ++ "\n\t | otherwise = \"gleich 0\""
             , answers =
                 [ { code = "guardFunction :: Int -> String"
                   , isCorrect = True
@@ -253,20 +258,13 @@ lecture4 =
                 , { code = "guardFunction :: String"
                   , isCorrect = False
                   }
-                , { code = "Float"
+                , { code = "guardFunction :: Float"
                   , isCorrect = False
                   }
-                , { code = "SomeType"
+                , { code = "guardFunction :: SomeType"
                   , isCorrect = False
                   }
                 ]
-            , functionName = "guardFunction"
-            , guards =
-                [ "x > 0 = \"größer 0\""
-                , "x < 0 = \"kleiner 0\""
-                ]
-            , arguments = [ "x" ]
-            , otherwise = "\"gleich 0\""
             }
         ]
     }
