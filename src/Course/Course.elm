@@ -213,7 +213,9 @@ lecture3 =
         [ FunctionExpression
             { id = 13
             , title = "Funktion"
-            , description = Just "Welchen Typ hat der folgende Funktionsaufruf?"
+            , description = Just "Welchen Typ hat die folgende Funtkion?"
+            , functionName = "add"
+            , arguments = [ "x", "y" ]
             , answers =
                 [ { code = "add :: Int -> Int -> Int"
                   , isCorrect = True
@@ -221,15 +223,13 @@ lecture3 =
                 , { code = "add :: Int -> Int -> String"
                   , isCorrect = True
                   }
-                , { code = "Float"
+                , { code = "add :: Float"
                   , isCorrect = False
                   }
-                , { code = "SomeType"
+                , { code = "Int"
                   , isCorrect = False
                   }
                 ]
-            , functionName = "add"
-            , arguments = [ "x", "y" ]
             }
         ]
     }

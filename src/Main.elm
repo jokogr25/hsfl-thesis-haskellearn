@@ -520,10 +520,7 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        [ Html.code
-                            []
-                            [ text singleExpression.expression ]
-                        ]
+                        (highlightedExpressionView singleExpression.expression)
                     ]
                 , runningExerciseAnswerView exercise singleExpression.answers
                 ]
@@ -548,10 +545,15 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        [ Html.code
-                            []
-                            [ text (binaryExpression.leftExpression ++ " " ++ binaryExpression.operator ++ " " ++ binaryExpression.rightExpression) ]
-                        ]
+                        (highlightedExpressionView
+                            (String.join
+                                " "
+                                [ binaryExpression.leftExpression
+                                , binaryExpression.operator
+                                , binaryExpression.rightExpression
+                                ]
+                            )
+                        )
                     ]
                 , runningExerciseAnswerView exercise binaryExpression.answers
                 ]
@@ -576,10 +578,12 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        [ Html.code
-                            []
-                            [ text (functionExpression.functionName ++ " " ++ String.join " " functionExpression.arguments) ]
-                        ]
+                        (highlightedExpressionView
+                            (functionExpression.functionName
+                                ++ " "
+                                ++ String.join " " functionExpression.arguments
+                            )
+                        )
                     ]
                 , runningExerciseAnswerView exercise functionExpression.answers
                 ]
@@ -604,28 +608,13 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        [ Highlight.useTheme Highlight.gitHub
-                        , Highlight.elm
+                        (highlightedExpressionView
                             (guardExpression.functionName
                                 ++ " "
                                 ++ String.join " " guardExpression.arguments
                                 ++ guardExpression.expression
                             )
-                            |> Result.map (Highlight.toBlockHtml (Just 0))
-                            |> Result.withDefault
-                                (Html.pre []
-                                    [ Html.code
-                                        [ Html.Attributes.class "bg-light p-3 rounded d-block" ]
-                                        [ text
-                                            (guardExpression.functionName
-                                                ++ " "
-                                                ++ String.join " " guardExpression.arguments
-                                                ++ guardExpression.expression
-                                            )
-                                        ]
-                                    ]
-                                )
-                        ]
+                        )
                     ]
                 , runningExerciseAnswerView exercise guardExpression.answers
                 ]
@@ -658,6 +647,23 @@ runningExerciseAnswerView exercise answers =
             )
             answers
         )
+
+
+highlightedExpressionView : String -> List (Html Msg)
+highlightedExpressionView expression =
+    [ Highlight.useTheme Highlight.gitHub
+    , Highlight.elm
+        expression
+        |> Result.map (Highlight.toBlockHtml Nothing)
+        |> Result.withDefault
+            (Html.pre []
+                [ Html.code
+                    []
+                    [ text expression
+                    ]
+                ]
+            )
+    ]
 
 
 finishedExerciseAnswerView : List Course.Answer -> Course.Answer -> Html Msg
