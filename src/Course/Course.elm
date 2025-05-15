@@ -238,8 +238,8 @@ lecture3 =
 lecture4 : Lecture
 lecture4 =
     { id = 4
-    , title = "Guard-Ausdrücke"
-    , description = "In dieser Lektion wird dein Wissen über Guard-Ausdrücke getestet."
+    , title = "Guards"
+    , description = "In dieser Lektion wird dein Wissen über Guards getestet."
     , exercises =
         [ GuardExpression
             { id = 14

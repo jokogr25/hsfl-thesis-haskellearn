@@ -451,7 +451,7 @@ coursePage c =
 
 lectureView : Lecture -> Html Msg
 lectureView l =
-    div [ Html.Attributes.class "container" ]
+    div [ Html.Attributes.class "container fixed-bottom mb-2" ]
         [ h4 []
             [ text l.title
             ]
@@ -665,7 +665,6 @@ excerciseView exercise =
                             (e.functionName
                                 ++ " "
                                 ++ String.join " " e.arguments
-                                ++ "\n"
                                 ++ e.expression
                             )
                             |> Result.map (Highlight.toBlockHtml (Just 0))
