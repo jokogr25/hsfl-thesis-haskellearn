@@ -872,7 +872,7 @@ finishedExerciseView exercise answer =
                         ]
                     , div
                         [ Html.Attributes.class "card-body" ]
-                        [ case guardExpressionModel.description of
+                        ((case guardExpressionModel.description of
                             Just d ->
                                 div
                                     [ Html.Attributes.class "card-text"
@@ -881,11 +881,13 @@ finishedExerciseView exercise answer =
 
                             Nothing ->
                                 text ""
-                        , Html.code
-                            []
-                            [ text (guardExpressionModel.functionName ++ " " ++ (guardExpressionModel.arguments |> String.join " "))
-                            ]
-                        ]
+                         )
+                            :: highlightedExpressionView
+                                (String.join
+                                    " "
+                                    (guardExpressionModel.functionName :: (guardExpressionModel.arguments ++ [ guardExpressionModel.expression ]))
+                                )
+                        )
                     , finishedExerciseAnswerView
                         guardExpressionModel.answers
                         answer
