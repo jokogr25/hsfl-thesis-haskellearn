@@ -862,7 +862,7 @@ finishedExerciseView exercise answer =
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
-                    [ case binaryExpressionModel.description of
+                    (((case binaryExpressionModel.description of
                         Just d ->
                             div
                                 [ Html.Attributes.class "card-text"
@@ -871,14 +871,14 @@ finishedExerciseView exercise answer =
 
                         Nothing ->
                             text ""
-                    , Html.code
-                        []
-                        [ text (binaryExpressionModel.leftExpression ++ " " ++ binaryExpressionModel.operator ++ " " ++ binaryExpressionModel.rightExpression)
-                        ]
-                    , finishedExerciseAnswerView
-                        binaryExpressionModel.answers
-                        answer
-                    ]
+                      )
+                        :: highlightedExpressionView (binaryExpressionModel.leftExpression ++ " " ++ binaryExpressionModel.operator ++ " " ++ binaryExpressionModel.rightExpression) Nothing
+                     )
+                        ++ [ finishedExerciseAnswerView
+                                binaryExpressionModel.answers
+                                answer
+                           ]
+                    )
                 , finishedLectureFooter
                 ]
 
