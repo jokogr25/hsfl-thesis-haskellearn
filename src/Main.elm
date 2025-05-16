@@ -442,13 +442,35 @@ coursePage c =
                                     ]
 
                     Finished ->
-                        div []
-                            (List.map
-                                (\( exercise, answer ) ->
-                                    finishedExerciseView exercise answer
+                        if List.all (\( _, a ) -> a.isCorrect) c.answeredExercices then
+                            div [] [ text "Gut gemacht!" ]
+
+                        else
+                            div [ Html.Attributes.class "container mb-2" ]
+                                (text
+                                    ("Du hast "
+                                        ++ String.fromInt
+                                            (List.length
+                                                (List.filter
+                                                    (\( _, a ) -> a.isCorrect)
+                                                    c.answeredExercices
+                                                )
+                                            )
+                                        ++ " von "
+                                        ++ String.fromInt
+                                            (List.length c.answeredExercices)
+                                        ++ " Aufgabe(n) korrekt beantwortet. Im folgenden kannst du deine Antworten überprüfen."
+                                    )
+                                    :: List.filterMap
+                                        (\( exercise, answer ) ->
+                                            if not answer.isCorrect then
+                                                Just (finishedExerciseView exercise answer)
+
+                                            else
+                                                Nothing
+                                        )
+                                        c.answeredExercices
                                 )
-                                c.answeredExercices
-                            )
 
             Nothing ->
                 div [ Html.Attributes.class "album" ]
@@ -761,9 +783,7 @@ highlightedInlineView expression =
 finishedExerciseAnswerView : List Course.Answer -> Course.Answer -> Html Msg
 finishedExerciseAnswerView answers studentAnswer =
     div
-        [ Html.Attributes.class
-            "card-footer btn-toolbar bg-white"
-        ]
+        []
         (List.map
             (\answer ->
                 if answer == studentAnswer then
@@ -808,7 +828,7 @@ finishedExerciseView exercise answer =
                     ]
                 , div
                     [ Html.Attributes.class "card-body" ]
-                    ((case singleExpressionModel.description of
+                    (((case singleExpressionModel.description of
                         Just d ->
                             div
                                 [ Html.Attributes.class "card-text"
@@ -817,14 +837,17 @@ finishedExerciseView exercise answer =
 
                         Nothing ->
                             text ""
-                     )
+                      )
                         :: highlightedExpressionView
                             singleExpressionModel.expression
                             Nothing
+                     )
+                        ++ [ finishedExerciseAnswerView
+                                singleExpressionModel.answers
+                                answer
+                           ]
                     )
-                , finishedExerciseAnswerView
-                    singleExpressionModel.answers
-                    answer
+                , finishedLectureFooter
                 ]
 
         Course.BinaryExpression binaryExpressionModel ->
@@ -856,6 +879,7 @@ finishedExerciseView exercise answer =
                         binaryExpressionModel.answers
                         answer
                     ]
+                , finishedLectureFooter
                 ]
 
         Course.FunctionExpression functionExpressionModel ->
@@ -889,6 +913,7 @@ finishedExerciseView exercise answer =
                         functionExpressionModel.answers
                         answer
                     ]
+                , finishedLectureFooter
                 ]
 
         Course.GuardExpression guardExpressionModel ->
@@ -925,6 +950,7 @@ finishedExerciseView exercise answer =
                         guardExpressionModel.answers
                         answer
                     ]
+                , finishedLectureFooter
                 ]
 
         Course.PatternMatchingExpression patternExpressionModel ->
@@ -958,8 +984,27 @@ finishedExerciseView exercise answer =
                     , finishedExerciseAnswerView
                         patternExpressionModel.answers
                         answer
+                    , finishedLectureFooter
                     ]
                 ]
+
+
+finishedLectureFooter : Html Msg
+finishedLectureFooter =
+    div
+        [ Html.Attributes.class
+            "card-footer d-flex justify-content-between align-items-center"
+        ]
+        [ button
+            [ Html.Attributes.class "btn btn-lg btn-secondary" ]
+            [ text "<" ]
+        , button
+            [ Html.Attributes.class "btn btn-lg btn-warning" ]
+            [ text "Lektion neustarten" ]
+        , button
+            [ Html.Attributes.class "btn btn-lg btn-secondary" ]
+            [ text ">" ]
+        ]
 
 
 header : Model -> Html Msg
