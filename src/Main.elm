@@ -820,7 +820,7 @@ finishedExerciseView exercise answer =
             div
                 [ Html.Attributes.class "card m-2" ]
                 [ div
-                    [ Html.Attributes.class "card-title text-center" ]
+                    [ Html.Attributes.class "card-header text-center" ]
                     [ Html.h5
                         []
                         [ text singleExpressionModel.title
