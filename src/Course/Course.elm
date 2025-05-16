@@ -22,6 +22,7 @@ type Exercise
     | BinaryExpression BinaryExpressionModel
     | FunctionExpression FunctionExpressionModel
     | GuardExpression GuardExpressionModel
+    | PatternMatchingExpression PatternMatchingExpressionModel
 
 
 type alias SingleExpressionModel =
@@ -58,10 +59,19 @@ type alias GuardExpressionModel =
     { id : Int
     , title : String
     , description : Maybe String
-    , answers : List Answer
     , functionName : String
     , expression : String
     , arguments : List String
+    , answers : List Answer
+    }
+
+
+type alias PatternMatchingExpressionModel =
+    { id : Int
+    , title : String
+    , description : Maybe String
+    , patterns : List String
+    , answers : List Answer
     }
 
 
@@ -80,7 +90,7 @@ course1 =
     { id = 1
     , title = "Ausdrücke"
     , description = "Lerne etwas zu Ausdrücken in Haskell"
-    , lectures = [ lecture1, lecture2, lecture3, lecture4 ]
+    , lectures = [ lecture1, lecture2, lecture3, lecture4, lecture5 ]
     }
 
 
@@ -262,6 +272,36 @@ lecture4 =
                   , isCorrect = False
                   }
                 , { code = "guardFunction :: SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        ]
+    }
+
+
+lecture5 : Lecture
+lecture5 =
+    { id = 5
+    , title = "Pattern Matching"
+    , description = "In dieser Lektion wird dein Wissen über Pattern Matching getestet."
+    , exercises =
+        [ PatternMatchingExpression
+            { id = 15
+            , title = "Pattern Matching"
+            , description = Just "Welchen Typ hat der folgende Pattern Matching Ausdruck?"
+            , patterns = [ "f _ 0 = 0", "f 1 _ = 1", "f x y = x + y" ]
+            , answers =
+                [ { code = "f :: Int -> Int -> Int"
+                  , isCorrect = True
+                  }
+                , { code = "f :: Int -> String -> Int"
+                  , isCorrect = False
+                  }
+                , { code = "f :: Int -> Int -> String"
+                  , isCorrect = False
+                  }
+                , { code = "f :: Int -> Int -> Float"
                   , isCorrect = False
                   }
                 ]

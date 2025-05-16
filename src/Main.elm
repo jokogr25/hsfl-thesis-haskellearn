@@ -576,7 +576,7 @@ excerciseView exercise =
                         ]
                     , div
                         [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView singleExpression.expression)
+                        (highlightedExpressionView singleExpression.expression Nothing)
                     ]
                 , runningExerciseAnswerView exercise singleExpression.answers
                 ]
@@ -609,6 +609,7 @@ excerciseView exercise =
                                 , binaryExpression.rightExpression
                                 ]
                             )
+                            Nothing
                         )
                     ]
                 , runningExerciseAnswerView exercise binaryExpression.answers
@@ -639,6 +640,7 @@ excerciseView exercise =
                                 ++ " "
                                 ++ String.join " " functionExpression.arguments
                             )
+                            Nothing
                         )
                     ]
                 , runningExerciseAnswerView exercise functionExpression.answers
@@ -670,9 +672,38 @@ excerciseView exercise =
                                 ++ String.join " " guardExpression.arguments
                                 ++ guardExpression.expression
                             )
+                            Nothing
                         )
                     ]
                 , runningExerciseAnswerView exercise guardExpression.answers
+                ]
+
+            Course.PatternMatchingExpression patternMatchingExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text patternMatchingExpression.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case patternMatchingExpression.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
+                            )
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView
+                            (String.join "\n" patternMatchingExpression.patterns)
+                            Nothing
+                        )
+                    ]
+                , runningExerciseAnswerView exercise patternMatchingExpression.answers
                 ]
         )
 
@@ -687,30 +718,35 @@ runningExerciseAnswerView exercise answers =
                     [ Html.Attributes.class "btn bg-white btn-outline-dark m-1"
                     , onClick (SelectAnswer exercise answer)
                     ]
-                    [ Highlight.useTheme Highlight.gitHub
-                    , Highlight.elm
-                        answer.code
-                        |> Result.map Highlight.toInlineHtml
-                        |> Result.withDefault
-                            (Html.pre []
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
-                                ]
-                            )
-                    ]
+                    (highlightedInlineView answer.code)
             )
             answers
         )
 
 
-highlightedExpressionView : String -> List (Html Msg)
-highlightedExpressionView expression =
+highlightedExpressionView : String -> Maybe Int -> List (Html Msg)
+highlightedExpressionView expression line =
     [ Highlight.useTheme Highlight.gitHub
     , Highlight.elm
         expression
-        |> Result.map (Highlight.toBlockHtml Nothing)
+        |> Result.map (Highlight.toBlockHtml line)
+        |> Result.withDefault
+            (Html.pre []
+                [ Html.code
+                    []
+                    [ text expression
+                    ]
+                ]
+            )
+    ]
+
+
+highlightedInlineView : String -> List (Html Msg)
+highlightedInlineView expression =
+    [ Highlight.useTheme Highlight.gitHub
+    , Highlight.elm
+        expression
+        |> Result.map Highlight.toInlineHtml
         |> Result.withDefault
             (Html.pre []
                 [ Html.code
@@ -744,19 +780,7 @@ finishedExerciseAnswerView answers studentAnswer =
                             , ( "btn-outline-dark opacity-50", not answer.isCorrect )
                             ]
                     ]
-                    [ Highlight.useTheme Highlight.gitHub
-                    , Highlight.elm
-                        answer.code
-                        |> Result.map Highlight.toInlineHtml
-                        |> Result.withDefault
-                            (Html.pre []
-                                [ Html.code
-                                    []
-                                    [ text answer.code
-                                    ]
-                                ]
-                            )
-                    ]
+                    (highlightedInlineView answer.code)
             )
             answers
         )
@@ -789,6 +813,7 @@ finishedExerciseView exercise answer =
                      )
                         :: highlightedExpressionView
                             singleExpressionModel.expression
+                            Nothing
                     )
                 , finishedExerciseAnswerView
                     singleExpressionModel.answers
@@ -887,9 +912,44 @@ finishedExerciseView exercise answer =
                                     " "
                                     (guardExpressionModel.functionName :: (guardExpressionModel.arguments ++ [ guardExpressionModel.expression ]))
                                 )
+                                Nothing
                         )
                     , finishedExerciseAnswerView
                         guardExpressionModel.answers
+                        answer
+                    ]
+                ]
+
+        Course.PatternMatchingExpression patternExpressionModel ->
+            div
+                []
+                [ div
+                    [ Html.Attributes.class "card m-2" ]
+                    [ div
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ h5
+                            []
+                            [ text patternExpressionModel.title
+                            ]
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        ((case patternExpressionModel.description of
+                            Just d ->
+                                div
+                                    [ Html.Attributes.class "card-text"
+                                    ]
+                                    [ text d ]
+
+                            Nothing ->
+                                text ""
+                         )
+                            :: highlightedExpressionView
+                                (String.join "\n" patternExpressionModel.patterns)
+                                Nothing
+                        )
+                    , finishedExerciseAnswerView
+                        patternExpressionModel.answers
                         answer
                     ]
                 ]
