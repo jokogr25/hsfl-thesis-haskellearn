@@ -762,25 +762,32 @@ finishedExerciseAnswerView : List Course.Answer -> Course.Answer -> Html Msg
 finishedExerciseAnswerView answers studentAnswer =
     div
         [ Html.Attributes.class
-            "card-footer btn-toolbar"
+            "card-footer btn-toolbar bg-white"
         ]
         (List.map
             (\answer ->
-                div
-                    [ Html.Attributes.class "btn bg-white m-1 pe-none"
-                    , if answer == studentAnswer then
-                        Html.Attributes.classList
+                if answer == studentAnswer then
+                    div
+                        [ Html.Attributes.class "btn bg-white m-1 pe-none"
+                        , Html.Attributes.classList
                             [ ( "btn-outline-success", answer.isCorrect )
                             , ( "btn-outline-danger", not answer.isCorrect )
                             ]
+                        ]
+                        (highlightedInlineView answer.code)
 
-                      else
-                        Html.Attributes.classList
-                            [ ( "btn-outline-success", answer.isCorrect )
-                            , ( "btn-outline-dark opacity-50", not answer.isCorrect )
+                else if answer.isCorrect then
+                    div
+                        [ Html.Attributes.class "btn bg-white m-1 pe-none"
+                        , Html.Attributes.classList
+                            [ ( "btn-outline-danger", not answer.isCorrect )
+                            , ( "btn-outline-success", answer.isCorrect )
                             ]
-                    ]
-                    (highlightedInlineView answer.code)
+                        ]
+                        (highlightedInlineView answer.code)
+
+                else
+                    text ""
             )
             answers
         )
