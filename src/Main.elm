@@ -250,10 +250,16 @@ update msg model =
                 FinishedLecture lecture answeredExercises i ->
                     ( { model
                         | page =
-                            FinishedLecture
-                                lecture
-                                answeredExercises
-                                (min (List.length answeredExercises - 1) (i + 1))
+                            if
+                                List.length
+                                    (List.filter (\( _, a ) -> not a.isCorrect) answeredExercises)
+                                    - 1
+                                    == i
+                            then
+                                FinishedLecture lecture answeredExercises i
+
+                            else
+                                FinishedLecture lecture answeredExercises (i + 1)
                       }
                     , Cmd.none
                     )
@@ -340,7 +346,9 @@ view model =
                                     ]
 
                             Nothing ->
-                                text "WARUM IST DAS HIER NULL?!"
+                                Debug.log (String.fromInt (List.length wrongExercises))
+                                    text
+                                    "WARUM IST DAS HIER NULL?!"
         ]
 
 
