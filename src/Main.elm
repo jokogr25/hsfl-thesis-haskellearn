@@ -49,8 +49,9 @@ type Page
     | CoursesOverview (List Course)
     | Course Course
     | Lecture Lecture
-    | RunningLecture Lecture (List ( Exercise, Course.Answer ))
-    | FinishedLecture Lecture (List ( Exercise, Course.Answer ))
+    | RunningLecture Lecture (List Exercise) (List ( Exercise, Course.Answer ))
+    | FinishedLecture Lecture (List ( Exercise, Course.Answer )) Int
+    | WinningLecture Lecture
 
 
 type alias Model =
@@ -73,6 +74,8 @@ type Msg
     | StartLecture
     | SelectAnswer Course.Exercise Course.Answer
     | GoToCourseOverview
+    | NextWrongAnswer
+    | PrevWrongAnswer
     | NoOp
 
 
@@ -204,7 +207,7 @@ update msg model =
                 Lecture lecture ->
                     ( { model
                         | page =
-                            RunningLecture lecture []
+                            RunningLecture lecture lecture.exercises []
                       }
                     , Cmd.none
                     )
@@ -214,26 +217,59 @@ update msg model =
 
         SelectAnswer exercise answer ->
             case model.page of
-                RunningLecture lecture answeredExercises ->
+                RunningLecture lecture remainingExercises answeredExercises ->
                     ( { model
                         | page =
                             let
                                 newAnswers =
                                     answeredExercises ++ [ ( exercise, answer ) ]
 
-                                newLecture =
-                                    { lecture
-                                        | exercises =
-                                            List.filter
-                                                (\e -> e /= exercise)
-                                                lecture.exercises
-                                    }
+                                newRemainingExercises =
+                                    List.filter
+                                        (\e -> e /= exercise)
+                                        remainingExercises
                             in
-                            if List.length newLecture.exercises == 0 then
-                                FinishedLecture newLecture newAnswers
+                            if List.length newRemainingExercises == 0 then
+                                if List.all (\( _, a ) -> a.isCorrect) newAnswers then
+                                    WinningLecture lecture
+
+                                else
+                                    FinishedLecture lecture newAnswers 0
 
                             else
-                                RunningLecture newLecture newAnswers
+                                RunningLecture lecture newRemainingExercises newAnswers
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        NextWrongAnswer ->
+            case model.page of
+                FinishedLecture lecture answeredExercises i ->
+                    ( { model
+                        | page =
+                            FinishedLecture
+                                lecture
+                                answeredExercises
+                                (min (List.length answeredExercises - 1) (i + 1))
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        PrevWrongAnswer ->
+            case model.page of
+                FinishedLecture lecture answeredExercises i ->
+                    ( { model
+                        | page =
+                            FinishedLecture
+                                lecture
+                                answeredExercises
+                                (max 0 (i - 1))
                       }
                     , Cmd.none
                     )
@@ -263,44 +299,48 @@ view model =
             Lecture lecture ->
                 lectureView lecture
 
-            RunningLecture lecture _ ->
-                case List.head lecture.exercises of
+            RunningLecture lecture remainingExercises _ ->
+                case List.head remainingExercises of
                     Just exercise ->
                         runningLectureView lecture exercise
 
                     Nothing ->
                         div [] [ text "Hier gehörst du nicht hin!" ]
 
-            FinishedLecture _ answeredExercises ->
-                if List.all (\( _, a ) -> a.isCorrect) answeredExercises then
-                    div [] [ text "Gut gemacht!" ]
+            WinningLecture _ ->
+                div
+                    []
+                    [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
 
-                else
-                    div [ Html.Attributes.class "container mb-2" ]
-                        (text
-                            ("Du hast "
-                                ++ String.fromInt
-                                    (List.length
-                                        (List.filter
-                                            (\( _, a ) -> a.isCorrect)
-                                            answeredExercises
+            FinishedLecture _ answeredExercises i ->
+                let
+                    wrongExercises =
+                        List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
+                in
+                case wrongExercises of
+                    [] ->
+                        text "FinishedLecture: Hier stimmt was nicht!"
+
+                    w ->
+                        case get i w of
+                            Just ( exercise, answer ) ->
+                                div
+                                    [ Html.Attributes.class "container mb-2 fixed-bottom" ]
+                                    [ text
+                                        ("Du hast "
+                                            ++ String.fromInt (List.length answeredExercises - List.length w)
+                                            ++ " von "
+                                            ++ String.fromInt
+                                                (List.length answeredExercises)
+                                            ++ " Aufgaben richtig gelöst."
                                         )
-                                    )
-                                ++ " von "
-                                ++ String.fromInt
-                                    (List.length answeredExercises)
-                                ++ " Aufgabe(n) korrekt beantwortet. Im folgenden kannst du deine Antworten überprüfen."
-                            )
-                            :: List.filterMap
-                                (\( exercise, answer ) ->
-                                    if not answer.isCorrect then
-                                        Just (finishedExerciseView exercise answer)
+                                    , finishedExerciseView
+                                        exercise
+                                        answer
+                                    ]
 
-                                    else
-                                        Nothing
-                                )
-                                answeredExercises
-                        )
+                            Nothing ->
+                                text "WARUM IST DAS HIER NULL?!"
         ]
 
 
@@ -853,8 +893,8 @@ finishedExerciseView exercise answer =
                     , finishedExerciseAnswerView
                         functionExpressionModel.answers
                         answer
+                    , finishedLectureFooter
                     ]
-                , finishedLectureFooter
                 ]
 
         Course.GuardExpression guardExpressionModel ->
@@ -890,8 +930,8 @@ finishedExerciseView exercise answer =
                     , finishedExerciseAnswerView
                         guardExpressionModel.answers
                         answer
+                    , finishedLectureFooter
                     ]
-                , finishedLectureFooter
                 ]
 
         Course.PatternMatchingExpression patternExpressionModel ->
@@ -937,13 +977,13 @@ finishedLectureFooter =
             "card-footer d-flex justify-content-between align-items-center"
         ]
         [ button
-            [ Html.Attributes.class "btn btn-lg btn-secondary" ]
+            [ Html.Attributes.class "btn btn-lg btn-secondary", onClick PrevWrongAnswer ]
             [ text "<" ]
         , button
             [ Html.Attributes.class "btn btn-lg btn-warning" ]
             [ text "Lektion neustarten" ]
         , button
-            [ Html.Attributes.class "btn btn-lg btn-secondary" ]
+            [ Html.Attributes.class "btn btn-lg btn-secondary", onClick NextWrongAnswer ]
             [ text ">" ]
         ]
 
@@ -1046,3 +1086,8 @@ toKey key =
 
         _ ->
             Other
+
+
+get : Int -> List a -> Maybe a
+get n xs =
+    List.head (List.drop n xs)
