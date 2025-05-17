@@ -44,23 +44,13 @@ type alias LandingPageModel =
     }
 
 
-type alias CoursesOverviewPageModel =
-    { courses : List Course
-    }
-
-
-type alias CoursePageModel =
-    { course : Course
-    , selectedLecture : Maybe Lecture
-    , lectureState : LectureState
-    , answeredExercices : List ( Exercise, Course.Answer )
-    }
-
-
 type Page
     = Landing LandingPageModel
-    | CoursesOverview CoursesOverviewPageModel
-    | Course CoursePageModel
+    | CoursesOverview (List Course)
+    | Course Course
+    | Lecture Lecture
+    | RunningLecture Lecture (List ( Exercise, Course.Answer ))
+    | FinishedLecture Lecture (List ( Exercise, Course.Answer ))
 
 
 type alias Model =
@@ -81,7 +71,6 @@ type Msg
     | SelectCourse Course
     | SelectLecture Lecture
     | StartLecture
-    | StopLecture
     | SelectAnswer Course.Exercise Course.Answer
     | GoToCourseOverview
     | NoOp
@@ -133,10 +122,7 @@ update msg model =
         GoToCourseOverview ->
             ( { model
                 | page =
-                    CoursesOverview
-                        { courses =
-                            [ course1 ]
-                        }
+                    CoursesOverview [ course1 ]
               }
             , Cmd.none
             )
@@ -170,9 +156,7 @@ update msg model =
                             ( { model
                                 | page =
                                     CoursesOverview
-                                        { courses =
-                                            [ course1 ]
-                                        }
+                                        [ course1 ]
                                 , user =
                                     Just
                                         { name = username }
@@ -197,25 +181,17 @@ update msg model =
         SelectCourse course ->
             ( { model
                 | page =
-                    Course
-                        { course = course
-                        , selectedLecture = Nothing
-                        , lectureState = NotStarted
-                        , answeredExercices = []
-                        }
+                    Course course
               }
             , Cmd.none
             )
 
         SelectLecture lecture ->
             case model.page of
-                Course course ->
+                Course _ ->
                     ( { model
                         | page =
-                            Course
-                                { course
-                                    | selectedLecture = Just lecture
-                                }
+                            Lecture lecture
                       }
                     , Cmd.none
                     )
@@ -225,29 +201,10 @@ update msg model =
 
         StartLecture ->
             case model.page of
-                Course course ->
+                Lecture lecture ->
                     ( { model
                         | page =
-                            Course
-                                { course
-                                    | lectureState = Running
-                                }
-                      }
-                    , Cmd.none
-                    )
-
-                _ ->
-                    ( model, Cmd.none )
-
-        StopLecture ->
-            case model.page of
-                Course course ->
-                    ( { model
-                        | page =
-                            Course
-                                { course
-                                    | lectureState = NotStarted
-                                }
+                            RunningLecture lecture []
                       }
                     , Cmd.none
                     )
@@ -257,37 +214,26 @@ update msg model =
 
         SelectAnswer exercise answer ->
             case model.page of
-                Course course ->
+                RunningLecture lecture answeredExercises ->
                     ( { model
                         | page =
-                            Course
-                                { course
-                                    | lectureState =
-                                        case course.selectedLecture of
-                                            Just lecture ->
-                                                if List.length lecture.exercises == 1 then
-                                                    Finished
+                            let
+                                newAnswers =
+                                    answeredExercises ++ [ ( exercise, answer ) ]
 
-                                                else
-                                                    Running
+                                newLecture =
+                                    { lecture
+                                        | exercises =
+                                            List.filter
+                                                (\e -> e /= exercise)
+                                                lecture.exercises
+                                    }
+                            in
+                            if List.length newLecture.exercises == 0 then
+                                FinishedLecture newLecture newAnswers
 
-                                            Nothing ->
-                                                NotStarted
-                                    , selectedLecture =
-                                        case course.selectedLecture of
-                                            Just lecture ->
-                                                Just
-                                                    { lecture
-                                                        | exercises =
-                                                            List.tail lecture.exercises
-                                                                |> Maybe.withDefault []
-                                                    }
-
-                                            _ ->
-                                                Nothing
-                                    , answeredExercices =
-                                        course.answeredExercices ++ [ ( exercise, answer ) ]
-                                }
+                            else
+                                RunningLecture newLecture newAnswers
                       }
                     , Cmd.none
                     )
@@ -313,6 +259,48 @@ view model =
 
             Course c ->
                 coursePage c
+
+            Lecture lecture ->
+                lectureView lecture
+
+            RunningLecture lecture _ ->
+                case List.head lecture.exercises of
+                    Just exercise ->
+                        runningLectureView lecture exercise
+
+                    Nothing ->
+                        div [] [ text "Hier gehörst du nicht hin!" ]
+
+            FinishedLecture _ answeredExercises ->
+                if List.all (\( _, a ) -> a.isCorrect) answeredExercises then
+                    div [] [ text "Gut gemacht!" ]
+
+                else
+                    div [ Html.Attributes.class "container mb-2" ]
+                        (text
+                            ("Du hast "
+                                ++ String.fromInt
+                                    (List.length
+                                        (List.filter
+                                            (\( _, a ) -> a.isCorrect)
+                                            answeredExercises
+                                        )
+                                    )
+                                ++ " von "
+                                ++ String.fromInt
+                                    (List.length answeredExercises)
+                                ++ " Aufgabe(n) korrekt beantwortet. Im folgenden kannst du deine Antworten überprüfen."
+                            )
+                            :: List.filterMap
+                                (\( exercise, answer ) ->
+                                    if not answer.isCorrect then
+                                        Just (finishedExerciseView exercise answer)
+
+                                    else
+                                        Nothing
+                                )
+                                answeredExercises
+                        )
         ]
 
 
@@ -359,8 +347,8 @@ landingPage l =
         ]
 
 
-coursesOverview : CoursesOverviewPageModel -> Html Msg
-coursesOverview c =
+coursesOverview : List Course -> Html Msg
+coursesOverview courses =
     div [ Html.Attributes.class "m-1" ]
         [ Html.h1
             [ Html.Attributes.class "display-5 text-center" ]
@@ -369,7 +357,7 @@ coursesOverview c =
         , Html.p
             [ Html.Attributes.class "text-center" ]
             [ text
-                ("Dir stehen " ++ String.fromInt (List.length c.courses) ++ " Kurse zur Verfügung: ")
+                ("Dir stehen " ++ String.fromInt (List.length courses) ++ " Kurse zur Verfügung: ")
             ]
         , div
             [ Html.Attributes.class "album" ]
@@ -410,7 +398,7 @@ coursesOverview c =
                                         ]
                                     ]
                             )
-                            c.courses
+                            courses
                         )
                     ]
                 ]
@@ -419,111 +407,64 @@ coursesOverview c =
         ]
 
 
-coursePage : CoursePageModel -> Html Msg
-coursePage c =
+coursePage : Course -> Html Msg
+coursePage course =
     div []
         [ h3
             [ Html.Attributes.class "display-5 text-center" ]
-            [ text c.course.title ]
-        , case c.selectedLecture of
-            Just l ->
-                case c.lectureState of
-                    NotStarted ->
-                        lectureView l
-
-                    Running ->
-                        case List.head l.exercises of
-                            Just e ->
-                                runningLectureView l e
-
-                            Nothing ->
-                                div []
-                                    [ text "Hier stimmt was nicht!"
-                                    ]
-
-                    Finished ->
-                        if List.all (\( _, a ) -> a.isCorrect) c.answeredExercices then
-                            div [] [ text "Gut gemacht!" ]
-
-                        else
-                            div [ Html.Attributes.class "container mb-2" ]
-                                (text
-                                    ("Du hast "
-                                        ++ String.fromInt
-                                            (List.length
-                                                (List.filter
-                                                    (\( _, a ) -> a.isCorrect)
-                                                    c.answeredExercices
-                                                )
-                                            )
-                                        ++ " von "
-                                        ++ String.fromInt
-                                            (List.length c.answeredExercices)
-                                        ++ " Aufgabe(n) korrekt beantwortet. Im folgenden kannst du deine Antworten überprüfen."
-                                    )
-                                    :: List.filterMap
-                                        (\( exercise, answer ) ->
-                                            if not answer.isCorrect then
-                                                Just (finishedExerciseView exercise answer)
-
-                                            else
-                                                Nothing
-                                        )
-                                        c.answeredExercices
-                                )
-
-            Nothing ->
-                div [ Html.Attributes.class "album" ]
+            [ div
+                [ Html.Attributes.class "album" ]
+                [ div
+                    [ Html.Attributes.class "container" ]
                     [ div
-                        [ Html.Attributes.class "container" ]
+                        [ Html.Attributes.class
+                            "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                        ]
                         [ div
-                            [ Html.Attributes.class
-                                "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
-                            ]
-                            [ div
-                                [ Html.Attributes.class "col" ]
-                                (List.map
-                                    (\lecture ->
-                                        div
+                            [ Html.Attributes.class "col" ]
+                            (List.map
+                                (\lecture ->
+                                    div
+                                        [ Html.Attributes.class
+                                            "card shadow-sm m-1"
+                                        , onClick (SelectLecture lecture)
+                                        ]
+                                        [ div
                                             [ Html.Attributes.class
-                                                "card shadow-sm m-1"
-                                            , onClick (SelectLecture lecture)
+                                                "card-title text-center"
+                                            ]
+                                            [ text lecture.title
+                                            ]
+                                        , div
+                                            [ Html.Attributes.class
+                                                "card-body"
                                             ]
                                             [ div
                                                 [ Html.Attributes.class
-                                                    "card-title text-center"
+                                                    "card-text"
                                                 ]
-                                                [ text lecture.title
-                                                ]
-                                            , div
-                                                [ Html.Attributes.class
-                                                    "card-body"
-                                                ]
-                                                [ div
-                                                    [ Html.Attributes.class
-                                                        "card-text"
-                                                    ]
-                                                    [ text lecture.description
-                                                    , div
-                                                        [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
-                                                        [ div [] []
-                                                        , Html.small
-                                                            [ Html.Attributes.class "muted" ]
-                                                            [ text
-                                                                (String.fromInt (List.length lecture.exercises)
-                                                                    ++ " Aufgaben"
-                                                                )
-                                                            ]
+                                                [ text lecture.description
+                                                , div
+                                                    [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
+                                                    [ div [] []
+                                                    , Html.small
+                                                        [ Html.Attributes.class "muted" ]
+                                                        [ text
+                                                            (String.fromInt (List.length lecture.exercises)
+                                                                ++ " Aufgaben"
+                                                            )
                                                         ]
                                                     ]
                                                 ]
                                             ]
-                                    )
-                                    c.course.lectures
+                                        ]
                                 )
-                            ]
+                                course.lectures
+                            )
                         ]
                     ]
+                ]
+            ]
         ]
 
 
