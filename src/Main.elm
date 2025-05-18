@@ -413,13 +413,13 @@ coursesOverview courses =
                 [ Html.Attributes.class "container" ]
                 [ div
                     [ Html.Attributes.class
-                        "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                        "row"
                     ]
-                    [ div
-                        [ Html.Attributes.class "col" ]
-                        (List.map
-                            (\course ->
-                                div
+                    (List.map
+                        (\course ->
+                            div
+                                [ Html.Attributes.class "col" ]
+                                [ div
                                     [ Html.Attributes.class "card shadow-sm", onClick (SelectCourse course) ]
                                     [ div
                                         [ Html.Attributes.class "card-title text-center" ]
@@ -445,10 +445,10 @@ coursesOverview courses =
                                             ]
                                         ]
                                     ]
-                            )
-                            courses
+                                ]
                         )
-                    ]
+                        courses
+                    )
                 ]
             ]
         , foot
@@ -460,57 +460,58 @@ coursePage course =
     div []
         [ h3
             [ Html.Attributes.class "display-5 text-center" ]
+            [ text course.title
+            ]
+        , div
+            [ Html.Attributes.class "album" ]
             [ div
-                [ Html.Attributes.class "album" ]
+                [ Html.Attributes.class "container" ]
                 [ div
-                    [ Html.Attributes.class "container" ]
-                    [ div
-                        [ Html.Attributes.class
-                            "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
-                        ]
-                        [ div
-                            [ Html.Attributes.class "col" ]
-                            (List.map
-                                (\lecture ->
-                                    div
+                    [ Html.Attributes.class
+                        "row row-cols-sm-2"
+                    ]
+                    (List.map
+                        (\lecture ->
+                            div
+                                [ Html.Attributes.class "col-md-4" ]
+                                [ div
+                                    [ Html.Attributes.class
+                                        "card shadow-sm m-1"
+                                    , onClick (SelectLecture lecture)
+                                    ]
+                                    [ div
                                         [ Html.Attributes.class
-                                            "card shadow-sm m-1"
-                                        , onClick (SelectLecture lecture)
+                                            "card-title text-center"
+                                        ]
+                                        [ text lecture.title
+                                        ]
+                                    , div
+                                        [ Html.Attributes.class
+                                            "card-body"
                                         ]
                                         [ div
                                             [ Html.Attributes.class
-                                                "card-title text-center"
+                                                "card-text"
                                             ]
-                                            [ text lecture.title
-                                            ]
-                                        , div
-                                            [ Html.Attributes.class
-                                                "card-body"
-                                            ]
-                                            [ div
-                                                [ Html.Attributes.class
-                                                    "card-text"
-                                                ]
-                                                [ text lecture.description
-                                                , div
-                                                    [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
-                                                    [ div [] []
-                                                    , Html.small
-                                                        [ Html.Attributes.class "muted" ]
-                                                        [ text
-                                                            (String.fromInt (List.length lecture.exercises)
-                                                                ++ " Aufgaben"
-                                                            )
-                                                        ]
+                                            [ text lecture.description
+                                            , div
+                                                [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
+                                                [ div [] []
+                                                , Html.small
+                                                    [ Html.Attributes.class "muted" ]
+                                                    [ text
+                                                        (String.fromInt (List.length lecture.exercises)
+                                                            ++ " Aufgaben"
+                                                        )
                                                     ]
                                                 ]
                                             ]
                                         ]
-                                )
-                                course.lectures
-                            )
-                        ]
-                    ]
+                                    ]
+                                ]
+                        )
+                        course.lectures
+                    )
                 ]
             ]
         ]
