@@ -7,3 +7,7 @@ dist
 
 parcel
 .parcel-cache
+
+# parcel needed stuff
+src/index.html
+src/index.js
