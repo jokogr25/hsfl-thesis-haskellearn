@@ -6341,11 +6341,21 @@ var $author$project$Main$coursePage = function (course) {
 					]),
 				_List_fromArray(
 					[
+						$elm$html$Html$text(course.title)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('album')
+					]),
+				_List_fromArray(
+					[
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('album')
+								$elm$html$Html$Attributes$class('container')
 							]),
 						_List_fromArray(
 							[
@@ -6353,34 +6363,44 @@ var $author$project$Main$coursePage = function (course) {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('container')
+										$elm$html$Html$Attributes$class('row row-cols-sm-2')
 									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3')
-											]),
-										_List_fromArray(
-											[
-												A2(
-												$elm$html$Html$div,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('col')
-													]),
-												A2(
-													$elm$core$List$map,
-													function (lecture) {
-														return A2(
+								A2(
+									$elm$core$List$map,
+									function (lecture) {
+										return A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('col-md-4')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$div,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('card shadow-sm m-1'),
+															$elm$html$Html$Events$onClick(
+															$author$project$Main$SelectLecture(lecture))
+														]),
+													_List_fromArray(
+														[
+															A2(
 															$elm$html$Html$div,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('card shadow-sm m-1'),
-																	$elm$html$Html$Events$onClick(
-																	$author$project$Main$SelectLecture(lecture))
+																	$elm$html$Html$Attributes$class('card-title text-center')
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text(lecture.title)
+																])),
+															A2(
+															$elm$html$Html$div,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('card-body')
 																]),
 															_List_fromArray(
 																[
@@ -6388,58 +6408,39 @@ var $author$project$Main$coursePage = function (course) {
 																	$elm$html$Html$div,
 																	_List_fromArray(
 																		[
-																			$elm$html$Html$Attributes$class('card-title text-center')
+																			$elm$html$Html$Attributes$class('card-text')
 																		]),
 																	_List_fromArray(
 																		[
-																			$elm$html$Html$text(lecture.title)
-																		])),
-																	A2(
-																	$elm$html$Html$div,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('card-body')
-																		]),
-																	_List_fromArray(
-																		[
+																			$elm$html$Html$text(lecture.description),
 																			A2(
 																			$elm$html$Html$div,
 																			_List_fromArray(
 																				[
-																					$elm$html$Html$Attributes$class('card-text')
+																					$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
 																				]),
 																			_List_fromArray(
 																				[
-																					$elm$html$Html$text(lecture.description),
+																					A2($elm$html$Html$div, _List_Nil, _List_Nil),
 																					A2(
-																					$elm$html$Html$div,
+																					$elm$html$Html$small,
 																					_List_fromArray(
 																						[
-																							$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
+																							$elm$html$Html$Attributes$class('muted')
 																						]),
 																					_List_fromArray(
 																						[
-																							A2($elm$html$Html$div, _List_Nil, _List_Nil),
-																							A2(
-																							$elm$html$Html$small,
-																							_List_fromArray(
-																								[
-																									$elm$html$Html$Attributes$class('muted')
-																								]),
-																							_List_fromArray(
-																								[
-																									$elm$html$Html$text(
-																									$elm$core$String$fromInt(
-																										$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
-																								]))
+																							$elm$html$Html$text(
+																							$elm$core$String$fromInt(
+																								$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
 																						]))
 																				]))
 																		]))
-																]));
-													},
-													course.lectures))
-											]))
-									]))
+																]))
+														]))
+												]));
+									},
+									course.lectures))
 							]))
 					]))
 			]));
@@ -6510,20 +6511,20 @@ var $author$project$Main$coursesOverview = function (courses) {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3')
+										$elm$html$Html$Attributes$class('row')
 									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('col')
-											]),
-										A2(
-											$elm$core$List$map,
-											function (course) {
-												return A2(
+								A2(
+									$elm$core$List$map,
+									function (course) {
+										return A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('col')
+												]),
+											_List_fromArray(
+												[
+													A2(
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
@@ -6584,10 +6585,10 @@ var $author$project$Main$coursesOverview = function (courses) {
 																				]))
 																		]))
 																]))
-														]));
-											},
-											courses))
-									]))
+														]))
+												]));
+									},
+									courses))
 							]))
 					])),
 				$author$project$Main$foot
@@ -9088,7 +9089,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
+					$elm$html$Html$Attributes$class('btn btn-secondary'),
 					$elm$html$Html$Events$onClick($author$project$Main$PrevWrongAnswer)
 				]),
 			_List_fromArray(
@@ -9099,7 +9100,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('btn btn-lg btn-warning')
+					$elm$html$Html$Attributes$class('btn btn-outline-warning')
 				]),
 			_List_fromArray(
 				[
@@ -9109,7 +9110,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
+					$elm$html$Html$Attributes$class('btn btn-secondary'),
 					$elm$html$Html$Events$onClick($author$project$Main$NextWrongAnswer)
 				]),
 			_List_fromArray(
