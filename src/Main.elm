@@ -986,13 +986,13 @@ finishedLectureFooter =
             "card-footer d-flex justify-content-between align-items-center"
         ]
         [ button
-            [ Html.Attributes.class "btn btn-lg btn-secondary", onClick PrevWrongAnswer ]
+            [ Html.Attributes.class "btn btn-secondary", onClick PrevWrongAnswer ]
             [ text "<" ]
         , button
-            [ Html.Attributes.class "btn btn-lg btn-warning" ]
+            [ Html.Attributes.class "btn btn-outline-warning" ]
             [ text "Lektion neustarten" ]
         , button
-            [ Html.Attributes.class "btn btn-lg btn-secondary", onClick NextWrongAnswer ]
+            [ Html.Attributes.class "btn btn-secondary", onClick NextWrongAnswer ]
             [ text ">" ]
         ]
 
