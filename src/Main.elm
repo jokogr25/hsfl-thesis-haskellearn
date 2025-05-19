@@ -41,7 +41,7 @@ type alias Lecture =
     , title : String
     , description : String
     , exercises : List Exercise
-    , badge : Badge Msg
+    , badge : Badge
     }
 
 
@@ -109,16 +109,16 @@ type alias Answer =
     }
 
 
-type alias Badge msg =
+type alias Badge =
     { id : String
     , name : String
-    , image : Html msg
+    , image : Html Msg
     }
 
 
 type alias User =
     { name : String
-    , badges : List (Badge Msg)
+    , badges : List Badge
     }
 
 
@@ -158,6 +158,7 @@ type Msg
     | GoToCourseOverview
     | NextWrongAnswer
     | PrevWrongAnswer
+    | AddBadge Badge
     | NoOp
 
 
@@ -365,6 +366,23 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        AddBadge badge ->
+            case model.user of
+                Just user ->
+                    ( { model
+                        | user =
+                            Just
+                                { user
+                                    | badges = badge :: user.badges
+                                }
+                        , page = CoursesOverview [ course1 ]
+                      }
+                    , Cmd.none
+                    )
+
+                Nothing ->
+                    ( model, Cmd.none )
+
 
 
 -- VIEW
@@ -395,10 +413,19 @@ view model =
                     Nothing ->
                         div [] [ text "Hier gehörst du nicht hin!" ]
 
-            WinningLecture _ ->
+            WinningLecture lecture ->
                 div
-                    []
-                    [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
+                    [ Html.Attributes.class "container fixed-bottom mb-2" ]
+                    [ h4
+                        []
+                        [ text lecture.title ]
+                    , text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen."
+                    , button
+                        [ onClick (AddBadge lecture.badge)
+                        , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
+                        ]
+                        [ text "Zurück zur Kursübersicht" ]
+                    ]
 
             FinishedLecture _ answeredExercises i ->
                 let
@@ -1093,7 +1120,17 @@ header m =
                             []
 
                         _ ->
-                            [ h5 [] [ text (Maybe.withDefault "" (Maybe.map .name m.user)) ]
+                            [ h5
+                                []
+                                [ text (Maybe.withDefault "" (Maybe.map .name m.user))
+                                ]
+                            , div
+                                []
+                                [ text
+                                    (Maybe.withDefault ""
+                                        (Maybe.map (\user -> String.fromInt (List.length user.badges)) m.user)
+                                    )
+                                ]
                             , button
                                 [ Html.Attributes.class "navbar-toggler"
                                 , Html.Attributes.attribute "data-bs-toggle" "collapse"
