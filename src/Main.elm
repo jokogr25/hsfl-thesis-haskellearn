@@ -1124,13 +1124,23 @@ header m =
                                 []
                                 [ text (Maybe.withDefault "" (Maybe.map .name m.user))
                                 ]
-                            , div
-                                []
-                                [ text
-                                    (Maybe.withDefault ""
-                                        (Maybe.map (\user -> String.fromInt (List.length user.badges)) m.user)
+                            , Maybe.withDefault (Html.div [] [])
+                                (Maybe.map
+                                    (\user ->
+                                        button
+                                            [ Html.Attributes.class "btn btn-success" ]
+                                            [ div
+                                                [ Html.Attributes.class "d-none d-sm-block" ]
+                                                [ text "Medallien" ]
+                                            , Html.span
+                                                [ Html.Attributes.class "badge badge-pill" ]
+                                                [ text (String.fromInt (List.length user.badges))
+                                                , Img.badgeSvg
+                                                ]
+                                            ]
                                     )
-                                ]
+                                    m.user
+                                )
                             , button
                                 [ Html.Attributes.class "navbar-toggler"
                                 , Html.Attributes.attribute "data-bs-toggle" "collapse"
