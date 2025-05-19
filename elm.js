@@ -5739,8 +5739,8 @@ var $author$project$Main$subscriptions = function (_v0) {
 				$elm$browser$Browser$Events$onKeyDown($author$project$Main$keyDecoder))
 			]));
 };
-var $author$project$Main$Course = function (a) {
-	return {$: 'Course', a: a};
+var $author$project$Main$CoursePage = function (a) {
+	return {$: 'CoursePage', a: a};
 };
 var $author$project$Main$CoursesOverview = function (a) {
 	return {$: 'CoursesOverview', a: a};
@@ -5749,8 +5749,8 @@ var $author$project$Main$FinishedLecture = F3(
 	function (a, b, c) {
 		return {$: 'FinishedLecture', a: a, b: b, c: c};
 	});
-var $author$project$Main$Lecture = function (a) {
-	return {$: 'Lecture', a: a};
+var $author$project$Main$LecturePage = function (a) {
+	return {$: 'LecturePage', a: a};
 };
 var $author$project$Main$RunningLecture = F3(
 	function (a, b, c) {
@@ -5802,10 +5802,11 @@ var $author$project$Main$checkUsername = function (name) {
 		return false;
 	}
 };
-var $author$project$Course$Course$SingleExpression = function (a) {
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $author$project$Main$SingleExpression = function (a) {
 	return {$: 'SingleExpression', a: a};
 };
-var $author$project$Course$Course$exercise1 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise1 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5819,7 +5820,7 @@ var $author$project$Course$Course$exercise1 = $author$project$Course$Course$Sing
 		id: 1,
 		title: 'Zahlenausdruck'
 	});
-var $author$project$Course$Course$exercise2 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise2 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5833,7 +5834,7 @@ var $author$project$Course$Course$exercise2 = $author$project$Course$Course$Sing
 		id: 2,
 		title: 'Stringausdruck'
 	});
-var $author$project$Course$Course$exercise3 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise3 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5847,7 +5848,7 @@ var $author$project$Course$Course$exercise3 = $author$project$Course$Course$Sing
 		id: 3,
 		title: 'Boolausdruck'
 	});
-var $author$project$Course$Course$exercise4 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise4 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5861,7 +5862,7 @@ var $author$project$Course$Course$exercise4 = $author$project$Course$Course$Sing
 		id: 4,
 		title: 'Listenausdruck'
 	});
-var $author$project$Course$Course$exercise5 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise5 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5875,7 +5876,7 @@ var $author$project$Course$Course$exercise5 = $author$project$Course$Course$Sing
 		id: 5,
 		title: 'Tupleausdruck'
 	});
-var $author$project$Course$Course$exercise6 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise6 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5889,7 +5890,7 @@ var $author$project$Course$Course$exercise6 = $author$project$Course$Course$Sing
 		id: 6,
 		title: 'Maybeausdruck'
 	});
-var $author$project$Course$Course$exercise7 = $author$project$Course$Course$SingleExpression(
+var $author$project$Main$exercise7 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
@@ -5903,21 +5904,31 @@ var $author$project$Course$Course$exercise7 = $author$project$Course$Course$Sing
 		id: 7,
 		title: 'Maybeausdruck'
 	});
-var $author$project$Course$Course$lecture1 = {
+var $author$project$Main$lecture1 = {
+	badge: {
+		id: '',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Funktionen'
+	},
 	description: 'In dieser Lektion wird dein Wissen über Typen von einfachen Ausdrücken getestet.',
 	exercises: _List_fromArray(
-		[$author$project$Course$Course$exercise1, $author$project$Course$Course$exercise2, $author$project$Course$Course$exercise3, $author$project$Course$Course$exercise4, $author$project$Course$Course$exercise5, $author$project$Course$Course$exercise6, $author$project$Course$Course$exercise7]),
+		[$author$project$Main$exercise1, $author$project$Main$exercise2, $author$project$Main$exercise3, $author$project$Main$exercise4, $author$project$Main$exercise5, $author$project$Main$exercise6, $author$project$Main$exercise7]),
 	id: 1,
 	title: 'Typen von einfachen Ausdrücken'
 };
-var $author$project$Course$Course$BinaryExpression = function (a) {
+var $author$project$Main$BinaryExpression = function (a) {
 	return {$: 'BinaryExpression', a: a};
 };
-var $author$project$Course$Course$lecture2 = {
+var $author$project$Main$lecture2 = {
+	badge: {
+		id: '',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Zweistellige Ausdrücke'
+	},
 	description: 'Diese Lektion beinhaltet Aufgaben mit zweistelligen Ausdrücken, die über einfache Operatoren miteinander verbunden sind.',
 	exercises: _List_fromArray(
 		[
-			$author$project$Course$Course$BinaryExpression(
+			$author$project$Main$BinaryExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -5933,7 +5944,7 @@ var $author$project$Course$Course$lecture2 = {
 				rightExpression: '2',
 				title: 'Zahlenausdruck'
 			}),
-			$author$project$Course$Course$BinaryExpression(
+			$author$project$Main$BinaryExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -5949,7 +5960,7 @@ var $author$project$Course$Course$lecture2 = {
 				rightExpression: '\"Welt\"',
 				title: 'Stringausdruck'
 			}),
-			$author$project$Course$Course$BinaryExpression(
+			$author$project$Main$BinaryExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -5965,7 +5976,7 @@ var $author$project$Course$Course$lecture2 = {
 				rightExpression: 'False',
 				title: 'Boolausdruck'
 			}),
-			$author$project$Course$Course$BinaryExpression(
+			$author$project$Main$BinaryExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -5981,7 +5992,7 @@ var $author$project$Course$Course$lecture2 = {
 				rightExpression: '[3, 4]',
 				title: 'Listenausdruck'
 			}),
-			$author$project$Course$Course$BinaryExpression(
+			$author$project$Main$BinaryExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -6001,14 +6012,19 @@ var $author$project$Course$Course$lecture2 = {
 	id: 2,
 	title: 'Typen von zweistelligen Ausdrücken'
 };
-var $author$project$Course$Course$FunctionExpression = function (a) {
+var $author$project$Main$FunctionExpression = function (a) {
 	return {$: 'FunctionExpression', a: a};
 };
-var $author$project$Course$Course$lecture3 = {
+var $author$project$Main$lecture3 = {
+	badge: {
+		id: '',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Funktionen'
+	},
 	description: 'In dieser Lektion wird dein Wissen über Funktionen getestet.',
 	exercises: _List_fromArray(
 		[
-			$author$project$Course$Course$FunctionExpression(
+			$author$project$Main$FunctionExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -6028,14 +6044,19 @@ var $author$project$Course$Course$lecture3 = {
 	id: 3,
 	title: 'Funktionen'
 };
-var $author$project$Course$Course$GuardExpression = function (a) {
+var $author$project$Main$GuardExpression = function (a) {
 	return {$: 'GuardExpression', a: a};
 };
-var $author$project$Course$Course$lecture4 = {
+var $author$project$Main$lecture4 = {
+	badge: {
+		id: '',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Funktionen'
+	},
 	description: 'In dieser Lektion wird dein Wissen über Guards getestet.',
 	exercises: _List_fromArray(
 		[
-			$author$project$Course$Course$GuardExpression(
+			$author$project$Main$GuardExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -6056,14 +6077,19 @@ var $author$project$Course$Course$lecture4 = {
 	id: 4,
 	title: 'Guards'
 };
-var $author$project$Course$Course$PatternMatchingExpression = function (a) {
+var $author$project$Main$PatternMatchingExpression = function (a) {
 	return {$: 'PatternMatchingExpression', a: a};
 };
-var $author$project$Course$Course$lecture5 = {
+var $author$project$Main$lecture5 = {
+	badge: {
+		id: '',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Funktionen'
+	},
 	description: 'In dieser Lektion wird dein Wissen über Pattern Matching getestet.',
 	exercises: _List_fromArray(
 		[
-			$author$project$Course$Course$PatternMatchingExpression(
+			$author$project$Main$PatternMatchingExpression(
 			{
 				answers: _List_fromArray(
 					[
@@ -6082,11 +6108,11 @@ var $author$project$Course$Course$lecture5 = {
 	id: 5,
 	title: 'Pattern Matching'
 };
-var $author$project$Course$Course$course1 = {
+var $author$project$Main$course1 = {
 	description: 'Lerne etwas zu Ausdrücken in Haskell',
 	id: 1,
 	lectures: _List_fromArray(
-		[$author$project$Course$Course$lecture1, $author$project$Course$Course$lecture2, $author$project$Course$Course$lecture3, $author$project$Course$Course$lecture4, $author$project$Course$Course$lecture5]),
+		[$author$project$Main$lecture1, $author$project$Main$lecture2, $author$project$Main$lecture3, $author$project$Main$lecture4, $author$project$Main$lecture5]),
 	title: 'Ausdrücke'
 };
 var $elm$core$List$filter = F2(
@@ -6114,7 +6140,7 @@ var $author$project$Main$update = F2(
 						{
 							page: $author$project$Main$CoursesOverview(
 								_List_fromArray(
-									[$author$project$Course$Course$course1]))
+									[$author$project$Main$course1]))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'EnteringName':
@@ -6149,7 +6175,7 @@ var $author$project$Main$update = F2(
 								{
 									page: $author$project$Main$CoursesOverview(
 										_List_fromArray(
-											[$author$project$Course$Course$course1])),
+											[$author$project$Main$course1])),
 									user: $elm$core$Maybe$Just(
 										{name: username})
 								}),
@@ -6177,18 +6203,18 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							page: $author$project$Main$Course(course)
+							page: $author$project$Main$CoursePage(course)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'SelectLecture':
 				var lecture = msg.a;
 				var _v4 = model.page;
-				if (_v4.$ === 'Course') {
+				if (_v4.$ === 'CoursePage') {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								page: $author$project$Main$Lecture(lecture)
+								page: $author$project$Main$LecturePage(lecture)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -6196,7 +6222,7 @@ var $author$project$Main$update = F2(
 				}
 			case 'StartLecture':
 				var _v5 = model.page;
-				if (_v5.$ === 'Lecture') {
+				if (_v5.$ === 'LecturePage') {
 					var lecture = _v5.a;
 					return _Utils_Tuple2(
 						_Utils_update(
@@ -6305,7 +6331,6 @@ var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('
 var $author$project$Main$SelectLecture = function (a) {
 	return {$: 'SelectLecture', a: a};
 };
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -10367,10 +10392,10 @@ var $author$project$Main$view = function (model) {
 					case 'CoursesOverview':
 						var s = _v0.a;
 						return $author$project$Main$coursesOverview(s);
-					case 'Course':
+					case 'CoursePage':
 						var c = _v0.a;
 						return $author$project$Main$coursePage(c);
-					case 'Lecture':
+					case 'LecturePage':
 						var lecture = _v0.a;
 						return $author$project$Main$lectureView(lecture);
 					case 'RunningLecture':
