@@ -118,6 +118,7 @@ type alias Badge msg =
 
 type alias User =
     { name : String
+    , badges : List (Badge Msg)
     }
 
 
@@ -243,7 +244,7 @@ update msg model =
                                         [ course1 ]
                                 , user =
                                     Just
-                                        { name = username }
+                                        { name = username, badges = [] }
                               }
                             , Cmd.none
                             )
