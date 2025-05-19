@@ -396,7 +396,7 @@ view model =
             Just user ->
                 case model.page of
                     CoursesOverview s ->
-                        coursesOverview s
+                        coursesOverview s user
 
                     CoursePage c ->
                         coursePage c user
@@ -514,8 +514,8 @@ landingPage l =
         ]
 
 
-coursesOverview : List Course -> Html Msg
-coursesOverview courses =
+coursesOverview : List Course -> User -> Html Msg
+coursesOverview courses user =
     div [ Html.Attributes.class "m-1" ]
         [ Html.h1
             [ Html.Attributes.class "display-5 text-center" ]
@@ -549,20 +549,40 @@ coursesOverview courses =
                                         [ div
                                             [ Html.Attributes.class "card-text" ]
                                             [ text course.description ]
-                                        , div
-                                            [ Html.Attributes.class
-                                                "d-flex justify-content-between align-items-center"
-                                            ]
-                                            [ div [] []
-                                            , Html.small
-                                                [ Html.Attributes.class "muted" ]
-                                                [ text
-                                                    (String.fromInt (List.length course.lectures)
-                                                        ++ " Lektionen"
-                                                    )
+                                        ]
+                                    , div
+                                        [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
+                                        ]
+                                        (let
+                                            progress =
+                                                List.length
+                                                    (List.filter (\l -> List.any (\b -> b == l.badge) user.badges) course.lectures)
+                                                    * 100
+                                                    // List.length course.lectures
+                                         in
+                                         if progress < 100 then
+                                            [ div
+                                                [ Html.Attributes.class "progress" ]
+                                                [ div
+                                                    [ Html.Attributes.class "progress-bar progress-bar-striped bg-success"
+                                                    , Html.Attributes.attribute "role" "progressbar"
+                                                    , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
+                                                    , Html.Attributes.attribute "aria-valuemin" "0"
+                                                    , Html.Attributes.attribute "aria-valuemax" "100"
+                                                    , Html.Attributes.style "width" (String.fromInt progress)
+                                                    ]
+                                                    [ text "Fortschritt" ]
                                                 ]
                                             ]
-                                        ]
+
+                                         else
+                                            [ div [] []
+                                            , div
+                                                []
+                                                [ text "Abgeschlossen!"
+                                                ]
+                                            ]
+                                        )
                                     ]
                                 ]
                         )
