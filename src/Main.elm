@@ -1698,7 +1698,7 @@ exercise7 =
         , description = Just "Welchen Typ hat der folgende Ausdruck?"
         , expression = "Nothing"
         , answers =
-            [ { code = "Maybe Int"
+            [ { code = "Maybe a"
               , isCorrect = True
               }
             , { code = "String"
