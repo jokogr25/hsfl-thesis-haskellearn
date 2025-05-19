@@ -295,6 +295,14 @@ update msg model =
                     , Cmd.none
                     )
 
+                FinishedLecture lecture _ _ ->
+                    ( { model
+                        | page =
+                            RunningLecture lecture lecture.exercises []
+                      }
+                    , Cmd.none
+                    )
+
                 _ ->
                     ( model, Cmd.none )
 
@@ -1133,7 +1141,7 @@ finishedLectureFooter =
             [ Html.Attributes.class "btn btn-secondary", onClick PrevWrongAnswer ]
             [ text "<" ]
         , button
-            [ Html.Attributes.class "btn btn-outline-warning" ]
+            [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
             [ text "Lektion neustarten" ]
         , button
             [ Html.Attributes.class "btn btn-secondary", onClick NextWrongAnswer ]
