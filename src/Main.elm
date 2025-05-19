@@ -392,72 +392,82 @@ view : Model -> Html Msg
 view model =
     div []
         [ header model
-        , case model.page of
-            Landing l ->
-                landingPage l
+        , case model.user of
+            Just user ->
+                case model.page of
+                    CoursesOverview s ->
+                        coursesOverview s
 
-            CoursesOverview s ->
-                coursesOverview s
+                    CoursePage c ->
+                        coursePage c user
 
-            CoursePage c ->
-                coursePage c
+                    LecturePage lecture ->
+                        lectureView lecture
 
-            LecturePage lecture ->
-                lectureView lecture
-
-            RunningLecture lecture remainingExercises _ ->
-                case List.head remainingExercises of
-                    Just exercise ->
-                        runningLectureView lecture exercise
-
-                    Nothing ->
-                        div [] [ text "Hier gehörst du nicht hin!" ]
-
-            WinningLecture lecture ->
-                div
-                    [ Html.Attributes.class "container fixed-bottom mb-2" ]
-                    [ h4
-                        []
-                        [ text lecture.title ]
-                    , text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen."
-                    , button
-                        [ onClick (AddBadge lecture.badge)
-                        , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
-                        ]
-                        [ text "Zurück zur Kursübersicht" ]
-                    ]
-
-            FinishedLecture _ answeredExercises i ->
-                let
-                    wrongExercises =
-                        List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
-                in
-                case wrongExercises of
-                    [] ->
-                        text "FinishedLecture: Hier stimmt was nicht!"
-
-                    w ->
-                        case get i w of
-                            Just ( exercise, answer ) ->
-                                div
-                                    [ Html.Attributes.class "container mb-2 fixed-bottom" ]
-                                    [ text
-                                        ("Du hast "
-                                            ++ String.fromInt (List.length answeredExercises - List.length w)
-                                            ++ " von "
-                                            ++ String.fromInt
-                                                (List.length answeredExercises)
-                                            ++ " Aufgaben richtig gelöst."
-                                        )
-                                    , finishedExerciseView
-                                        exercise
-                                        answer
-                                    ]
+                    RunningLecture lecture remainingExercises _ ->
+                        case List.head remainingExercises of
+                            Just exercise ->
+                                runningLectureView lecture exercise
 
                             Nothing ->
-                                Debug.log (String.fromInt (List.length wrongExercises))
-                                    text
-                                    "WARUM IST DAS HIER NULL?!"
+                                div [] [ text "Hier gehörst du nicht hin!" ]
+
+                    WinningLecture lecture ->
+                        div
+                            [ Html.Attributes.class "container fixed-bottom mb-2" ]
+                            [ h4
+                                []
+                                [ text lecture.title ]
+                            , text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen."
+                            , button
+                                [ onClick (AddBadge lecture.badge)
+                                , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
+                                ]
+                                [ text "Zurück zur Kursübersicht" ]
+                            ]
+
+                    FinishedLecture _ answeredExercises i ->
+                        let
+                            wrongExercises =
+                                List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
+                        in
+                        case wrongExercises of
+                            [] ->
+                                text "FinishedLecture: Hier stimmt was nicht!"
+
+                            w ->
+                                case get i w of
+                                    Just ( exercise, answer ) ->
+                                        div
+                                            [ Html.Attributes.class "container mb-2 fixed-bottom" ]
+                                            [ text
+                                                ("Du hast "
+                                                    ++ String.fromInt (List.length answeredExercises - List.length w)
+                                                    ++ " von "
+                                                    ++ String.fromInt
+                                                        (List.length answeredExercises)
+                                                    ++ " Aufgaben richtig gelöst."
+                                                )
+                                            , finishedExerciseView
+                                                exercise
+                                                answer
+                                            ]
+
+                                    Nothing ->
+                                        Debug.log (String.fromInt (List.length wrongExercises))
+                                            text
+                                            "WARUM IST DAS HIER NULL?!"
+
+                    _ ->
+                        text "Hier gehörst du nicht hin!"
+
+            Nothing ->
+                case model.page of
+                    Landing l ->
+                        landingPage l
+
+                    _ ->
+                        div [] []
         ]
 
 
@@ -564,8 +574,8 @@ coursesOverview courses =
         ]
 
 
-coursePage : Course -> Html Msg
-coursePage course =
+coursePage : Course -> User -> Html Msg
+coursePage course user =
     div []
         [ h3
             [ Html.Attributes.class "display-5 text-center" ]
@@ -608,7 +618,12 @@ coursePage course =
                                                 [ div [] []
                                                 , Html.small
                                                     [ Html.Attributes.class "muted" ]
-                                                    [ text
+                                                    [ if List.any (\b -> b == lecture.badge) user.badges then
+                                                        Img.badgeSvg
+
+                                                      else
+                                                        text ""
+                                                    , text
                                                         (String.fromInt (List.length lecture.exercises)
                                                             ++ " Aufgaben"
                                                         )
@@ -1251,7 +1266,7 @@ lecture2 =
     , title = "Typen von zweistelligen Ausdrücken"
     , description = "Diese Lektion beinhaltet Aufgaben mit zweistelligen Ausdrücken, die über einfache Operatoren miteinander verbunden sind."
     , badge =
-        { id = ""
+        { id = "binaryexpression"
         , name = "Zweistellige Ausdrücke"
         , image = div [] []
         }
@@ -1412,8 +1427,8 @@ lecture4 =
     , title = "Guards"
     , description = "In dieser Lektion wird dein Wissen über Guards getestet."
     , badge =
-        { id = ""
-        , name = "Funktionen"
+        { id = "guards"
+        , name = "Guards"
         , image = div [] []
         }
     , exercises =
@@ -1452,8 +1467,8 @@ lecture5 =
     , title = "Pattern Matching"
     , description = "In dieser Lektion wird dein Wissen über Pattern Matching getestet."
     , badge =
-        { id = ""
-        , name = "Funktionen"
+        { id = "pattern-matching"
+        , name = "Pattern Matching"
         , image = div [] []
         }
     , exercises =
@@ -1487,8 +1502,8 @@ lecture1 =
     , title = "Typen von einfachen Ausdrücken"
     , description = "In dieser Lektion wird dein Wissen über Typen von einfachen Ausdrücken getestet."
     , badge =
-        { id = ""
-        , name = "Funktionen"
+        { id = "singleexpression"
+        , name = "Single Expression"
         , image = div [] []
         }
     , exercises =
