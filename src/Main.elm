@@ -36,10 +36,19 @@ type alias Course =
     }
 
 
+type alias LearningContent =
+    { id : Int
+    , title : String
+    , description : String
+    , expression : String
+    }
+
+
 type alias Lecture =
     { id : Int
     , title : String
     , description : String
+    , learningContent : List LearningContent
     , exercises : List Exercise
     , badge : Badge
     }
@@ -1298,6 +1307,7 @@ lecture2 =
         , name = "Zweistellige Ausdrücke"
         , image = div [] []
         }
+    , learningContent = []
     , exercises =
         [ BinaryExpression
             { id = 8
@@ -1423,6 +1433,7 @@ lecture3 =
         , name = "Funktionen"
         , image = div [] []
         }
+    , learningContent = []
     , exercises =
         [ FunctionExpression
             { id = 13
@@ -1459,6 +1470,7 @@ lecture4 =
         , name = "Guards"
         , image = div [] []
         }
+    , learningContent = []
     , exercises =
         [ GuardExpression
             { id = 14
@@ -1499,6 +1511,7 @@ lecture5 =
         , name = "Pattern Matching"
         , image = div [] []
         }
+    , learningContent = []
     , exercises =
         [ PatternMatchingExpression
             { id = 15
@@ -1534,6 +1547,7 @@ lecture1 =
         , name = "Single Expression"
         , image = div [] []
         }
+    , learningContent = []
     , exercises =
         [ exercise1
         , exercise2
