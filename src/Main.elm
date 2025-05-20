@@ -779,10 +779,7 @@ runningLearningContentView lecture exampleIndex =
             div
                 [ Html.Attributes.class "container fixed-bottom mb-2"
                 ]
-                [ h4 []
-                    [ text lecture.title
-                    ]
-                , div
+                [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
                     [ button
                         [ Html.Attributes.class "btn btn-lg btn-dark d-block"
