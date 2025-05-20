@@ -36,11 +36,19 @@ type alias Course =
     }
 
 
+type alias LearningExample =
+    { id : Int
+    , title : String
+    , expression : String
+    , description : Maybe String
+    }
+
+
 type alias LearningContent =
     { id : Int
     , title : String
     , description : String
-    , expression : String
+    , examples : List LearningExample
     }
 
 
@@ -1547,7 +1555,71 @@ lecture1 =
         , name = "Single Expression"
         , image = div [] []
         }
-    , learningContent = []
+    , learningContent =
+        [ { id = 1
+          , title = "Einfache Ausdrücke bzw. Typen"
+          , description = "In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert. \". Einfache Ausdrücke sind Ausdrücke, die nur einen Wert haben. Das bedeutet, dass sie keine Funktionen oder Operatoren enthalten. Einfache Ausdrücke sind z.B. Zahlen, Strings, Listen und Tupel. Im folgenden wirst du sehen, wie einfache Ausdrück in Haskell aussehen können. Das \"x\" ist in jedem Beispiel eine Konstante, hinter der ein Wert steckt. Der Typ des Wertes wird durch den Typ des Ausdrucks bestimmt. Das bedeutet, dass der Typ des Ausdrucks immer dem Typ der Variable entspricht. Wenn du also den Ausdruck \"x = 1\" hast, dann ist der Typ von \"x\" immer \"Int\". Wenn du den Ausdruck \"x = 1.0\" hast, dann ist der Typ von \"x\" immer \"Float\"."
+          , examples =
+                [ { id = 1
+                  , title = "Ganzzahliger Ausdruck"
+                  , expression = "x :: Int\nx = 1"
+                  , description = Nothing
+                  }
+                , { id = 2
+                  , title = "Gleitkommazahl-Ausdruck"
+                  , expression = "x :: Float\nx = 1.0"
+                  , description = Nothing
+                  }
+                , { id = 3
+                  , title = "String-Ausdruck"
+                  , expression = "x :: String\nx = \"Hallo\""
+                  , description = Nothing
+                  }
+                , { id = 4
+                  , title = "Gleitkommazahl-Ausdruck"
+                  , expression = "x :: Float\nx = 1.0"
+                  , description = Nothing
+                  }
+                , { id = 5
+                  , title = "Listen-Ausdruck"
+                  , expression = "x :: [String]\nx = [\"Hallo\", \"Welt\"]"
+                  , description = Nothing
+                  }
+                ]
+          }
+        , { id = 2
+          , title = "Tupel-Ausdruck"
+          , description = "Ein Tupel ist eine Datenstruktur, die mehrere Werte zusammenfasst. Ein Tupel kann beliebig viele Werte enthalten. Die Werte können unterschiedliche Typen haben. Ein Tupel wird in Haskell mit runden Klammern dargestellt. Die Werte werden durch Kommas getrennt. Ein Tupel mit zwei Werten wird als \"2-Tupel\" bezeichnet. Ein Tupel mit drei Werten wird als \"3-Tupel\" bezeichnet. Ein Tupel mit n Werten wird als \"n-Tupel\" bezeichnet. Ein Tupel mit n Werten hat den Typ \"(a, b, c, d, e, f, g, h, i, j)\"."
+          , examples =
+                [ { id = 1
+                  , title = "Tupel-Ausdruck"
+                  , expression = "x :: (Int, String)\nx = (1, \"Hallo\")"
+                  , description = Nothing
+                  }
+                , { id = 2
+                  , title = "Tupel-Ausdruck"
+                  , expression = "x :: (Int, String, Bool)\nx = (1, \"Hallo\", True)"
+                  , description = Nothing
+                  }
+                ]
+          }
+        , { id = 3
+          , title = "Generische Typen - Maybe"
+          , description = "In Haskell gibt es wie in anderen Sprachen auch das Konzept der generischen Typen. Hier schauen wir uns das Beispiel \"Maybe\" an (vgl. Nullables in OOP). Man kann sagen, dass ein \"Maybe Int\" über den Typ Int läuft."
+          , examples =
+                [ { id = 1
+                  , title = "Defintion von Maybe"
+                  , expression = "type alias Maybe a = Just a | Nothing"
+                  , description = Just "Der Type Maybe hat zwei Konstruktoren: \"Just\" und \"Nothing\". \"Just\" ist der Konstruktor, der einen Wert enthält. \"Nothing\" ist der Konstruktor, der keinen Wert enthält. Der Typ \"Maybe a\" ist ein generischer Typ, der einen Wert vom Typ \"a\" enthalten kann. Der Typ \"Maybe a\" kann auch keinen Wert enthalten, dargestellt durch \"Nothing\". Der Typ \"Maybe a\" ist also ein Typ, der entweder einen Wert vom Typ \"a\" oder keinen Wert enthält."
+                  }
+                , { id = 2
+                  , title = "Maybe-Ausdruck"
+                  , expression = "x :: Maybe Int\nx = Nothing"
+                  , description = Nothing
+                  }
+                ]
+          }
+        ]
     , exercises =
         [ exercise1
         , exercise2
