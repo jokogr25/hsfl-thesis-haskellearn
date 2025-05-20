@@ -788,7 +788,7 @@ runningLearningContentView lecture exampleIndex =
                         [ Html.Attributes.class "btn btn-lg btn-dark d-block"
                         , onClick StartQuiz
                         ]
-                        [ text "Quiz starten" ]
+                        [ text ("Quiz \"" ++ lecture.title ++ "\" starten") ]
                     ]
                 ]
 
