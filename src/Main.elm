@@ -1726,6 +1726,11 @@ lecture1 =
               , expression = "x :: [String]\nx = [\"Hallo\", \"Welt\"]"
               , description = Nothing
               }
+            , { id = 6
+              , title = "Boolescher Ausdruck"
+              , expression = "x :: Bool\nx = True"
+              , description = Just "Ein boolescher Ausdruck kann entweder 'True' oder 'False' sein. In diesem Beispiel ist der Wert 'True'."
+              }
             ]
         }
     , exercises =
