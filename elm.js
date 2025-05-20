@@ -5745,20 +5745,24 @@ var $author$project$Main$CoursePage = function (a) {
 var $author$project$Main$CoursesOverview = function (a) {
 	return {$: 'CoursesOverview', a: a};
 };
-var $author$project$Main$FinishedLecture = F3(
+var $author$project$Main$FinishedQuiz = F3(
 	function (a, b, c) {
-		return {$: 'FinishedLecture', a: a, b: b, c: c};
+		return {$: 'FinishedQuiz', a: a, b: b, c: c};
+	});
+var $author$project$Main$LearningContentPage = F2(
+	function (a, b) {
+		return {$: 'LearningContentPage', a: a, b: b};
 	});
 var $author$project$Main$LecturePage = function (a) {
 	return {$: 'LecturePage', a: a};
 };
-var $author$project$Main$RunningLecture = F3(
+var $author$project$Main$RunningQuiz = F3(
 	function (a, b, c) {
-		return {$: 'RunningLecture', a: a, b: b, c: c};
+		return {$: 'RunningQuiz', a: a, b: b, c: c};
 	});
 var $author$project$Main$UsernameIncorrect = {$: 'UsernameIncorrect'};
-var $author$project$Main$WinningLecture = function (a) {
-	return {$: 'WinningLecture', a: a};
+var $author$project$Main$WinningQuiz = function (a) {
+	return {$: 'WinningQuiz', a: a};
 };
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
@@ -5894,7 +5898,7 @@ var $author$project$Main$exercise7 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
 			[
-				{code: 'Maybe Int', isCorrect: true},
+				{code: 'Maybe a', isCorrect: true},
 				{code: 'String', isCorrect: false},
 				{code: 'Float', isCorrect: false},
 				{code: 'SomeType', isCorrect: false}
@@ -5906,14 +5910,33 @@ var $author$project$Main$exercise7 = $author$project$Main$SingleExpression(
 	});
 var $author$project$Main$lecture1 = {
 	badge: {
-		id: '',
+		id: 'singleexpression',
 		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Funktionen'
+		name: 'Single Expression'
 	},
 	description: 'In dieser Lektion wird dein Wissen über Typen von einfachen Ausdrücken getestet.',
 	exercises: _List_fromArray(
 		[$author$project$Main$exercise1, $author$project$Main$exercise2, $author$project$Main$exercise3, $author$project$Main$exercise4, $author$project$Main$exercise5, $author$project$Main$exercise6, $author$project$Main$exercise7]),
 	id: 1,
+	learningContent: {
+		description: 'In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert. \". Einfache Ausdrücke sind Ausdrücke, die nur einen Wert haben. Das bedeutet, dass sie keine Funktionen oder Operatoren enthalten. Einfache Ausdrücke sind z.B. Zahlen, Strings, Listen und Tupel. Im folgenden wirst du sehen, wie einfache Ausdrück in Haskell aussehen können. Das \"x\" ist in jedem Beispiel eine Konstante, hinter der ein Wert steckt. Der Typ des Wertes wird durch den Typ des Ausdrucks bestimmt. Das bedeutet, dass der Typ des Ausdrucks immer dem Typ der Variable entspricht. Wenn du also den Ausdruck \"x = 1\" hast, dann ist der Typ von \"x\" immer \"Int\". Wenn du den Ausdruck \"x = 1.0\" hast, dann ist der Typ von \"x\" immer \"Float\".',
+		examples: _List_fromArray(
+			[
+				{description: $elm$core$Maybe$Nothing, expression: 'x :: Int\nx = 1', id: 1, title: 'Ganzzahliger Ausdruck'},
+				{description: $elm$core$Maybe$Nothing, expression: 'x :: Float\nx = 1.0', id: 2, title: 'Gleitkommazahl-Ausdruck'},
+				{description: $elm$core$Maybe$Nothing, expression: 'x :: String\nx = \"Hallo\"', id: 3, title: 'String-Ausdruck'},
+				{description: $elm$core$Maybe$Nothing, expression: 'x :: Float\nx = 1.0', id: 4, title: 'Gleitkommazahl-Ausdruck'},
+				{description: $elm$core$Maybe$Nothing, expression: 'x :: [String]\nx = [\"Hallo\", \"Welt\"]', id: 5, title: 'Listen-Ausdruck'},
+				{
+				description: $elm$core$Maybe$Just('Ein boolescher Ausdruck kann entweder \'True\' oder \'False\' sein. In diesem Beispiel ist der Wert \'True\'.'),
+				expression: 'x :: Bool\nx = True',
+				id: 6,
+				title: 'Boolescher Ausdruck'
+			}
+			]),
+		id: 1,
+		title: 'Einfache Ausdrücke bzw. Typen'
+	},
 	title: 'Typen von einfachen Ausdrücken'
 };
 var $author$project$Main$BinaryExpression = function (a) {
@@ -5921,7 +5944,7 @@ var $author$project$Main$BinaryExpression = function (a) {
 };
 var $author$project$Main$lecture2 = {
 	badge: {
-		id: '',
+		id: 'binaryexpression',
 		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
 		name: 'Zweistellige Ausdrücke'
 	},
@@ -6010,6 +6033,7 @@ var $author$project$Main$lecture2 = {
 			})
 		]),
 	id: 2,
+	learningContent: {description: 'In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr. In dieser Lektion wirst du sehen, wie diese Operatoren in Haskell aussehen.', examples: _List_Nil, id: 1, title: 'Zweistellige Ausdrücke'},
 	title: 'Typen von zweistelligen Ausdrücken'
 };
 var $author$project$Main$FunctionExpression = function (a) {
@@ -6042,6 +6066,20 @@ var $author$project$Main$lecture3 = {
 			})
 		]),
 	id: 3,
+	learningContent: {
+		description: 'Funktionen sind ein zentraler Bestandteil von Haskell. Sie ermöglichen es, Eingaben zu verarbeiten und Ausgaben zu erzeugen. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In dieser Lektion lernst du, wie Funktionen in Haskell definiert und verwendet werden.',
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('Diese Funktion nimmt zwei Ganzzahlen als Eingabe und gibt ihre Summe zurück.'),
+				expression: 'add :: Int -> Int -> Int\nadd x y = x + y',
+				id: 1,
+				title: 'Einfache Funktion'
+			}
+			]),
+		id: 1,
+		title: 'Funktionen in Haskell'
+	},
 	title: 'Funktionen'
 };
 var $author$project$Main$GuardExpression = function (a) {
@@ -6049,9 +6087,9 @@ var $author$project$Main$GuardExpression = function (a) {
 };
 var $author$project$Main$lecture4 = {
 	badge: {
-		id: '',
+		id: 'guards',
 		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Funktionen'
+		name: 'Guards'
 	},
 	description: 'In dieser Lektion wird dein Wissen über Guards getestet.',
 	exercises: _List_fromArray(
@@ -6075,6 +6113,20 @@ var $author$project$Main$lecture4 = {
 			})
 		]),
 	id: 4,
+	learningContent: {
+		description: 'Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden.',
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('Diese Funktion berechnet den absoluten Wert einer Zahl. Wenn die Zahl größer oder gleich 0 ist, wird sie direkt zurückgegeben. Andernfalls wird ihr negatives Pendant zurückgegeben.'),
+				expression: 'absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x',
+				id: 1,
+				title: 'Einfacher Guard-Ausdruck'
+			}
+			]),
+		id: 1,
+		title: 'Guards in Haskell'
+	},
 	title: 'Guards'
 };
 var $author$project$Main$PatternMatchingExpression = function (a) {
@@ -6082,9 +6134,9 @@ var $author$project$Main$PatternMatchingExpression = function (a) {
 };
 var $author$project$Main$lecture5 = {
 	badge: {
-		id: '',
+		id: 'pattern-matching',
 		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Funktionen'
+		name: 'Pattern Matching'
 	},
 	description: 'In dieser Lektion wird dein Wissen über Pattern Matching getestet.',
 	exercises: _List_fromArray(
@@ -6106,6 +6158,20 @@ var $author$project$Main$lecture5 = {
 			})
 		]),
 	id: 5,
+	learningContent: {
+		description: 'Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln.',
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('In diesem Beispiel wird die Funktion `f` definiert, die eine Ganzzahl als Eingabe nimmt und einen String zurückgibt. Für die Eingabe `0` gibt sie \"Null\" zurück, für `1` \"Eins\" und für alle anderen Werte \"Andere Zahl\".'),
+				expression: 'f :: Int -> String\nf 0 = \"Null\"\nf 1 = \"Eins\"\nf _ = \"Andere Zahl\"',
+				id: 1,
+				title: 'Einfaches Pattern Matching'
+			}
+			]),
+		id: 1,
+		title: 'Pattern Matching in Haskell'
+	},
 	title: 'Pattern Matching'
 };
 var $author$project$Main$course1 = {
@@ -6177,7 +6243,7 @@ var $author$project$Main$update = F2(
 										_List_fromArray(
 											[$author$project$Main$course1])),
 									user: $elm$core$Maybe$Just(
-										{name: username})
+										{badges: _List_Nil, name: username})
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
@@ -6222,23 +6288,33 @@ var $author$project$Main$update = F2(
 				}
 			case 'StartLecture':
 				var _v5 = model.page;
-				if (_v5.$ === 'LecturePage') {
-					var lecture = _v5.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: A3($author$project$Main$RunningLecture, lecture, lecture.exercises, _List_Nil)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				switch (_v5.$) {
+					case 'LecturePage':
+						var lecture = _v5.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: A2($author$project$Main$LearningContentPage, lecture, 0)
+								}),
+							$elm$core$Platform$Cmd$none);
+					case 'FinishedQuiz':
+						var lecture = _v5.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: A3($author$project$Main$RunningQuiz, lecture, lecture.exercises, _List_Nil)
+								}),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'SelectAnswer':
 				var exercise = msg.a;
 				var answer = msg.b;
 				var _v6 = model.page;
-				if (_v6.$ === 'RunningLecture') {
+				if (_v6.$ === 'RunningQuiz') {
 					var lecture = _v6.a;
 					var remainingExercises = _v6.b;
 					var answeredExercises = _v6.c;
@@ -6265,7 +6341,7 @@ var $author$project$Main$update = F2(
 											var a = _v7.b;
 											return a.isCorrect;
 										},
-										newAnswers) ? $author$project$Main$WinningLecture(lecture) : A3($author$project$Main$FinishedLecture, lecture, newAnswers, 0)) : A3($author$project$Main$RunningLecture, lecture, newRemainingExercises, newAnswers);
+										newAnswers) ? $author$project$Main$WinningQuiz(lecture) : A3($author$project$Main$FinishedQuiz, lecture, newAnswers, 0)) : A3($author$project$Main$RunningQuiz, lecture, newRemainingExercises, newAnswers);
 								}()
 							}),
 						$elm$core$Platform$Cmd$none);
@@ -6274,7 +6350,7 @@ var $author$project$Main$update = F2(
 				}
 			case 'NextWrongAnswer':
 				var _v8 = model.page;
-				if (_v8.$ === 'FinishedLecture') {
+				if (_v8.$ === 'FinishedQuiz') {
 					var lecture = _v8.a;
 					var answeredExercises = _v8.b;
 					var i = _v8.c;
@@ -6291,15 +6367,15 @@ var $author$project$Main$update = F2(
 												return !a.isCorrect;
 											},
 											answeredExercises)) - 1,
-									i) ? A3($author$project$Main$FinishedLecture, lecture, answeredExercises, i) : A3($author$project$Main$FinishedLecture, lecture, answeredExercises, i + 1)
+									i) ? A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i) : A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i + 1)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
+			case 'PrevWrongAnswer':
 				var _v10 = model.page;
-				if (_v10.$ === 'FinishedLecture') {
+				if (_v10.$ === 'FinishedQuiz') {
 					var lecture = _v10.a;
 					var answeredExercises = _v10.b;
 					var i = _v10.c;
@@ -6308,7 +6384,7 @@ var $author$project$Main$update = F2(
 							model,
 							{
 								page: A3(
-									$author$project$Main$FinishedLecture,
+									$author$project$Main$FinishedQuiz,
 									lecture,
 									answeredExercises,
 									A2($elm$core$Basics$max, 0, i - 1))
@@ -6317,8 +6393,69 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
+			case 'AddBadge':
+				var badge = msg.a;
+				var _v11 = model.user;
+				if (_v11.$ === 'Just') {
+					var user = _v11.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								page: $author$project$Main$CoursesOverview(
+									_List_fromArray(
+										[$author$project$Main$course1])),
+								user: $elm$core$Maybe$Just(
+									_Utils_update(
+										user,
+										{
+											badges: A2(
+												$elm$core$List$any,
+												function (b) {
+													return _Utils_eq(b, badge);
+												},
+												user.badges) ? user.badges : A2($elm$core$List$cons, badge, user.badges)
+										}))
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			case 'NextExample':
+				var _v12 = model.page;
+				if (_v12.$ === 'LearningContentPage') {
+					var lecture = _v12.a;
+					var i = _v12.b;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								page: A2($author$project$Main$LearningContentPage, lecture, i + 1)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			default:
+				var _v13 = model.page;
+				if (_v13.$ === 'LearningContentPage') {
+					var lecture = _v13.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								page: A3($author$project$Main$RunningQuiz, lecture, lecture.exercises, _List_Nil)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
 	});
+var $author$project$Main$AddBadge = function (a) {
+	return {$: 'AddBadge', a: a};
+};
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6331,6 +6468,79 @@ var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('
 var $author$project$Main$SelectLecture = function (a) {
 	return {$: 'SelectLecture', a: a};
 };
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
+var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
+var $author$project$Images$Images$badgeSvg = A2(
+	$elm$svg$Svg$svg,
+	_List_fromArray(
+		[
+			$elm$svg$Svg$Attributes$viewBox('0 0 80 80'),
+			$elm$svg$Svg$Attributes$height('2em')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#59C5EF'),
+					$elm$svg$Svg$Attributes$d('M30.432 39.985 20.474 57.2l8.428-1.008 7.57-13.088z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#2BA0BF'),
+					$elm$svg$Svg$Attributes$d('m36.472 43.104-7.57 13.088L32.229 64l10.282-17.777z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#59C5EF'),
+					$elm$svg$Svg$Attributes$d('M39.107 49.022 47.771 64l3.327-7.808-5.679-9.819z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#2BA0BF'),
+					$elm$svg$Svg$Attributes$d('m51.73 43.723-6.311 2.65 5.679 9.819 8.428 1.008z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#FFBD66'),
+					$elm$svg$Svg$Attributes$d('m57.38 32.571-.916-.664a1.72 1.72 0 0 1-.457-2.294l.592-.964a1.72 1.72 0 0 0-1.067-2.574l-1.1-.263a1.723 1.723 0 0 1-1.3-1.945l.178-1.116a1.71 1.71 0 0 0-.482-1.488 1.711 1.711 0 0 0-1.488-.483l-1.117.178a1.721 1.721 0 0 1-1.945-1.3l-.262-1.1a1.72 1.72 0 0 0-2.575-1.067l-.963.593a1.72 1.72 0 0 1-2.294-.456l-.664-.916a1.721 1.721 0 0 0-2.787 0l-.664.916a1.72 1.72 0 0 1-2.294.456l-.964-.592a1.72 1.72 0 0 0-2.574 1.066l-.263 1.1a1.722 1.722 0 0 1-1.945 1.3l-1.117-.178a1.72 1.72 0 0 0-1.986 1.546l-.003.035c-.008.126-.003.257.018.388l.179 1.117a1.72 1.72 0 0 1-1.3 1.945l-1.1.263a1.72 1.72 0 0 0-1.066 2.574l.592.964a1.721 1.721 0 0 1-.457 2.295l-.916.663a1.72 1.72 0 0 0 0 2.786l.916.664a1.72 1.72 0 0 1 .457 2.294l-.592.964a1.72 1.72 0 0 0 1.066 2.574l1.1.264a1.721 1.721 0 0 1 1.3 1.944l-.179 1.116a1.711 1.711 0 0 0 .483 1.488v.002c.371.371.91.574 1.488.482l1.117-.179a1.72 1.72 0 0 1 1.945 1.3l.262 1.1a1.72 1.72 0 0 0 2.575 1.066l.964-.592a1.721 1.721 0 0 1 2.294.457l.664.915c.687.948 2.1.948 2.787 0l.664-.915a1.721 1.721 0 0 1 2.294-.457l.964.592a1.72 1.72 0 0 0 2.574-1.066l.263-1.1a1.722 1.722 0 0 1 1.945-1.3l1.117.179c.132.021.262.026.388.018l.035-.002a1.722 1.722 0 0 0 1.546-1.986l-.178-1.117a1.72 1.72 0 0 1 1.3-1.945l1.1-.263a1.72 1.72 0 0 0 1.067-2.574l-.592-.964a1.72 1.72 0 0 1 .457-2.294l.916-.664a1.72 1.72 0 0 0 0-2.786z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#FDDC85'),
+					$elm$svg$Svg$Attributes$d('M51.604 33.845c0-6.339-5.138-11.478-11.477-11.478-6.338 0-11.477 5.139-11.477 11.478 0 6.339 5.138 11.476 11.477 11.476s11.477-5.137 11.477-11.476z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$fill('#FFBD66'),
+					$elm$svg$Svg$Attributes$d('m40.128 25.373 2.467 4.998 5.517.802-3.993 3.892.943 5.494-4.934-2.594-4.934 2.594.942-5.494-3.992-3.892 5.516-.802z')
+				]),
+			_List_Nil)
+		]));
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -6352,274 +6562,171 @@ var $elm$html$Html$Events$onClick = function (msg) {
 var $elm$html$Html$small = _VirtualDom_node('small');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$coursePage = function (course) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$h3,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('display-5 text-center')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(course.title)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('album')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('container')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('row row-cols-sm-2')
-									]),
-								A2(
-									$elm$core$List$map,
-									function (lecture) {
-										return A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('col-md-4')
-												]),
-											_List_fromArray(
-												[
-													A2(
-													$elm$html$Html$div,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$class('card shadow-sm m-1'),
-															$elm$html$Html$Events$onClick(
-															$author$project$Main$SelectLecture(lecture))
-														]),
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$div,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('card-title text-center')
-																]),
-															_List_fromArray(
-																[
-																	$elm$html$Html$text(lecture.title)
-																])),
-															A2(
-															$elm$html$Html$div,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('card-body')
-																]),
-															_List_fromArray(
-																[
-																	A2(
-																	$elm$html$Html$div,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('card-text')
-																		]),
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$text(lecture.description),
-																			A2(
-																			$elm$html$Html$div,
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
-																				]),
-																			_List_fromArray(
-																				[
-																					A2($elm$html$Html$div, _List_Nil, _List_Nil),
-																					A2(
-																					$elm$html$Html$small,
-																					_List_fromArray(
-																						[
-																							$elm$html$Html$Attributes$class('muted')
-																						]),
-																					_List_fromArray(
-																						[
-																							$elm$html$Html$text(
-																							$elm$core$String$fromInt(
-																								$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
-																						]))
-																				]))
-																		]))
-																]))
-														]))
-												]));
-									},
-									course.lectures))
-							]))
-					]))
-			]));
-};
+var $author$project$Main$coursePage = F2(
+	function (course, user) {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h3,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('display-5 text-center')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(course.title)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('album')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('container')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('row row-cols-sm-2')
+										]),
+									A2(
+										$elm$core$List$map,
+										function (lecture) {
+											return A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('col-md-4')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$div,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('card shadow-sm m-1'),
+																$elm$html$Html$Events$onClick(
+																$author$project$Main$SelectLecture(lecture))
+															]),
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('card-title text-center')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(lecture.title)
+																	])),
+																A2(
+																$elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('card-body')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		$elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('card-text')
+																			]),
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$text(lecture.description),
+																				A2(
+																				$elm$html$Html$div,
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
+																					]),
+																				_List_fromArray(
+																					[
+																						A2($elm$html$Html$div, _List_Nil, _List_Nil),
+																						A2(
+																						$elm$html$Html$small,
+																						_List_fromArray(
+																							[
+																								$elm$html$Html$Attributes$class('muted')
+																							]),
+																						_List_fromArray(
+																							[
+																								A2(
+																								$elm$core$List$any,
+																								function (b) {
+																									return _Utils_eq(b, lecture.badge);
+																								},
+																								user.badges) ? $author$project$Images$Images$badgeSvg : $elm$html$Html$text(''),
+																								$elm$html$Html$text(
+																								$elm$core$String$fromInt(
+																									$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
+																							]))
+																					]))
+																			]))
+																	]))
+															]))
+													]));
+										},
+										course.lectures))
+								]))
+						]))
+				]));
+	});
 var $author$project$Main$SelectCourse = function (a) {
 	return {$: 'SelectCourse', a: a};
 };
-var $author$project$Main$foot = A2(
-	$elm$html$Html$div,
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $author$project$Images$Images$bookmarkCheckSvg = A2(
+	$elm$svg$Svg$svg,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('footer fixed-bottom text-center')
+			$elm$svg$Svg$Attributes$width('16'),
+			$elm$svg$Svg$Attributes$height('16'),
+			$elm$svg$Svg$Attributes$fill('currentColor'),
+			$elm$svg$Svg$Attributes$class('bi bi-check-square'),
+			$elm$svg$Svg$Attributes$viewBox('0 0 16 16')
 		]),
 	_List_fromArray(
 		[
-			$elm$html$Html$text('Copyright © 2025')
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z')
+				]),
+			_List_Nil),
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z')
+				]),
+			_List_Nil)
 		]));
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$Main$coursesOverview = function (courses) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('m-1')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$h1,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('display-5 text-center')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Kursübersicht')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('text-center')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						'Dir stehen ' + ($elm$core$String$fromInt(
-							$elm$core$List$length(courses)) + ' Kurse zur Verfügung: '))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('album')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('container')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('row')
-									]),
-								A2(
-									$elm$core$List$map,
-									function (course) {
-										return A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('col')
-												]),
-											_List_fromArray(
-												[
-													A2(
-													$elm$html$Html$div,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$class('card shadow-sm'),
-															$elm$html$Html$Events$onClick(
-															$author$project$Main$SelectCourse(course))
-														]),
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$div,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('card-title text-center')
-																]),
-															_List_fromArray(
-																[
-																	$elm$html$Html$text(course.title)
-																])),
-															A2(
-															$elm$html$Html$div,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('card-body')
-																]),
-															_List_fromArray(
-																[
-																	A2(
-																	$elm$html$Html$div,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('card-text')
-																		]),
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$text(course.description)
-																		])),
-																	A2(
-																	$elm$html$Html$div,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
-																		]),
-																	_List_fromArray(
-																		[
-																			A2($elm$html$Html$div, _List_Nil, _List_Nil),
-																			A2(
-																			$elm$html$Html$small,
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$Attributes$class('muted')
-																				]),
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$text(
-																					$elm$core$String$fromInt(
-																						$elm$core$List$length(course.lectures)) + ' Lektionen')
-																				]))
-																		]))
-																]))
-														]))
-												]));
-									},
-									courses))
-							]))
-					])),
-				$author$project$Main$foot
-			]));
-};
-var $elm$html$Html$code = _VirtualDom_node('code');
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;
 	return y;
@@ -6634,6 +6741,210 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
+var $author$project$Main$foot = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('footer fixed-bottom text-center')
+		]),
+	_List_fromArray(
+		[
+			$elm$html$Html$text('Copyright © 2025')
+		]));
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$Main$coursesOverview = F2(
+	function (courses, user) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('m-1')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h1,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('display-5 text-center')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Kursübersicht')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-center')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Dir stehen ' + ($elm$core$String$fromInt(
+								$elm$core$List$length(courses)) + ' Kurse zur Verfügung: '))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('album')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('container')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('row')
+										]),
+									A2(
+										$elm$core$List$map,
+										function (course) {
+											return A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('col')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$div,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('card shadow-sm'),
+																$elm$html$Html$Events$onClick(
+																$author$project$Main$SelectCourse(course))
+															]),
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('card-title text-center')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(course.title)
+																	])),
+																A2(
+																$elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('card-body')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		$elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('card-text')
+																			]),
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$text(course.description)
+																			]))
+																	])),
+																function () {
+																var progress = (($elm$core$List$length(
+																	A2(
+																		$elm$core$List$filter,
+																		function (l) {
+																			return A2(
+																				$elm$core$List$any,
+																				function (b) {
+																					return _Utils_eq(b, l.badge);
+																				},
+																				user.badges);
+																		},
+																		course.lectures)) * 100) / $elm$core$List$length(course.lectures)) | 0;
+																return A2(
+																	$elm$html$Html$div,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('card-footer'),
+																			$elm$html$Html$Attributes$classList(
+																			_List_fromArray(
+																				[
+																					_Utils_Tuple2('d-none', !progress)
+																				]))
+																		]),
+																	(progress < 100) ? _List_fromArray(
+																		[
+																			A2(
+																			$elm$html$Html$div,
+																			_List_fromArray(
+																				[
+																					$elm$html$Html$Attributes$class('progress'),
+																					A2($elm$html$Html$Attributes$style, 'height', '2em')
+																				]),
+																			_List_fromArray(
+																				[
+																					A2(
+																					$elm$html$Html$div,
+																					_List_fromArray(
+																						[
+																							$elm$html$Html$Attributes$class('progress-bar progress-bar bg-success'),
+																							A2($elm$html$Html$Attributes$attribute, 'role', 'progressbar'),
+																							A2(
+																							$elm$html$Html$Attributes$attribute,
+																							'aria-valuenow',
+																							$elm$core$String$fromInt(progress)),
+																							A2($elm$html$Html$Attributes$attribute, 'aria-valuemin', '0'),
+																							A2($elm$html$Html$Attributes$attribute, 'aria-valuemax', '100'),
+																							A2(
+																							$elm$html$Html$Attributes$style,
+																							'width',
+																							$elm$core$String$fromInt(progress) + '%')
+																						]),
+																					_List_fromArray(
+																						[
+																							$elm$html$Html$text('Fortschritt')
+																						]))
+																				]))
+																		]) : _List_fromArray(
+																		[
+																			A2(
+																			$elm$html$Html$div,
+																			_List_fromArray(
+																				[
+																					$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
+																				]),
+																			_List_fromArray(
+																				[
+																					A2($elm$html$Html$div, _List_Nil, _List_Nil),
+																					A2(
+																					$elm$html$Html$div,
+																					_List_Nil,
+																					_List_fromArray(
+																						[$author$project$Images$Images$bookmarkCheckSvg]))
+																				]))
+																		]));
+															}()
+															]))
+													]));
+										},
+										courses))
+								]))
+						])),
+					$author$project$Main$foot
+				]));
+	});
+var $elm$html$Html$code = _VirtualDom_node('code');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$HCode = function (a) {
 	return {$: 'HCode', a: a};
 };
@@ -9101,7 +9412,7 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 	});
 var $author$project$Main$NextWrongAnswer = {$: 'NextWrongAnswer'};
 var $author$project$Main$PrevWrongAnswer = {$: 'PrevWrongAnswer'};
-var $elm$html$Html$button = _VirtualDom_node('button');
+var $author$project$Main$StartLecture = {$: 'StartLecture'};
 var $author$project$Main$finishedLectureFooter = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -9125,7 +9436,8 @@ var $author$project$Main$finishedLectureFooter = A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('btn btn-outline-warning')
+					$elm$html$Html$Attributes$class('btn btn-outline-warning'),
+					$elm$html$Html$Events$onClick($author$project$Main$StartLecture)
 				]),
 			_List_fromArray(
 				[
@@ -9144,14 +9456,6 @@ var $author$project$Main$finishedLectureFooter = A2(
 				]))
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');
-var $elm$virtual_dom$VirtualDom$attribute = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_attribute,
-			_VirtualDom_noOnOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlUri(value));
-	});
-var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(
 	function (start, index, _v0) {
 		var fragments = _v0.fragments;
@@ -9622,23 +9926,16 @@ var $author$project$Main$get = F2(
 		return $elm$core$List$head(
 			A2($elm$core$List$drop, n, xs));
 	});
+var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $author$project$Main$GoToCourseOverview = {$: 'GoToCourseOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$li = _VirtualDom_node('li');
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
-var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$Attributes$preserveAspectRatio = _VirtualDom_attribute('preserveAspectRatio');
 var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var $elm$svg$Svg$Attributes$version = _VirtualDom_attribute('version');
-var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Images$Images$logo = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
@@ -9781,6 +10078,46 @@ var $author$project$Main$header = function (m) {
 													},
 													m.user)))
 										])),
+									A2(
+									$elm$core$Maybe$withDefault,
+									A2($elm$html$Html$div, _List_Nil, _List_Nil),
+									A2(
+										$elm$core$Maybe$map,
+										function (user) {
+											return (!$elm$core$List$length(user.badges)) ? $elm$html$Html$text('') : A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('bg-success rounded')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$div,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('d-none d-sm-block')
+															]),
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Medallien')
+															])),
+														A2(
+														$elm$html$Html$span,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('badge badge-pill')
+															]),
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$elm$core$String$fromInt(
+																	$elm$core$List$length(user.badges))),
+																$author$project$Images$Images$badgeSvg
+															]))
+													]));
+										},
+										m.user)),
 									A2(
 									$elm$html$Html$button,
 									_List_fromArray(
@@ -9980,8 +10317,6 @@ var $author$project$Main$landingPage = function (l) {
 					]))
 			]));
 };
-var $author$project$Main$StartLecture = {$: 'StartLecture'};
-var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $author$project$Main$lectureView = function (l) {
 	return A2(
 		$elm$html$Html$div,
@@ -10040,6 +10375,138 @@ var $author$project$Main$lectureView = function (l) {
 			]));
 };
 var $elm$core$Debug$log = _Debug_log;
+var $author$project$Main$StartQuiz = {$: 'StartQuiz'};
+var $author$project$Main$NextExample = {$: 'NextExample'};
+var $author$project$Main$learningExampleView = function (example) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('card m-2 fixed-bottom')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-header')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(example.title)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-body')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('card-title')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								A2($elm$core$Maybe$withDefault, '', example.description))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('card-content')
+							]),
+						A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
+					]),
+				_List_fromArray(
+					[
+						A2($elm$html$Html$div, _List_Nil, _List_Nil),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
+								$elm$html$Html$Events$onClick($author$project$Main$NextExample)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Nächstes Beispiel')
+							]))
+					]))
+			]));
+};
+var $author$project$Main$runningLearningContentView = F2(
+	function (lecture, exampleIndex) {
+		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
+		if (_v0.$ === 'Just') {
+			var example = _v0.a;
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('container')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h4,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(lecture.learningContent.title)
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(lecture.learningContent.description)
+							])),
+						$author$project$Main$learningExampleView(example)
+					]));
+		} else {
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('d-grid gap-2')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-lg btn-dark d-block'),
+										$elm$html$Html$Events$onClick($author$project$Main$StartQuiz)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Quiz \"' + (lecture.title + '\" starten'))
+									]))
+							]))
+					]));
+		}
+	});
 var $author$project$Main$SelectAnswer = F2(
 	function (a, b) {
 		return {$: 'SelectAnswer', a: a, b: b};
@@ -10350,7 +10817,7 @@ var $author$project$Main$excerciseView = function (exercise) {
 			}
 		}());
 };
-var $author$project$Main$runningLectureView = F2(
+var $author$project$Main$runningQuizView = F2(
 	function (l, e) {
 		return A2(
 			$elm$html$Html$div,
@@ -10384,86 +10851,133 @@ var $author$project$Main$view = function (model) {
 			[
 				$author$project$Main$header(model),
 				function () {
-				var _v0 = model.page;
-				switch (_v0.$) {
-					case 'Landing':
-						var l = _v0.a;
-						return $author$project$Main$landingPage(l);
-					case 'CoursesOverview':
-						var s = _v0.a;
-						return $author$project$Main$coursesOverview(s);
-					case 'CoursePage':
-						var c = _v0.a;
-						return $author$project$Main$coursePage(c);
-					case 'LecturePage':
-						var lecture = _v0.a;
-						return $author$project$Main$lectureView(lecture);
-					case 'RunningLecture':
-						var lecture = _v0.a;
-						var remainingExercises = _v0.b;
-						var _v1 = $elm$core$List$head(remainingExercises);
-						if (_v1.$ === 'Just') {
-							var exercise = _v1.a;
-							return A2($author$project$Main$runningLectureView, lecture, exercise);
-						} else {
-							return A2(
-								$elm$html$Html$div,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Hier gehörst du nicht hin!')
-									]));
-						}
-					case 'WinningLecture':
-						return A2(
-							$elm$html$Html$div,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
-								]));
-					default:
-						var answeredExercises = _v0.b;
-						var i = _v0.c;
-						var wrongExercises = A2(
-							$elm$core$List$filter,
-							function (_v5) {
-								var a = _v5.b;
-								return !a.isCorrect;
-							},
-							answeredExercises);
-						if (!wrongExercises.b) {
-							return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
-						} else {
-							var w = wrongExercises;
-							var _v3 = A2($author$project$Main$get, i, w);
-							if (_v3.$ === 'Just') {
-								var _v4 = _v3.a;
-								var exercise = _v4.a;
-								var answer = _v4.b;
+				var _v0 = model.user;
+				if (_v0.$ === 'Just') {
+					var user = _v0.a;
+					var _v1 = model.page;
+					switch (_v1.$) {
+						case 'CoursesOverview':
+							var s = _v1.a;
+							return A2($author$project$Main$coursesOverview, s, user);
+						case 'CoursePage':
+							var c = _v1.a;
+							return A2($author$project$Main$coursePage, c, user);
+						case 'LecturePage':
+							var lecture = _v1.a;
+							return $author$project$Main$lectureView(lecture);
+						case 'RunningQuiz':
+							var lecture = _v1.a;
+							var remainingExercises = _v1.b;
+							var _v2 = $elm$core$List$head(remainingExercises);
+							if (_v2.$ === 'Just') {
+								var exercise = _v2.a;
+								return A2($author$project$Main$runningQuizView, lecture, exercise);
+							} else {
 								return A2(
 									$elm$html$Html$div,
+									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('container mb-2 fixed-bottom')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											'Du hast ' + ($elm$core$String$fromInt(
-												$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
-												$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.')))),
-											A2($author$project$Main$finishedExerciseView, exercise, answer)
+											$elm$html$Html$text('Hier gehörst du nicht hin!')
 										]));
-							} else {
-								return A3(
-									$elm$core$Debug$log,
-									$elm$core$String$fromInt(
-										$elm$core$List$length(wrongExercises)),
-									$elm$html$Html$text,
-									'WARUM IST DAS HIER NULL?!');
 							}
-						}
+						case 'WinningQuiz':
+							var lecture = _v1.a;
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$h4,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text(lecture.title)
+											])),
+										$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.'),
+										A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Events$onClick(
+												$author$project$Main$AddBadge(lecture.badge)),
+												$elm$html$Html$Attributes$class('btn btn-dark btn-lg w-100 h-100')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Zurück zur Kursübersicht')
+											]))
+									]));
+						case 'FinishedQuiz':
+							var answeredExercises = _v1.b;
+							var i = _v1.c;
+							var wrongExercises = A2(
+								$elm$core$List$filter,
+								function (_v6) {
+									var a = _v6.b;
+									return !a.isCorrect;
+								},
+								answeredExercises);
+							if (!wrongExercises.b) {
+								return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
+							} else {
+								var w = wrongExercises;
+								var _v4 = A2($author$project$Main$get, i, w);
+								if (_v4.$ === 'Just') {
+									var _v5 = _v4.a;
+									var exercise = _v5.a;
+									var answer = _v5.b;
+									return A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('container mb-2 fixed-bottom')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												'Du hast ' + ($elm$core$String$fromInt(
+													$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
+													$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.')))),
+												A2($author$project$Main$finishedExerciseView, exercise, answer)
+											]));
+								} else {
+									return A3(
+										$elm$core$Debug$log,
+										$elm$core$String$fromInt(
+											$elm$core$List$length(wrongExercises)),
+										$elm$html$Html$text,
+										'WARUM IST DAS HIER NULL?!');
+								}
+							}
+						case 'LearningContentPage':
+							var lecture = _v1.a;
+							var i = _v1.b;
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('container')
+									]),
+								_List_fromArray(
+									[
+										A2($author$project$Main$runningLearningContentView, lecture, i)
+									]));
+						default:
+							return $elm$html$Html$text('Dieser Fall sollte nicht eintreten!');
+					}
+				} else {
+					var _v7 = model.page;
+					if (_v7.$ === 'Landing') {
+						var l = _v7.a;
+						return $author$project$Main$landingPage(l);
+					} else {
+						return A2($elm$html$Html$div, _List_Nil, _List_Nil);
+					}
 				}
 			}()
 			]));
