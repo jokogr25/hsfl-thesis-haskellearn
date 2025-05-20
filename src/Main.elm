@@ -639,10 +639,13 @@ coursesOverview courses user =
                                             ]
 
                                          else
-                                            [ div [] []
-                                            , div
-                                                []
-                                                [ text "Abgeschlossen!"
+                                            [ div
+                                                [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
+                                                [ div [] []
+                                                , div
+                                                    []
+                                                    [ Img.bookmarkCheckSvg
+                                                    ]
                                                 ]
                                             ]
                                         )

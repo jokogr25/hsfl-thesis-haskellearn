@@ -2,7 +2,7 @@ module Images.Images exposing (..)
 
 import Html exposing (Html)
 import Svg exposing (g, path, svg)
-import Svg.Attributes exposing (d, fill, height, preserveAspectRatio, stroke, transform, version, viewBox, width)
+import Svg.Attributes exposing (class, d, fill, fillRule, height, preserveAspectRatio, stroke, transform, version, viewBox, width)
 
 
 logo : Html msg
@@ -167,6 +167,26 @@ badgeSvg =
         , path
             [ fill "#FFBD66"
             , d "m40.128 25.373 2.467 4.998 5.517.802-3.993 3.892.943 5.494-4.934-2.594-4.934 2.594.942-5.494-3.992-3.892 5.516-.802z"
+            ]
+            []
+        ]
+
+
+bookmarkCheckSvg : Html msg
+bookmarkCheckSvg =
+    svg
+        [ width "16"
+        , height "16"
+        , fill "currentColor"
+        , class "bi bi-check-square"
+        , viewBox "0 0 16 16"
+        ]
+        [ path
+            [ d "M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+            ]
+            []
+        , path
+            [ d "M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"
             ]
             []
         ]
