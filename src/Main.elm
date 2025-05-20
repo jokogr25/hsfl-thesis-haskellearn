@@ -485,7 +485,7 @@ view model =
                                             "WARUM IST DAS HIER NULL?!"
 
                     LearningExamplePage _ ->
-                        text "Hier gehörst du nicht hin!"
+                        text "LearningExamplePage"
 
                     Landing _ ->
                         text "Dieser Fall sollte nicht eintreten!"
