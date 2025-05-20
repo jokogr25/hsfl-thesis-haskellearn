@@ -56,7 +56,7 @@ type alias Lecture =
     { id : Int
     , title : String
     , description : String
-    , learningContent : List LearningContent
+    , learningContent : LearningContent
     , exercises : List Exercise
     , badge : Badge
     }
@@ -1319,7 +1319,12 @@ lecture2 =
         , name = "Zweistellige Ausdrücke"
         , image = div [] []
         }
-    , learningContent = []
+    , learningContent =
+        { id = 1
+        , title = "Zweistellige Ausdrücke"
+        , description = "In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr. In dieser Lektion wirst du sehen, wie diese Operatoren in Haskell aussehen."
+        , examples = []
+        }
     , exercises =
         [ BinaryExpression
             { id = 8
@@ -1445,7 +1450,18 @@ lecture3 =
         , name = "Funktionen"
         , image = div [] []
         }
-    , learningContent = []
+    , learningContent =
+        { id = 1
+        , title = "Funktionen in Haskell"
+        , description = "Funktionen sind ein zentraler Bestandteil von Haskell. Sie ermöglichen es, Eingaben zu verarbeiten und Ausgaben zu erzeugen. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In dieser Lektion lernst du, wie Funktionen in Haskell definiert und verwendet werden."
+        , examples =
+            [ { id = 1
+              , title = "Einfache Funktion"
+              , expression = "add :: Int -> Int -> Int\nadd x y = x + y"
+              , description = Just "Diese Funktion nimmt zwei Ganzzahlen als Eingabe und gibt ihre Summe zurück."
+              }
+            ]
+        }
     , exercises =
         [ FunctionExpression
             { id = 13
@@ -1482,7 +1498,18 @@ lecture4 =
         , name = "Guards"
         , image = div [] []
         }
-    , learningContent = []
+    , learningContent =
+        { id = 1
+        , title = "Guards in Haskell"
+        , description = "Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden."
+        , examples =
+            [ { id = 1
+              , title = "Einfacher Guard-Ausdruck"
+              , expression = "absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x"
+              , description = Just "Diese Funktion berechnet den absoluten Wert einer Zahl. Wenn die Zahl größer oder gleich 0 ist, wird sie direkt zurückgegeben. Andernfalls wird ihr negatives Pendant zurückgegeben."
+              }
+            ]
+        }
     , exercises =
         [ GuardExpression
             { id = 14
@@ -1523,7 +1550,18 @@ lecture5 =
         , name = "Pattern Matching"
         , image = div [] []
         }
-    , learningContent = []
+    , learningContent =
+        { id = 1
+        , title = "Pattern Matching in Haskell"
+        , description = "Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln."
+        , examples =
+            [ { id = 1
+              , title = "Einfaches Pattern Matching"
+              , expression = "f :: Int -> String\nf 0 = \"Null\"\nf 1 = \"Eins\"\nf _ = \"Andere Zahl\""
+              , description = Just "In diesem Beispiel wird die Funktion `f` definiert, die eine Ganzzahl als Eingabe nimmt und einen String zurückgibt. Für die Eingabe `0` gibt sie \"Null\" zurück, für `1` \"Eins\" und für alle anderen Werte \"Andere Zahl\"."
+              }
+            ]
+        }
     , exercises =
         [ PatternMatchingExpression
             { id = 15
@@ -1560,70 +1598,37 @@ lecture1 =
         , image = div [] []
         }
     , learningContent =
-        [ { id = 1
-          , title = "Einfache Ausdrücke bzw. Typen"
-          , description = "In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert. \". Einfache Ausdrücke sind Ausdrücke, die nur einen Wert haben. Das bedeutet, dass sie keine Funktionen oder Operatoren enthalten. Einfache Ausdrücke sind z.B. Zahlen, Strings, Listen und Tupel. Im folgenden wirst du sehen, wie einfache Ausdrück in Haskell aussehen können. Das \"x\" ist in jedem Beispiel eine Konstante, hinter der ein Wert steckt. Der Typ des Wertes wird durch den Typ des Ausdrucks bestimmt. Das bedeutet, dass der Typ des Ausdrucks immer dem Typ der Variable entspricht. Wenn du also den Ausdruck \"x = 1\" hast, dann ist der Typ von \"x\" immer \"Int\". Wenn du den Ausdruck \"x = 1.0\" hast, dann ist der Typ von \"x\" immer \"Float\"."
-          , examples =
-                [ { id = 1
-                  , title = "Ganzzahliger Ausdruck"
-                  , expression = "x :: Int\nx = 1"
-                  , description = Nothing
-                  }
-                , { id = 2
-                  , title = "Gleitkommazahl-Ausdruck"
-                  , expression = "x :: Float\nx = 1.0"
-                  , description = Nothing
-                  }
-                , { id = 3
-                  , title = "String-Ausdruck"
-                  , expression = "x :: String\nx = \"Hallo\""
-                  , description = Nothing
-                  }
-                , { id = 4
-                  , title = "Gleitkommazahl-Ausdruck"
-                  , expression = "x :: Float\nx = 1.0"
-                  , description = Nothing
-                  }
-                , { id = 5
-                  , title = "Listen-Ausdruck"
-                  , expression = "x :: [String]\nx = [\"Hallo\", \"Welt\"]"
-                  , description = Nothing
-                  }
-                ]
-          }
-        , { id = 2
-          , title = "Tupel-Ausdruck"
-          , description = "Ein Tupel ist eine Datenstruktur, die mehrere Werte zusammenfasst. Ein Tupel kann beliebig viele Werte enthalten. Die Werte können unterschiedliche Typen haben. Ein Tupel wird in Haskell mit runden Klammern dargestellt. Die Werte werden durch Kommas getrennt. Ein Tupel mit zwei Werten wird als \"2-Tupel\" bezeichnet. Ein Tupel mit drei Werten wird als \"3-Tupel\" bezeichnet. Ein Tupel mit n Werten wird als \"n-Tupel\" bezeichnet. Ein Tupel mit n Werten hat den Typ \"(a, b, c, d, e, f, g, h, i, j)\"."
-          , examples =
-                [ { id = 1
-                  , title = "Tupel-Ausdruck"
-                  , expression = "x :: (Int, String)\nx = (1, \"Hallo\")"
-                  , description = Nothing
-                  }
-                , { id = 2
-                  , title = "Tupel-Ausdruck"
-                  , expression = "x :: (Int, String, Bool)\nx = (1, \"Hallo\", True)"
-                  , description = Nothing
-                  }
-                ]
-          }
-        , { id = 3
-          , title = "Generische Typen - Maybe"
-          , description = "In Haskell gibt es wie in anderen Sprachen auch das Konzept der generischen Typen. Hier schauen wir uns das Beispiel \"Maybe\" an (vgl. Nullables in OOP). Man kann sagen, dass ein \"Maybe Int\" über den Typ Int läuft."
-          , examples =
-                [ { id = 1
-                  , title = "Defintion von Maybe"
-                  , expression = "type alias Maybe a = Just a | Nothing"
-                  , description = Just "Der Type Maybe hat zwei Konstruktoren: \"Just\" und \"Nothing\". \"Just\" ist der Konstruktor, der einen Wert enthält. \"Nothing\" ist der Konstruktor, der keinen Wert enthält. Der Typ \"Maybe a\" ist ein generischer Typ, der einen Wert vom Typ \"a\" enthalten kann. Der Typ \"Maybe a\" kann auch keinen Wert enthalten, dargestellt durch \"Nothing\". Der Typ \"Maybe a\" ist also ein Typ, der entweder einen Wert vom Typ \"a\" oder keinen Wert enthält."
-                  }
-                , { id = 2
-                  , title = "Maybe-Ausdruck"
-                  , expression = "x :: Maybe Int\nx = Nothing"
-                  , description = Nothing
-                  }
-                ]
-          }
-        ]
+        { id = 1
+        , title = "Einfache Ausdrücke bzw. Typen"
+        , description = "In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert. \". Einfache Ausdrücke sind Ausdrücke, die nur einen Wert haben. Das bedeutet, dass sie keine Funktionen oder Operatoren enthalten. Einfache Ausdrücke sind z.B. Zahlen, Strings, Listen und Tupel. Im folgenden wirst du sehen, wie einfache Ausdrück in Haskell aussehen können. Das \"x\" ist in jedem Beispiel eine Konstante, hinter der ein Wert steckt. Der Typ des Wertes wird durch den Typ des Ausdrucks bestimmt. Das bedeutet, dass der Typ des Ausdrucks immer dem Typ der Variable entspricht. Wenn du also den Ausdruck \"x = 1\" hast, dann ist der Typ von \"x\" immer \"Int\". Wenn du den Ausdruck \"x = 1.0\" hast, dann ist der Typ von \"x\" immer \"Float\"."
+        , examples =
+            [ { id = 1
+              , title = "Ganzzahliger Ausdruck"
+              , expression = "x :: Int\nx = 1"
+              , description = Nothing
+              }
+            , { id = 2
+              , title = "Gleitkommazahl-Ausdruck"
+              , expression = "x :: Float\nx = 1.0"
+              , description = Nothing
+              }
+            , { id = 3
+              , title = "String-Ausdruck"
+              , expression = "x :: String\nx = \"Hallo\""
+              , description = Nothing
+              }
+            , { id = 4
+              , title = "Gleitkommazahl-Ausdruck"
+              , expression = "x :: Float\nx = 1.0"
+              , description = Nothing
+              }
+            , { id = 5
+              , title = "Listen-Ausdruck"
+              , expression = "x :: [String]\nx = [\"Hallo\", \"Welt\"]"
+              , description = Nothing
+              }
+            ]
+        }
     , exercises =
         [ exercise1
         , exercise2
