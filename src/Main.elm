@@ -295,7 +295,7 @@ update msg model =
                 CoursePage _ ->
                     ( { model
                         | page =
-                            LearningExamplePage lecture
+                            LecturePage lecture
                       }
                     , Cmd.none
                     )
@@ -308,7 +308,7 @@ update msg model =
                 LecturePage lecture ->
                     ( { model
                         | page =
-                            RunningQuiz lecture lecture.exercises []
+                            LearningExamplePage lecture
                       }
                     , Cmd.none
                     )
