@@ -512,7 +512,9 @@ view model =
                                             "WARUM IST DAS HIER NULL?!"
 
                     LearningContentPage lecture i ->
-                        runningLearningContentView lecture i
+                        div [ Html.Attributes.class "container" ]
+                            [ runningLearningContentView lecture i
+                            ]
 
                     Landing _ ->
                         text "Dieser Fall sollte nicht eintreten!"
@@ -775,9 +777,10 @@ runningLearningContentView lecture exampleIndex =
                 [ h4 []
                     [ text lecture.title
                     ]
-                , div []
+                , div
+                    [ Html.Attributes.class "d-grid gap-2" ]
                     [ button
-                        [ Html.Attributes.class "btn btn-lg btn-secondary"
+                        [ Html.Attributes.class "btn btn-lg btn-dark d-block"
                         , onClick StartQuiz
                         ]
                         [ text "Quiz starten" ]
