@@ -433,7 +433,7 @@ view model =
                     RunningQuiz lecture remainingExercises _ ->
                         case List.head remainingExercises of
                             Just exercise ->
-                                runningLectureView lecture exercise
+                                runningQuizView lecture exercise
 
                             Nothing ->
                                 div [] [ text "Hier gehörst du nicht hin!" ]
@@ -724,8 +724,8 @@ lectureView l =
         ]
 
 
-runningLectureView : Lecture -> Exercise -> Html Msg
-runningLectureView l e =
+runningQuizView : Lecture -> Exercise -> Html Msg
+runningQuizView l e =
     div [ Html.Attributes.class "container" ]
         [ h4 []
             [ text l.title
