@@ -613,21 +613,26 @@ coursesOverview courses user =
                                             [ Html.Attributes.class "card-text" ]
                                             [ text course.description ]
                                         ]
-                                    , div
+                                    , let
+                                        progress =
+                                            List.length
+                                                (List.filter (\l -> List.any (\b -> b == l.badge) user.badges) course.lectures)
+                                                * 100
+                                                // List.length course.lectures
+                                      in
+                                      div
                                         [ Html.Attributes.class "card-footer"
+                                        , Html.Attributes.classList
+                                            [ ( "d-none", progress == 0 )
+                                            ]
                                         ]
-                                        (let
-                                            progress =
-                                                List.length
-                                                    (List.filter (\l -> List.any (\b -> b == l.badge) user.badges) course.lectures)
-                                                    * 100
-                                                    // List.length course.lectures
-                                         in
-                                         if progress < 100 then
+                                        (if progress < 100 then
                                             [ div
-                                                [ Html.Attributes.class "progress" ]
+                                                [ Html.Attributes.class "progress"
+                                                , Html.Attributes.style "height" "2em"
+                                                ]
                                                 [ div
-                                                    [ Html.Attributes.class "progress-bar progress-bar-striped bg-success"
+                                                    [ Html.Attributes.class "progress-bar progress-bar bg-success"
                                                     , Html.Attributes.attribute "role" "progressbar"
                                                     , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
                                                     , Html.Attributes.attribute "aria-valuemin" "0"
