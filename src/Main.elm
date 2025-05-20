@@ -1295,17 +1295,21 @@ header m =
                             , Maybe.withDefault (Html.div [] [])
                                 (Maybe.map
                                     (\user ->
-                                        button
-                                            [ Html.Attributes.class "btn btn-success" ]
-                                            [ div
-                                                [ Html.Attributes.class "d-none d-sm-block" ]
-                                                [ text "Medallien" ]
-                                            , Html.span
-                                                [ Html.Attributes.class "badge badge-pill" ]
-                                                [ text (String.fromInt (List.length user.badges))
-                                                , Img.badgeSvg
+                                        if List.length user.badges == 0 then
+                                            text ""
+
+                                        else
+                                            div
+                                                [ Html.Attributes.class "bg-success rounded" ]
+                                                [ div
+                                                    [ Html.Attributes.class "d-none d-sm-block" ]
+                                                    [ text "Medallien" ]
+                                                , Html.span
+                                                    [ Html.Attributes.class "badge badge-pill" ]
+                                                    [ text (String.fromInt (List.length user.badges))
+                                                    , Img.badgeSvg
+                                                    ]
                                                 ]
-                                            ]
                                     )
                                     m.user
                                 )
