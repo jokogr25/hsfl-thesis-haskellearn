@@ -154,9 +154,9 @@ type Page
     | CoursesOverview (List Course)
     | CoursePage Course
     | LecturePage Lecture
-    | RunningLecture Lecture (List Exercise) (List ( Exercise, Answer ))
-    | FinishedLecture Lecture (List ( Exercise, Answer )) Int
-    | WinningLecture Lecture
+    | RunningQuiz Lecture (List Exercise) (List ( Exercise, Answer ))
+    | FinishedQuiz Lecture (List ( Exercise, Answer )) Int
+    | WinningQuiz Lecture
 
 
 type alias Model =
@@ -307,15 +307,15 @@ update msg model =
                 LecturePage lecture ->
                     ( { model
                         | page =
-                            RunningLecture lecture lecture.exercises []
+                            RunningQuiz lecture lecture.exercises []
                       }
                     , Cmd.none
                     )
 
-                FinishedLecture lecture _ _ ->
+                FinishedQuiz lecture _ _ ->
                     ( { model
                         | page =
-                            RunningLecture lecture lecture.exercises []
+                            RunningQuiz lecture lecture.exercises []
                       }
                     , Cmd.none
                     )
@@ -325,7 +325,7 @@ update msg model =
 
         SelectAnswer exercise answer ->
             case model.page of
-                RunningLecture lecture remainingExercises answeredExercises ->
+                RunningQuiz lecture remainingExercises answeredExercises ->
                     ( { model
                         | page =
                             let
@@ -339,13 +339,13 @@ update msg model =
                             in
                             if List.length newRemainingExercises == 0 then
                                 if List.all (\( _, a ) -> a.isCorrect) newAnswers then
-                                    WinningLecture lecture
+                                    WinningQuiz lecture
 
                                 else
-                                    FinishedLecture lecture newAnswers 0
+                                    FinishedQuiz lecture newAnswers 0
 
                             else
-                                RunningLecture lecture newRemainingExercises newAnswers
+                                RunningQuiz lecture newRemainingExercises newAnswers
                       }
                     , Cmd.none
                     )
@@ -355,7 +355,7 @@ update msg model =
 
         NextWrongAnswer ->
             case model.page of
-                FinishedLecture lecture answeredExercises i ->
+                FinishedQuiz lecture answeredExercises i ->
                     ( { model
                         | page =
                             if
@@ -364,10 +364,10 @@ update msg model =
                                     - 1
                                     == i
                             then
-                                FinishedLecture lecture answeredExercises i
+                                FinishedQuiz lecture answeredExercises i
 
                             else
-                                FinishedLecture lecture answeredExercises (i + 1)
+                                FinishedQuiz lecture answeredExercises (i + 1)
                       }
                     , Cmd.none
                     )
@@ -377,10 +377,10 @@ update msg model =
 
         PrevWrongAnswer ->
             case model.page of
-                FinishedLecture lecture answeredExercises i ->
+                FinishedQuiz lecture answeredExercises i ->
                     ( { model
                         | page =
-                            FinishedLecture
+                            FinishedQuiz
                                 lecture
                                 answeredExercises
                                 (max 0 (i - 1))
@@ -429,7 +429,7 @@ view model =
                     LecturePage lecture ->
                         lectureView lecture
 
-                    RunningLecture lecture remainingExercises _ ->
+                    RunningQuiz lecture remainingExercises _ ->
                         case List.head remainingExercises of
                             Just exercise ->
                                 runningLectureView lecture exercise
@@ -437,7 +437,7 @@ view model =
                             Nothing ->
                                 div [] [ text "Hier gehörst du nicht hin!" ]
 
-                    WinningLecture lecture ->
+                    WinningQuiz lecture ->
                         div
                             [ Html.Attributes.class "container fixed-bottom mb-2" ]
                             [ h4
@@ -451,7 +451,7 @@ view model =
                                 [ text "Zurück zur Kursübersicht" ]
                             ]
 
-                    FinishedLecture _ answeredExercises i ->
+                    FinishedQuiz _ answeredExercises i ->
                         let
                             wrongExercises =
                                 List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
