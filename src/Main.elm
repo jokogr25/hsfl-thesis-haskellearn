@@ -607,7 +607,7 @@ coursesOverview courses user =
                                             [ text course.description ]
                                         ]
                                     , div
-                                        [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
+                                        [ Html.Attributes.class "card-footer"
                                         ]
                                         (let
                                             progress =
@@ -625,7 +625,7 @@ coursesOverview courses user =
                                                     , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
                                                     , Html.Attributes.attribute "aria-valuemin" "0"
                                                     , Html.Attributes.attribute "aria-valuemax" "100"
-                                                    , Html.Attributes.style "width" (String.fromInt progress)
+                                                    , Html.Attributes.style "width" (String.fromInt progress ++ "%")
                                                     ]
                                                     [ text "Fortschritt" ]
                                                 ]
