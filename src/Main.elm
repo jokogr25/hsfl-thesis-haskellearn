@@ -154,7 +154,7 @@ type Page
     | CoursesOverview (List Course)
     | CoursePage Course
     | LecturePage Lecture
-    | LearningExamplePage Lecture
+    | LearningContentPage Lecture Int
     | RunningQuiz Lecture (List Exercise) (List ( Exercise, Answer ))
     | FinishedQuiz Lecture (List ( Exercise, Answer )) Int
     | WinningQuiz Lecture
@@ -172,6 +172,8 @@ type Msg
     | SelectCourse Course
     | SelectLecture Lecture
     | StartLecture
+    | NextExample
+    | StartQuiz
     | SelectAnswer Exercise Answer
     | GoToCourseOverview
     | NextWrongAnswer
@@ -308,7 +310,7 @@ update msg model =
                 LecturePage lecture ->
                     ( { model
                         | page =
-                            LearningExamplePage lecture
+                            LearningContentPage lecture 0
                       }
                     , Cmd.none
                     )
@@ -409,6 +411,31 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
+        NextExample ->
+            case model.page of
+                LearningContentPage lecture i ->
+                    ( { model
+                        | page = LearningContentPage lecture (i + 1)
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        StartQuiz ->
+            case model.page of
+                LearningContentPage lecture _ ->
+                    ( { model
+                        | page =
+                            RunningQuiz lecture lecture.exercises []
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 
 -- VIEW
@@ -484,8 +511,8 @@ view model =
                                             text
                                             "WARUM IST DAS HIER NULL?!"
 
-                    LearningExamplePage _ ->
-                        text "LearningExamplePage"
+                    LearningContentPage lecture i ->
+                        runningLearningContentView lecture i
 
                     Landing _ ->
                         text "Dieser Fall sollte nicht eintreten!"
@@ -720,6 +747,70 @@ lectureView l =
             , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
             ]
             [ text "Lektion starten"
+            ]
+        ]
+
+
+runningLearningContentView : Lecture -> Int -> Html Msg
+runningLearningContentView lecture exampleIndex =
+    case get exampleIndex lecture.learningContent.examples of
+        Just example ->
+            div
+                [ Html.Attributes.class "container"
+                ]
+                [ h4
+                    []
+                    [ text lecture.learningContent.title
+                    ]
+                , div
+                    []
+                    [ text lecture.learningContent.description ]
+                , learningExampleView example
+                ]
+
+        Nothing ->
+            div
+                [ Html.Attributes.class "container fixed-bottom mb-2"
+                ]
+                [ h4 []
+                    [ text lecture.title
+                    ]
+                , div []
+                    [ button
+                        [ Html.Attributes.class "btn btn-lg btn-secondary"
+                        , onClick StartQuiz
+                        ]
+                        [ text "Quiz starten" ]
+                    ]
+                ]
+
+
+learningExampleView : LearningExample -> Html Msg
+learningExampleView example =
+    div
+        [ Html.Attributes.class "card m-2 fixed-bottom"
+        ]
+        [ div
+            [ Html.Attributes.class "card-header" ]
+            [ text example.title ]
+        , div
+            [ Html.Attributes.class "card-body" ]
+            [ div
+                [ Html.Attributes.class "card-title" ]
+                [ text (Maybe.withDefault "" example.description) ]
+            , div
+                [ Html.Attributes.class "card-content" ]
+                (highlightedExpressionView example.expression Nothing)
+            ]
+        , div
+            [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
+            ]
+            [ div [] []
+            , button
+                [ Html.Attributes.class "btn btn-lg btn-secondary"
+                , onClick NextExample
+                ]
+                [ text "Nächstes Beispiel" ]
             ]
         ]
 
