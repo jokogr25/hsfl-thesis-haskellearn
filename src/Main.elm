@@ -154,6 +154,7 @@ type Page
     | CoursesOverview (List Course)
     | CoursePage Course
     | LecturePage Lecture
+    | LearningExamplePage Lecture
     | RunningQuiz Lecture (List Exercise) (List ( Exercise, Answer ))
     | FinishedQuiz Lecture (List ( Exercise, Answer )) Int
     | WinningQuiz Lecture
@@ -294,7 +295,7 @@ update msg model =
                 CoursePage _ ->
                     ( { model
                         | page =
-                            LecturePage lecture
+                            LearningExamplePage lecture
                       }
                     , Cmd.none
                     )
@@ -483,8 +484,11 @@ view model =
                                             text
                                             "WARUM IST DAS HIER NULL?!"
 
-                    _ ->
+                    LearningExamplePage _ ->
                         text "Hier gehörst du nicht hin!"
+
+                    Landing _ ->
+                        text "Dieser Fall sollte nicht eintreten!"
 
             Nothing ->
                 case model.page of
