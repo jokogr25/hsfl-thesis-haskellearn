@@ -401,7 +401,12 @@ update msg model =
                         | user =
                             Just
                                 { user
-                                    | badges = badge :: user.badges
+                                    | badges =
+                                        if List.any (\b -> b == badge) user.badges then
+                                            user.badges
+
+                                        else
+                                            badge :: user.badges
                                 }
                         , page = CoursesOverview [ course1 ]
                       }
