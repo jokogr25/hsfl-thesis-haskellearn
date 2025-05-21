@@ -208,6 +208,12 @@ subscriptions _ =
                     Enter ->
                         EnteringNameDone
 
+                    ArrowRight ->
+                        Next
+
+                    ArrowLeft ->
+                        Prev
+
                     _ ->
                         NoOp
             )
@@ -371,6 +377,13 @@ update msg model =
 
                             else
                                 FinishedQuiz lecture answeredExercises (i + 1)
+                      }
+                    , Cmd.none
+                    )
+
+                LearningContentPage lecture i ->
+                    ( { model
+                        | page = LearningContentPage lecture (i + 1)
                       }
                     , Cmd.none
                     )
@@ -1380,6 +1393,8 @@ checkUsername name =
 
 type Key
     = Enter
+    | ArrowLeft
+    | ArrowRight
     | Other
 
 
@@ -1393,6 +1408,12 @@ toKey key =
     case key of
         "Enter" ->
             Enter
+
+        "ArrowLeft" ->
+            ArrowLeft
+
+        "ArrowRight" ->
+            ArrowRight
 
         _ ->
             Other
