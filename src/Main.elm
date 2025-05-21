@@ -476,7 +476,7 @@ view model =
                             [ h4
                                 []
                                 [ text lecture.title ]
-                            , text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen."
+                            , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
                             , button
                                 [ onClick (AddBadge lecture.badge)
                                 , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
