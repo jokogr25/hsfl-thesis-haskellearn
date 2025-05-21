@@ -823,7 +823,7 @@ learningExampleView example =
                 [ Html.Attributes.class "btn btn-lg btn-secondary"
                 , onClick NextExample
                 ]
-                [ text "Nächstes Beispiel" ]
+                [ text "Weiter" ]
             ]
         ]
 
