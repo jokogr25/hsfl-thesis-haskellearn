@@ -5304,17 +5304,26 @@ var $author$project$Main$init = function (_v0) {
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Main$EnteringNameDone = {$: 'EnteringNameDone'};
+var $author$project$Main$Next = {$: 'Next'};
 var $author$project$Main$NoOp = {$: 'NoOp'};
+var $author$project$Main$Prev = {$: 'Prev'};
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$ArrowLeft = {$: 'ArrowLeft'};
+var $author$project$Main$ArrowRight = {$: 'ArrowRight'};
 var $author$project$Main$Enter = {$: 'Enter'};
 var $author$project$Main$Other = {$: 'Other'};
 var $author$project$Main$toKey = function (key) {
-	if (key === 'Enter') {
-		return $author$project$Main$Enter;
-	} else {
-		return $author$project$Main$Other;
+	switch (key) {
+		case 'Enter':
+			return $author$project$Main$Enter;
+		case 'ArrowLeft':
+			return $author$project$Main$ArrowLeft;
+		case 'ArrowRight':
+			return $author$project$Main$ArrowRight;
+		default:
+			return $author$project$Main$Other;
 	}
 };
 var $author$project$Main$keyDecoder = A2(
@@ -5730,10 +5739,15 @@ var $author$project$Main$subscriptions = function (_v0) {
 				A2(
 				$elm$core$Platform$Sub$map,
 				function (key) {
-					if (key.$ === 'Enter') {
-						return $author$project$Main$EnteringNameDone;
-					} else {
-						return $author$project$Main$NoOp;
+					switch (key.$) {
+						case 'Enter':
+							return $author$project$Main$EnteringNameDone;
+						case 'ArrowRight':
+							return $author$project$Main$Next;
+						case 'ArrowLeft':
+							return $author$project$Main$Prev;
+						default:
+							return $author$project$Main$NoOp;
 					}
 				},
 				$elm$browser$Browser$Events$onKeyDown($author$project$Main$keyDecoder))
@@ -6348,32 +6362,43 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 'NextWrongAnswer':
+			case 'Next':
 				var _v8 = model.page;
-				if (_v8.$ === 'FinishedQuiz') {
-					var lecture = _v8.a;
-					var answeredExercises = _v8.b;
-					var i = _v8.c;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: _Utils_eq(
-									$elm$core$List$length(
-										A2(
-											$elm$core$List$filter,
-											function (_v9) {
-												var a = _v9.b;
-												return !a.isCorrect;
-											},
-											answeredExercises)) - 1,
-									i) ? A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i) : A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i + 1)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				switch (_v8.$) {
+					case 'FinishedQuiz':
+						var lecture = _v8.a;
+						var answeredExercises = _v8.b;
+						var i = _v8.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: _Utils_eq(
+										$elm$core$List$length(
+											A2(
+												$elm$core$List$filter,
+												function (_v9) {
+													var a = _v9.b;
+													return !a.isCorrect;
+												},
+												answeredExercises)) - 1,
+										i) ? A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i) : A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i + 1)
+								}),
+							$elm$core$Platform$Cmd$none);
+					case 'LearningContentPage':
+						var lecture = _v8.a;
+						var i = _v8.b;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: A2($author$project$Main$LearningContentPage, lecture, i + 1)
+								}),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 'PrevWrongAnswer':
+			case 'Prev':
 				var _v10 = model.page;
 				if (_v10.$ === 'FinishedQuiz') {
 					var lecture = _v10.a;
@@ -6700,14 +6725,14 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var $author$project$Images$Images$bookmarkCheckSvg = A2(
+var $author$project$Images$Images$checkSvg = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
 		[
 			$elm$svg$Svg$Attributes$width('16'),
 			$elm$svg$Svg$Attributes$height('16'),
 			$elm$svg$Svg$Attributes$fill('currentColor'),
-			$elm$svg$Svg$Attributes$class('bi bi-check-square'),
+			$elm$svg$Svg$Attributes$class('bi bi-check-square-fill text-success'),
 			$elm$svg$Svg$Attributes$viewBox('0 0 16 16')
 		]),
 	_List_fromArray(
@@ -6716,14 +6741,7 @@ var $author$project$Images$Images$bookmarkCheckSvg = A2(
 			$elm$svg$Svg$path,
 			_List_fromArray(
 				[
-					$elm$svg$Svg$Attributes$d('M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$d('M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z')
+					$elm$svg$Svg$Attributes$d('M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z')
 				]),
 			_List_Nil)
 		]));
@@ -6911,10 +6929,7 @@ var $author$project$Main$coursesOverview = F2(
 																							'width',
 																							$elm$core$String$fromInt(progress) + '%')
 																						]),
-																					_List_fromArray(
-																						[
-																							$elm$html$Html$text('Fortschritt')
-																						]))
+																					_List_Nil)
 																				]))
 																		]) : _List_fromArray(
 																		[
@@ -6931,7 +6946,7 @@ var $author$project$Main$coursesOverview = F2(
 																					$elm$html$Html$div,
 																					_List_Nil,
 																					_List_fromArray(
-																						[$author$project$Images$Images$bookmarkCheckSvg]))
+																						[$author$project$Images$Images$checkSvg]))
 																				]))
 																		]));
 															}()
@@ -9410,8 +9425,6 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 				},
 				answers));
 	});
-var $author$project$Main$NextWrongAnswer = {$: 'NextWrongAnswer'};
-var $author$project$Main$PrevWrongAnswer = {$: 'PrevWrongAnswer'};
 var $author$project$Main$StartLecture = {$: 'StartLecture'};
 var $author$project$Main$finishedLectureFooter = A2(
 	$elm$html$Html$div,
@@ -9426,7 +9439,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class('btn btn-secondary'),
-					$elm$html$Html$Events$onClick($author$project$Main$PrevWrongAnswer)
+					$elm$html$Html$Events$onClick($author$project$Main$Prev)
 				]),
 			_List_fromArray(
 				[
@@ -9448,7 +9461,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class('btn btn-secondary'),
-					$elm$html$Html$Events$onClick($author$project$Main$NextWrongAnswer)
+					$elm$html$Html$Events$onClick($author$project$Main$Next)
 				]),
 			_List_fromArray(
 				[
@@ -10080,7 +10093,7 @@ var $author$project$Main$header = function (m) {
 										])),
 									A2(
 									$elm$core$Maybe$withDefault,
-									A2($elm$html$Html$div, _List_Nil, _List_Nil),
+									$elm$html$Html$text(''),
 									A2(
 										$elm$core$Maybe$map,
 										function (user) {
@@ -10092,16 +10105,6 @@ var $author$project$Main$header = function (m) {
 													]),
 												_List_fromArray(
 													[
-														A2(
-														$elm$html$Html$div,
-														_List_fromArray(
-															[
-																$elm$html$Html$Attributes$class('d-none d-sm-block')
-															]),
-														_List_fromArray(
-															[
-																$elm$html$Html$text('Medallien')
-															])),
 														A2(
 														$elm$html$Html$span,
 														_List_fromArray(
@@ -10377,75 +10380,77 @@ var $author$project$Main$lectureView = function (l) {
 var $elm$core$Debug$log = _Debug_log;
 var $author$project$Main$StartQuiz = {$: 'StartQuiz'};
 var $author$project$Main$NextExample = {$: 'NextExample'};
-var $author$project$Main$learningExampleView = function (example) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('card m-2 fixed-bottom')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('card-header')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(example.title)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('card-body')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('card-title')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(
-								A2($elm$core$Maybe$withDefault, '', example.description))
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('card-content')
-							]),
-						A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
-					]),
-				_List_fromArray(
-					[
-						A2($elm$html$Html$div, _List_Nil, _List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
-								$elm$html$Html$Events$onClick($author$project$Main$NextExample)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Nächstes Beispiel')
-							]))
-					]))
-			]));
-};
+var $author$project$Main$learningExampleView = F2(
+	function (example, isLastExample) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card m-2 fixed-bottom')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('card-header')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(example.title)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('card-body')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-title')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
+									A2($elm$core$Maybe$withDefault, '', example.description))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-content')
+								]),
+							A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
+						]),
+					_List_fromArray(
+						[
+							A2($elm$html$Html$div, _List_Nil, _List_Nil),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
+									isLastExample ? $elm$html$Html$Events$onClick($author$project$Main$StartQuiz) : $elm$html$Html$Events$onClick($author$project$Main$NextExample)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
+									isLastExample ? 'Quiz starten' : 'Weiter')
+								]))
+						]))
+				]));
+	});
 var $author$project$Main$runningLearningContentView = F2(
 	function (lecture, exampleIndex) {
 		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
@@ -10473,7 +10478,12 @@ var $author$project$Main$runningLearningContentView = F2(
 							[
 								$elm$html$Html$text(lecture.learningContent.description)
 							])),
-						$author$project$Main$learningExampleView(example)
+						A2(
+						$author$project$Main$learningExampleView,
+						example,
+						_Utils_eq(
+							exampleIndex,
+							$elm$core$List$length(lecture.learningContent.examples) - 1))
 					]));
 		} else {
 			return A2(
@@ -10517,7 +10527,7 @@ var $author$project$Main$runningExerciseAnswerView = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('card-footer btn-toolbar')
+					$elm$html$Html$Attributes$class('card-footer btn-toolbar d-flex gap-2')
 				]),
 			A2(
 				$elm$core$List$map,
@@ -10526,7 +10536,7 @@ var $author$project$Main$runningExerciseAnswerView = F2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn bg-white btn-outline-dark m-1'),
+								$elm$html$Html$Attributes$class('btn bg-white btn-outline-dark w-100'),
 								$elm$html$Html$Events$onClick(
 								A2($author$project$Main$SelectAnswer, exercise, answer))
 							]),
@@ -10898,7 +10908,13 @@ var $author$project$Main$view = function (model) {
 											[
 												$elm$html$Html$text(lecture.title)
 											])),
-										$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.'),
+										A2(
+										$elm$html$Html$p,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
+											])),
 										A2(
 										$elm$html$Html$button,
 										_List_fromArray(
