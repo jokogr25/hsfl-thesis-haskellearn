@@ -6566,7 +6566,7 @@ var $author$project$Images$Images$badgeSvg = A2(
 				]),
 			_List_Nil)
 		]));
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6595,7 +6595,7 @@ var $author$project$Main$coursePage = F2(
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$h3,
+					$elm$html$Html$h4,
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('display-5 text-center')
@@ -6624,7 +6624,7 @@ var $author$project$Main$coursePage = F2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('row row-cols-sm-2')
+											$elm$html$Html$Attributes$class(' row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3')
 										]),
 									A2(
 										$elm$core$List$map,
@@ -6641,7 +6641,7 @@ var $author$project$Main$coursePage = F2(
 														$elm$html$Html$div,
 														_List_fromArray(
 															[
-																$elm$html$Html$Attributes$class('card shadow-sm m-1'),
+																$elm$html$Html$Attributes$class('card shadow-sm m-2 h-100'),
 																$elm$html$Html$Events$onClick(
 																$author$project$Main$SelectLecture(lecture))
 															]),
@@ -6673,34 +6673,43 @@ var $author$project$Main$coursePage = F2(
 																			]),
 																		_List_fromArray(
 																			[
-																				$elm$html$Html$text(lecture.description),
+																				$elm$html$Html$text(lecture.description)
+																			]))
+																	])),
+																A2(
+																$elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('card-footer')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		$elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
+																			]),
+																		_List_fromArray(
+																			[
+																				A2($elm$html$Html$div, _List_Nil, _List_Nil),
 																				A2(
-																				$elm$html$Html$div,
+																				$elm$html$Html$small,
 																				_List_fromArray(
 																					[
-																						$elm$html$Html$Attributes$class('d-flex justify-content-between align-items-center')
+																						$elm$html$Html$Attributes$class('muted')
 																					]),
 																				_List_fromArray(
 																					[
-																						A2($elm$html$Html$div, _List_Nil, _List_Nil),
 																						A2(
-																						$elm$html$Html$small,
-																						_List_fromArray(
-																							[
-																								$elm$html$Html$Attributes$class('muted')
-																							]),
-																						_List_fromArray(
-																							[
-																								A2(
-																								$elm$core$List$any,
-																								function (b) {
-																									return _Utils_eq(b, lecture.badge);
-																								},
-																								user.badges) ? $author$project$Images$Images$badgeSvg : $elm$html$Html$text(''),
-																								$elm$html$Html$text(
-																								$elm$core$String$fromInt(
-																									$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
-																							]))
+																						$elm$core$List$any,
+																						function (b) {
+																							return _Utils_eq(b, lecture.badge);
+																						},
+																						user.badges) ? $author$project$Images$Images$badgeSvg : $elm$html$Html$text(''),
+																						$elm$html$Html$text(
+																						$elm$core$String$fromInt(
+																							$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
 																					]))
 																			]))
 																	]))
@@ -9939,7 +9948,6 @@ var $author$project$Main$get = F2(
 		return $elm$core$List$head(
 			A2($elm$core$List$drop, n, xs));
 	});
-var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $author$project$Main$GoToCourseOverview = {$: 'GoToCourseOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
