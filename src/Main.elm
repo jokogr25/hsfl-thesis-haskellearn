@@ -176,8 +176,8 @@ type Msg
     | StartQuiz
     | SelectAnswer Exercise Answer
     | GoToCourseOverview
-    | NextWrongAnswer
-    | PrevWrongAnswer
+    | Next
+    | Prev
     | AddBadge Badge
     | NoOp
 
@@ -356,7 +356,7 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        NextWrongAnswer ->
+        Next ->
             case model.page of
                 FinishedQuiz lecture answeredExercises i ->
                     ( { model
@@ -378,7 +378,7 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        PrevWrongAnswer ->
+        Prev ->
             case model.page of
                 FinishedQuiz lecture answeredExercises i ->
                     ( { model
@@ -1263,13 +1263,13 @@ finishedLectureFooter =
             "card-footer d-flex justify-content-between align-items-center"
         ]
         [ button
-            [ Html.Attributes.class "btn btn-secondary", onClick PrevWrongAnswer ]
+            [ Html.Attributes.class "btn btn-secondary", onClick Prev ]
             [ text "<" ]
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
             [ text "Lektion neustarten" ]
         , button
-            [ Html.Attributes.class "btn btn-secondary", onClick NextWrongAnswer ]
+            [ Html.Attributes.class "btn btn-secondary", onClick Next ]
             [ text ">" ]
         ]
 
