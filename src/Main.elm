@@ -1305,7 +1305,7 @@ header m =
                                 []
                                 [ text (Maybe.withDefault "" (Maybe.map .name m.user))
                                 ]
-                            , Maybe.withDefault (Html.div [] [])
+                            , Maybe.withDefault (text "")
                                 (Maybe.map
                                     (\user ->
                                         if List.length user.badges == 0 then
@@ -1314,10 +1314,7 @@ header m =
                                         else
                                             div
                                                 [ Html.Attributes.class "bg-success rounded" ]
-                                                [ div
-                                                    [ Html.Attributes.class "d-none d-sm-block" ]
-                                                    [ text "Medallien" ]
-                                                , Html.span
+                                                [ Html.span
                                                     [ Html.Attributes.class "badge badge-pill" ]
                                                     [ text (String.fromInt (List.length user.badges))
                                                     , Img.badgeSvg
