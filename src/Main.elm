@@ -681,7 +681,7 @@ coursesOverview courses user =
 coursePage : Course -> User -> Html Msg
 coursePage course user =
     div []
-        [ h3
+        [ h4
             [ Html.Attributes.class "display-5 text-center" ]
             [ text course.title
             ]
@@ -691,7 +691,7 @@ coursePage course user =
                 [ Html.Attributes.class "container" ]
                 [ div
                     [ Html.Attributes.class
-                        "row row-cols-sm-2"
+                        " row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
                     ]
                     (List.map
                         (\lecture ->
@@ -699,7 +699,7 @@ coursePage course user =
                                 [ Html.Attributes.class "col-md-4" ]
                                 [ div
                                     [ Html.Attributes.class
-                                        "card shadow-sm m-1"
+                                        "card shadow-sm m-2 h-100"
                                     , onClick (SelectLecture lecture)
                                     ]
                                     [ div
@@ -717,21 +717,24 @@ coursePage course user =
                                                 "card-text"
                                             ]
                                             [ text lecture.description
-                                            , div
-                                                [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
-                                                [ div [] []
-                                                , Html.small
-                                                    [ Html.Attributes.class "muted" ]
-                                                    [ if List.any (\b -> b == lecture.badge) user.badges then
-                                                        Img.badgeSvg
+                                            ]
+                                        ]
+                                    , div
+                                        [ Html.Attributes.class "card-footer" ]
+                                        [ div
+                                            [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
+                                            [ div [] []
+                                            , Html.small
+                                                [ Html.Attributes.class "muted" ]
+                                                [ if List.any (\b -> b == lecture.badge) user.badges then
+                                                    Img.badgeSvg
 
-                                                      else
-                                                        text ""
-                                                    , text
-                                                        (String.fromInt (List.length lecture.exercises)
-                                                            ++ " Aufgaben"
-                                                        )
-                                                    ]
+                                                  else
+                                                    text ""
+                                                , text
+                                                    (String.fromInt (List.length lecture.exercises)
+                                                        ++ " Aufgaben"
+                                                    )
                                                 ]
                                             ]
                                         ]
