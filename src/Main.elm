@@ -652,7 +652,7 @@ coursesOverview courses user =
                                                     , Html.Attributes.attribute "aria-valuemax" "100"
                                                     , Html.Attributes.style "width" (String.fromInt progress ++ "%")
                                                     ]
-                                                    [ text "Fortschritt" ]
+                                                    []
                                                 ]
                                             ]
 
