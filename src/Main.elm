@@ -1024,11 +1024,11 @@ excerciseView exercise =
 runningExerciseAnswerView : Exercise -> List Answer -> Html Msg
 runningExerciseAnswerView exercise answers =
     div
-        [ Html.Attributes.class "card-footer btn-toolbar" ]
+        [ Html.Attributes.class "card-footer btn-toolbar d-flex gap-2" ]
         (List.map
             (\answer ->
                 div
-                    [ Html.Attributes.class "btn bg-white btn-outline-dark m-1"
+                    [ Html.Attributes.class "btn bg-white btn-outline-dark w-100"
                     , onClick (SelectAnswer exercise answer)
                     ]
                     (highlightedInlineView answer.code)
