@@ -662,7 +662,7 @@ coursesOverview courses user =
                                                 [ div [] []
                                                 , div
                                                     []
-                                                    [ Img.bookmarkCheckSvg
+                                                    [ Img.checkSvg
                                                     ]
                                                 ]
                                             ]
@@ -793,7 +793,7 @@ runningLearningContentView lecture exampleIndex =
                 , div
                     []
                     [ text lecture.learningContent.description ]
-                , learningExampleView example
+                , learningExampleView example (exampleIndex == List.length lecture.learningContent.examples - 1)
                 ]
 
         Nothing ->
@@ -811,8 +811,8 @@ runningLearningContentView lecture exampleIndex =
                 ]
 
 
-learningExampleView : LearningExample -> Html Msg
-learningExampleView example =
+learningExampleView : LearningExample -> Bool -> Html Msg
+learningExampleView example isLastExample =
     div
         [ Html.Attributes.class "card m-2 fixed-bottom"
         ]
@@ -834,9 +834,20 @@ learningExampleView example =
             [ div [] []
             , button
                 [ Html.Attributes.class "btn btn-lg btn-secondary"
-                , onClick NextExample
+                , if isLastExample then
+                    onClick StartQuiz
+
+                  else
+                    onClick NextExample
                 ]
-                [ text "Weiter" ]
+                [ text
+                    (if isLastExample then
+                        "Quiz starten"
+
+                     else
+                        "Weiter"
+                    )
+                ]
             ]
         ]
 
