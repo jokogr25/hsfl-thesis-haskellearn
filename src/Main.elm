@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events
-import Html exposing (Html, a, button, div, h3, h4, h5, nav, text)
+import Html exposing (Html, a, button, div, h4, h5, nav, text)
 import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Images.Images as Img

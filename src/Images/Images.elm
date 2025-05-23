@@ -2,7 +2,7 @@ module Images.Images exposing (..)
 
 import Html exposing (Html)
 import Svg exposing (g, path, svg)
-import Svg.Attributes exposing (class, d, fill, fillRule, height, preserveAspectRatio, stroke, transform, version, viewBox, width)
+import Svg.Attributes exposing (d, fill, height, preserveAspectRatio, stroke, transform, version, viewBox, width)
 
 
 logo : Html msg
