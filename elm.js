@@ -5299,6 +5299,7 @@ var $author$project$Main$init = function (_v0) {
 		{
 			page: $author$project$Main$Landing(
 				{error: $elm$core$Maybe$Nothing, username: $elm$core$Maybe$Nothing}),
+			selectedCourse: $elm$core$Maybe$Nothing,
 			user: $elm$core$Maybe$Nothing
 		},
 		$elm$core$Platform$Cmd$none);
@@ -6220,7 +6221,8 @@ var $author$project$Main$update = F2(
 						{
 							page: $author$project$Main$CoursesOverview(
 								_List_fromArray(
-									[$author$project$Main$course1]))
+									[$author$project$Main$course1])),
+							selectedCourse: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'EnteringName':
@@ -6283,7 +6285,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							page: $author$project$Main$CoursePage(course)
+							page: $author$project$Main$CoursePage(course),
+							selectedCourse: $elm$core$Maybe$Just(course)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'SelectLecture':
@@ -6400,23 +6403,37 @@ var $author$project$Main$update = F2(
 				}
 			case 'Prev':
 				var _v10 = model.page;
-				if (_v10.$ === 'FinishedQuiz') {
-					var lecture = _v10.a;
-					var answeredExercises = _v10.b;
-					var i = _v10.c;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: A3(
-									$author$project$Main$FinishedQuiz,
-									lecture,
-									answeredExercises,
-									A2($elm$core$Basics$max, 0, i - 1))
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				switch (_v10.$) {
+					case 'FinishedQuiz':
+						var lecture = _v10.a;
+						var answeredExercises = _v10.b;
+						var i = _v10.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: A3(
+										$author$project$Main$FinishedQuiz,
+										lecture,
+										answeredExercises,
+										A2($elm$core$Basics$max, 0, i - 1))
+								}),
+							$elm$core$Platform$Cmd$none);
+					case 'LearningContentPage':
+						var lecture = _v10.a;
+						var i = _v10.b;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									page: A2(
+										$author$project$Main$LearningContentPage,
+										lecture,
+										A2($elm$core$Basics$max, 0, i - 1))
+								}),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'AddBadge':
 				var badge = msg.a;
@@ -6427,9 +6444,17 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								page: $author$project$Main$CoursesOverview(
-									_List_fromArray(
-										[$author$project$Main$course1])),
+								page: function () {
+									var _v12 = model.selectedCourse;
+									if (_v12.$ === 'Nothing') {
+										return $author$project$Main$CoursesOverview(
+											_List_fromArray(
+												[$author$project$Main$course1]));
+									} else {
+										var course = _v12.a;
+										return $author$project$Main$CoursePage(course);
+									}
+								}(),
 								user: $elm$core$Maybe$Just(
 									_Utils_update(
 										user,
@@ -6441,21 +6466,6 @@ var $author$project$Main$update = F2(
 												},
 												user.badges) ? user.badges : A2($elm$core$List$cons, badge, user.badges)
 										}))
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-				}
-			case 'NextExample':
-				var _v12 = model.page;
-				if (_v12.$ === 'LearningContentPage') {
-					var lecture = _v12.a;
-					var i = _v12.b;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: A2($author$project$Main$LearningContentPage, lecture, i + 1)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -6480,7 +6490,6 @@ var $author$project$Main$update = F2(
 var $author$project$Main$AddBadge = function (a) {
 	return {$: 'AddBadge', a: a};
 };
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -9435,6 +9444,22 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 				answers));
 	});
 var $author$project$Main$StartLecture = {$: 'StartLecture'};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $author$project$Main$haskellButton = F2(
+	function (t, msg) {
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+					$elm$html$Html$Events$onClick(msg)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(t)
+				]));
+	});
 var $author$project$Main$finishedLectureFooter = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -9443,17 +9468,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 		]),
 	_List_fromArray(
 		[
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('btn btn-secondary'),
-					$elm$html$Html$Events$onClick($author$project$Main$Prev)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('<')
-				])),
+			A2($author$project$Main$haskellButton, '<', $author$project$Main$Prev),
 			A2(
 			$elm$html$Html$button,
 			_List_fromArray(
@@ -9465,17 +9480,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 				[
 					$elm$html$Html$text('Lektion neustarten')
 				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('btn btn-secondary'),
-					$elm$html$Html$Events$onClick($author$project$Main$Next)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('>')
-				]))
+			A2($author$project$Main$haskellButton, '<', $author$project$Main$Next)
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(
@@ -10197,7 +10202,37 @@ var $author$project$Main$header = function (m) {
 															_List_fromArray(
 																[
 																	$elm$html$Html$text('Kursübersicht')
-																]))
+																])),
+															function () {
+															var _v2 = m.selectedCourse;
+															if (_v2.$ === 'Just') {
+																var course = _v2.a;
+																var _v3 = m.page;
+																if (_v3.$ === 'CoursePage') {
+																	return $elm$html$Html$text('');
+																} else {
+																	return A2(
+																		$elm$html$Html$a,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('nav-link'),
+																				$elm$html$Html$Attributes$classList(
+																				_List_fromArray(
+																					[
+																						_Utils_Tuple2('nav-link', true)
+																					])),
+																				$elm$html$Html$Events$onClick(
+																				$author$project$Main$SelectCourse(course))
+																			]),
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$text(course.title)
+																			]));
+																}
+															} else {
+																return $elm$html$Html$text('');
+															}
+														}()
 														]))
 												]))
 										]))
@@ -10306,21 +10341,9 @@ var $author$project$Main$landingPage = function (l) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Events$onClick($author$project$Main$EnteringNameDone),
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('btn', true),
-								_Utils_Tuple2('btn-lg', true),
-								_Utils_Tuple2('w-100', true),
-								_Utils_Tuple2(
-								'btn-dark',
-								$author$project$Main$checkUsername(l.username)),
-								_Utils_Tuple2(
-								'disabled',
-								!$author$project$Main$checkUsername(l.username))
-							])),
-						$elm$html$Html$Attributes$disabled(
-						!$author$project$Main$checkUsername(l.username))
+						$elm$html$Html$Attributes$class('btn btn-lg w-100 text-white'),
+						A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+						$author$project$Main$checkUsername(l.username) ? A2($elm$html$Html$Attributes$style, '', '') : $elm$html$Html$Attributes$disabled(true)
 					]),
 				_List_fromArray(
 					[
@@ -10372,24 +10395,13 @@ var $author$project$Main$lectureView = function (l) {
 									]))
 							]))
 					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Main$StartLecture),
-						$elm$html$Html$Attributes$class('btn btn-dark btn-lg w-100 h-100')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Lektion starten')
-					]))
+				A2($author$project$Main$haskellButton, 'Lektion starten', $author$project$Main$StartLecture)
 			]));
 };
 var $elm$core$Debug$log = _Debug_log;
 var $author$project$Main$StartQuiz = {$: 'StartQuiz'};
-var $author$project$Main$NextExample = {$: 'NextExample'};
 var $author$project$Main$learningExampleView = F2(
-	function (example, isLastExample) {
+	function (lc, example) {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -10443,19 +10455,25 @@ var $author$project$Main$learningExampleView = F2(
 						]),
 					_List_fromArray(
 						[
-							A2($elm$html$Html$div, _List_Nil, _List_Nil),
-							A2(
-							$elm$html$Html$button,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('btn btn-lg btn-secondary'),
-									isLastExample ? $elm$html$Html$Events$onClick($author$project$Main$StartQuiz) : $elm$html$Html$Events$onClick($author$project$Main$NextExample)
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(
-									isLastExample ? 'Quiz starten' : 'Weiter')
-								]))
+							function () {
+							var _v0 = $elm$core$List$head(lc.examples);
+							if (_v0.$ === 'Just') {
+								var head = _v0.a;
+								return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2($author$project$Main$haskellButton, '<<', $author$project$Main$Prev);
+							} else {
+								return $elm$html$Html$text('');
+							}
+						}(),
+							function () {
+							var lastIndex = $elm$core$List$length(lc.examples) - 1;
+							var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
+							if (_v1.$ === 'Just') {
+								var last = _v1.a;
+								return _Utils_eq(last, example) ? A2($author$project$Main$haskellButton, 'Quiz starten', $author$project$Main$StartQuiz) : A2($author$project$Main$haskellButton, '>>', $author$project$Main$Next);
+							} else {
+								return $elm$html$Html$text('');
+							}
+						}()
 						]))
 				]));
 	});
@@ -10486,12 +10504,7 @@ var $author$project$Main$runningLearningContentView = F2(
 							[
 								$elm$html$Html$text(lecture.learningContent.description)
 							])),
-						A2(
-						$author$project$Main$learningExampleView,
-						example,
-						_Utils_eq(
-							exampleIndex,
-							$elm$core$List$length(lecture.learningContent.examples) - 1))
+						A2($author$project$Main$learningExampleView, lecture.learningContent, example)
 					]));
 		} else {
 			return A2(
@@ -10510,17 +10523,7 @@ var $author$project$Main$runningLearningContentView = F2(
 							]),
 						_List_fromArray(
 							[
-								A2(
-								$elm$html$Html$button,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('btn btn-lg btn-dark d-block'),
-										$elm$html$Html$Events$onClick($author$project$Main$StartQuiz)
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Quiz \"' + (lecture.title + '\" starten'))
-									]))
+								A2($author$project$Main$haskellButton, 'Quiz \"' + (lecture.title + '\" starten'), $author$project$Main$StartQuiz)
 							]))
 					]));
 		}
@@ -10924,17 +10927,9 @@ var $author$project$Main$view = function (model) {
 												$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
 											])),
 										A2(
-										$elm$html$Html$button,
-										_List_fromArray(
-											[
-												$elm$html$Html$Events$onClick(
-												$author$project$Main$AddBadge(lecture.badge)),
-												$elm$html$Html$Attributes$class('btn btn-dark btn-lg w-100 h-100')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Zurück zur Kursübersicht')
-											]))
+										$author$project$Main$haskellButton,
+										'Zurück zur Lektion',
+										$author$project$Main$AddBadge(lecture.badge))
 									]));
 						case 'FinishedQuiz':
 							var answeredExercises = _v1.b;
