@@ -10202,16 +10202,25 @@ var $author$project$Main$header = function (m) {
 															_List_fromArray(
 																[
 																	$elm$html$Html$text('Kursübersicht')
-																])),
-															function () {
-															var _v2 = m.selectedCourse;
-															if (_v2.$ === 'Just') {
-																var course = _v2.a;
-																var _v3 = m.page;
-																if (_v3.$ === 'CoursePage') {
-																	return $elm$html$Html$text('');
-																} else {
-																	return A2(
+																]))
+														])),
+													function () {
+													var _v2 = m.selectedCourse;
+													if (_v2.$ === 'Just') {
+														var course = _v2.a;
+														var _v3 = m.page;
+														if (_v3.$ === 'CoursePage') {
+															return $elm$html$Html$text('');
+														} else {
+															return A2(
+																$elm$html$Html$li,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('nav-item')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
 																		$elm$html$Html$a,
 																		_List_fromArray(
 																			[
@@ -10227,13 +10236,13 @@ var $author$project$Main$header = function (m) {
 																		_List_fromArray(
 																			[
 																				$elm$html$Html$text(course.title)
-																			]));
-																}
-															} else {
-																return $elm$html$Html$text('');
-															}
-														}()
-														]))
+																			]))
+																	]));
+														}
+													} else {
+														return $elm$html$Html$text('');
+													}
+												}()
 												]))
 										]))
 								]);

@@ -1362,14 +1362,17 @@ header m =
                                             ]
                                             [ text "Kursübersicht"
                                             ]
-                                        , case m.selectedCourse of
-                                            Just course ->
-                                                case m.page of
-                                                    CoursePage _ ->
-                                                        text ""
+                                        ]
+                                    , case m.selectedCourse of
+                                        Just course ->
+                                            case m.page of
+                                                CoursePage _ ->
+                                                    text ""
 
-                                                    _ ->
-                                                        a
+                                                _ ->
+                                                    Html.li
+                                                        [ Html.Attributes.class "nav-item" ]
+                                                        [ a
                                                             [ Html.Attributes.class "nav-link"
                                                             , Html.Attributes.classList
                                                                 [ ( "nav-link", True )
@@ -1378,10 +1381,10 @@ header m =
                                                             ]
                                                             [ text course.title
                                                             ]
+                                                        ]
 
-                                            Nothing ->
-                                                text ""
-                                        ]
+                                        Nothing ->
+                                            text ""
                                     ]
                                 ]
                             ]
