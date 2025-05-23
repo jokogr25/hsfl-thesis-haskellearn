@@ -6594,6 +6594,7 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$small = _VirtualDom_node('small');
+var $elm$core$List$sortBy = _List_sortBy;
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
@@ -6728,7 +6729,17 @@ var $author$project$Main$coursePage = F2(
 															]))
 													]));
 										},
-										course.lectures))
+										A2(
+											$elm$core$List$sortBy,
+											function (l) {
+												return A2(
+													$elm$core$List$any,
+													function (b) {
+														return _Utils_eq(b, l.badge);
+													},
+													user.badges) ? 1 : 0;
+											},
+											course.lectures)))
 								]))
 						]))
 				]));

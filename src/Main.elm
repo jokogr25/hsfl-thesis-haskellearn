@@ -741,7 +741,16 @@ coursePage course user =
                                     ]
                                 ]
                         )
-                        course.lectures
+                        (List.sortBy
+                            (\l ->
+                                if List.any (\b -> b == l.badge) user.badges then
+                                    1
+
+                                else
+                                    0
+                            )
+                            course.lectures
+                        )
                     )
                 ]
             ]
