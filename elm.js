@@ -6594,6 +6594,8 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$small = _VirtualDom_node('small');
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$coursePage = F2(
@@ -6652,7 +6654,8 @@ var $author$project$Main$coursePage = F2(
 															[
 																$elm$html$Html$Attributes$class('card shadow-sm m-2 h-100'),
 																$elm$html$Html$Events$onClick(
-																$author$project$Main$SelectLecture(lecture))
+																$author$project$Main$SelectLecture(lecture)),
+																A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
 															]),
 														_List_fromArray(
 															[
@@ -6789,8 +6792,6 @@ var $author$project$Main$foot = A2(
 		]));
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $author$project$Main$coursesOverview = F2(
 	function (courses, user) {
 		return A2(
@@ -6862,7 +6863,8 @@ var $author$project$Main$coursesOverview = F2(
 															[
 																$elm$html$Html$Attributes$class('card shadow-sm'),
 																$elm$html$Html$Events$onClick(
-																$author$project$Main$SelectCourse(course))
+																$author$project$Main$SelectCourse(course)),
+																A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
 															]),
 														_List_fromArray(
 															[

@@ -611,7 +611,10 @@ coursesOverview courses user =
                             div
                                 [ Html.Attributes.class "col" ]
                                 [ div
-                                    [ Html.Attributes.class "card shadow-sm", onClick (SelectCourse course) ]
+                                    [ Html.Attributes.class "card shadow-sm"
+                                    , onClick (SelectCourse course)
+                                    , Html.Attributes.style "cursor" "pointer"
+                                    ]
                                     [ div
                                         [ Html.Attributes.class "card-title text-center" ]
                                         [ text course.title
@@ -697,6 +700,7 @@ coursePage course user =
                                     [ Html.Attributes.class
                                         "card shadow-sm m-2 h-100"
                                     , onClick (SelectLecture lecture)
+                                    , Html.Attributes.style "cursor" "pointer"
                                     ]
                                     [ div
                                         [ Html.Attributes.class
