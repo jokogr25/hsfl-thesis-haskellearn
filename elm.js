@@ -9493,7 +9493,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 				[
 					$elm$html$Html$text('Lektion neustarten')
 				])),
-			A2($author$project$Main$haskellButton, '<', $author$project$Main$Next)
+			A2($author$project$Main$haskellButton, '>', $author$project$Main$Next)
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(

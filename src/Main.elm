@@ -1300,7 +1300,7 @@ finishedLectureFooter =
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
             [ text "Lektion neustarten" ]
-        , haskellButton "<" Next
+        , haskellButton ">" Next
         ]
 
 
