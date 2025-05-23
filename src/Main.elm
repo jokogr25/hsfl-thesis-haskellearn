@@ -162,6 +162,7 @@ type Page
 
 type alias Model =
     { page : Page
+    , selectedCourse : Maybe Course
     , user : Maybe User
     }
 
@@ -172,7 +173,6 @@ type Msg
     | SelectCourse Course
     | SelectLecture Lecture
     | StartLecture
-    | NextExample
     | StartQuiz
     | SelectAnswer Exercise Answer
     | GoToCourseOverview
@@ -190,6 +190,7 @@ init _ =
                 , error = Nothing
                 }
       , user = Nothing
+      , selectedCourse = Nothing
       }
     , Cmd.none
     )
@@ -235,6 +236,7 @@ update msg model =
             ( { model
                 | page =
                     CoursesOverview [ course1 ]
+                , selectedCourse = Nothing
               }
             , Cmd.none
             )
@@ -294,6 +296,7 @@ update msg model =
             ( { model
                 | page =
                     CoursePage course
+                , selectedCourse = Just course
               }
             , Cmd.none
             )
@@ -396,10 +399,14 @@ update msg model =
                 FinishedQuiz lecture answeredExercises i ->
                     ( { model
                         | page =
-                            FinishedQuiz
-                                lecture
-                                answeredExercises
-                                (max 0 (i - 1))
+                            FinishedQuiz lecture answeredExercises (max 0 (i - 1))
+                      }
+                    , Cmd.none
+                    )
+
+                LearningContentPage lecture i ->
+                    ( { model
+                        | page = LearningContentPage lecture (max 0 (i - 1))
                       }
                     , Cmd.none
                     )
@@ -421,24 +428,18 @@ update msg model =
                                         else
                                             badge :: user.badges
                                 }
-                        , page = CoursesOverview [ course1 ]
+                        , page =
+                            case model.selectedCourse of
+                                Nothing ->
+                                    CoursesOverview [ course1 ]
+
+                                Just course ->
+                                    CoursePage course
                       }
                     , Cmd.none
                     )
 
                 Nothing ->
-                    ( model, Cmd.none )
-
-        NextExample ->
-            case model.page of
-                LearningContentPage lecture i ->
-                    ( { model
-                        | page = LearningContentPage lecture (i + 1)
-                      }
-                    , Cmd.none
-                    )
-
-                _ ->
                     ( model, Cmd.none )
 
         StartQuiz ->
@@ -490,12 +491,7 @@ view model =
                                 []
                                 [ text lecture.title ]
                             , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
-                            , button
-                                [ onClick (AddBadge lecture.badge)
-                                , Html.Attributes.class "btn btn-lg w-100 h-100"
-                                , haskellColor
-                                ]
-                                [ text "Zurück zur Kursübersicht" ]
+                            , haskellButton "Zurück zur Lektion" (AddBadge lecture.badge)
                             ]
 
                     FinishedQuiz _ answeredExercises i ->
@@ -579,8 +575,9 @@ landingPage l =
         , button
             [ onClick EnteringNameDone
             , Html.Attributes.class "btn btn-lg w-100 text-white"
+            , Html.Attributes.style "background-color" "#6f42c1"
             , if checkUsername l.username then
-                haskellColor
+                Html.Attributes.style "" ""
 
               else
                 Html.Attributes.disabled True
@@ -772,13 +769,7 @@ lectureView l =
                     ]
                 ]
             ]
-        , button
-            [ onClick StartLecture
-            , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
-            , haskellColor
-            ]
-            [ text "Lektion starten"
-            ]
+        , haskellButton "Lektion starten" StartLecture
         ]
 
 
@@ -796,7 +787,7 @@ runningLearningContentView lecture exampleIndex =
                 , div
                     []
                     [ text lecture.learningContent.description ]
-                , learningExampleView example (exampleIndex == List.length lecture.learningContent.examples - 1)
+                , learningExampleView lecture.learningContent example
                 ]
 
         Nothing ->
@@ -805,18 +796,13 @@ runningLearningContentView lecture exampleIndex =
                 ]
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
-                    [ button
-                        [ Html.Attributes.class "btn btn-lg d-block"
-                        , haskellColor
-                        , onClick StartQuiz
-                        ]
-                        [ text ("Quiz \"" ++ lecture.title ++ "\" starten") ]
+                    [ haskellButton ("Quiz \"" ++ lecture.title ++ "\" starten") StartQuiz
                     ]
                 ]
 
 
-learningExampleView : LearningExample -> Bool -> Html Msg
-learningExampleView example isLastExample =
+learningExampleView : LearningContent -> LearningExample -> Html Msg
+learningExampleView lc example =
     div
         [ Html.Attributes.class "card m-2 fixed-bottom"
         ]
@@ -835,24 +821,30 @@ learningExampleView example isLastExample =
         , div
             [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
             ]
-            [ div [] []
-            , button
-                [ Html.Attributes.class "btn btn-lg"
-                , haskellColor
-                , if isLastExample then
-                    onClick StartQuiz
+            [ case List.head lc.examples of
+                Just head ->
+                    if head == example then
+                        div [] []
 
-                  else
-                    onClick NextExample
-                ]
-                [ text
-                    (if isLastExample then
-                        "Quiz starten"
+                    else
+                        haskellButton "<<" Prev
 
-                     else
-                        "Weiter"
-                    )
-                ]
+                Nothing ->
+                    text ""
+            , let
+                lastIndex =
+                    List.length lc.examples - 1
+              in
+              case get lastIndex lc.examples of
+                Just last ->
+                    if last == example then
+                        haskellButton "Quiz starten" StartQuiz
+
+                    else
+                        haskellButton ">>" Next
+
+                Nothing ->
+                    text ""
             ]
         ]
 
@@ -1291,15 +1283,11 @@ finishedLectureFooter =
         [ Html.Attributes.class
             "card-footer d-flex justify-content-between align-items-center"
         ]
-        [ button
-            [ Html.Attributes.class "btn", haskellColor, onClick Prev ]
-            [ text "<" ]
+        [ haskellButton "<" Prev
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
             [ text "Lektion neustarten" ]
-        , button
-            [ Html.Attributes.class "btn", haskellColor, onClick Next ]
-            [ text ">" ]
+        , haskellButton "<" Next
         ]
 
 
@@ -1374,6 +1362,25 @@ header m =
                                             ]
                                             [ text "Kursübersicht"
                                             ]
+                                        , case m.selectedCourse of
+                                            Just course ->
+                                                case m.page of
+                                                    CoursePage _ ->
+                                                        text ""
+
+                                                    _ ->
+                                                        a
+                                                            [ Html.Attributes.class "nav-link"
+                                                            , Html.Attributes.classList
+                                                                [ ( "nav-link", True )
+                                                                ]
+                                                            , onClick (SelectCourse course)
+                                                            ]
+                                                            [ text course.title
+                                                            ]
+
+                                            Nothing ->
+                                                text ""
                                         ]
                                     ]
                                 ]
@@ -1437,9 +1444,15 @@ get n xs =
     List.head (List.drop n xs)
 
 
-haskellColor : Html.Attribute msg
-haskellColor =
-    Html.Attributes.style "background-color" "#6f42c1"
+haskellButton : String -> Msg -> Html Msg
+haskellButton t msg =
+    button
+        [ Html.Attributes.class "btn btn-lg text-white"
+        , Html.Attributes.style "background-color" "#6f42c1"
+        , onClick msg
+        ]
+        [ text t
+        ]
 
 
 
