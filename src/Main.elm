@@ -492,7 +492,8 @@ view model =
                             , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
                             , button
                                 [ onClick (AddBadge lecture.badge)
-                                , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
+                                , Html.Attributes.class "btn btn-lg w-100 h-100"
+                                , haskellColor
                                 ]
                                 [ text "Zurück zur Kursübersicht" ]
                             ]
@@ -577,14 +578,12 @@ landingPage l =
             ]
         , button
             [ onClick EnteringNameDone
-            , Html.Attributes.classList
-                [ ( "btn", True )
-                , ( "btn-lg", True )
-                , ( "w-100", True )
-                , ( "btn-dark", checkUsername l.username )
-                , ( "disabled", not (checkUsername l.username) )
-                ]
-            , Html.Attributes.disabled (not (checkUsername l.username))
+            , Html.Attributes.class "btn btn-lg w-100 text-white"
+            , if checkUsername l.username then
+                haskellColor
+
+              else
+                Html.Attributes.disabled True
             ]
             [ text "Start" ]
         ]
@@ -776,6 +775,7 @@ lectureView l =
         , button
             [ onClick StartLecture
             , Html.Attributes.class "btn btn-dark btn-lg w-100 h-100"
+            , haskellColor
             ]
             [ text "Lektion starten"
             ]
@@ -806,7 +806,8 @@ runningLearningContentView lecture exampleIndex =
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
                     [ button
-                        [ Html.Attributes.class "btn btn-lg btn-dark d-block"
+                        [ Html.Attributes.class "btn btn-lg d-block"
+                        , haskellColor
                         , onClick StartQuiz
                         ]
                         [ text ("Quiz \"" ++ lecture.title ++ "\" starten") ]
@@ -836,7 +837,8 @@ learningExampleView example isLastExample =
             ]
             [ div [] []
             , button
-                [ Html.Attributes.class "btn btn-lg btn-secondary"
+                [ Html.Attributes.class "btn btn-lg"
+                , haskellColor
                 , if isLastExample then
                     onClick StartQuiz
 
@@ -1290,13 +1292,13 @@ finishedLectureFooter =
             "card-footer d-flex justify-content-between align-items-center"
         ]
         [ button
-            [ Html.Attributes.class "btn btn-secondary", onClick Prev ]
+            [ Html.Attributes.class "btn", haskellColor, onClick Prev ]
             [ text "<" ]
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
             [ text "Lektion neustarten" ]
         , button
-            [ Html.Attributes.class "btn btn-secondary", onClick Next ]
+            [ Html.Attributes.class "btn", haskellColor, onClick Next ]
             [ text ">" ]
         ]
 
@@ -1435,9 +1437,13 @@ get n xs =
     List.head (List.drop n xs)
 
 
+haskellColor : Html.Attribute msg
+haskellColor =
+    Html.Attributes.style "background-color" "#6f42c1"
+
+
 
 -- EXAMPLES
---
 
 
 course1 : Course
