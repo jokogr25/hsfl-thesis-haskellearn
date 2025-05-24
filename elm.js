@@ -9964,7 +9964,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text('&larr;')
+					$elm$html$Html$text('<')
 				])),
 			A2(
 			$elm$html$Html$button,
@@ -9987,7 +9987,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text('&rarr;')
+					$elm$html$Html$text('>')
 				]))
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');

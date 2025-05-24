@@ -1423,7 +1423,7 @@ finishedLectureFooter =
             , Html.Attributes.style "background-color" "#6f42c1"
             , onClick Prev
             ]
-            [ text "&larr;"
+            [ text "<"
             ]
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick ShuffleExercises ]
@@ -1433,7 +1433,7 @@ finishedLectureFooter =
             , Html.Attributes.style "background-color" "#6f42c1"
             , onClick Next
             ]
-            [ text "&rarr;"
+            [ text ">"
             ]
         ]
 
