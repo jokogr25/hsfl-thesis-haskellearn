@@ -5289,16 +5289,16 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$Landing = function (a) {
-	return {$: 'Landing', a: a};
-};
+var $author$project$Main$Landing = F2(
+	function (a, b) {
+		return {$: 'Landing', a: a, b: b};
+	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			page: $author$project$Main$Landing(
-				{error: $elm$core$Maybe$Nothing, username: $elm$core$Maybe$Nothing}),
+			page: A2($author$project$Main$Landing, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
 			selectedCourse: $elm$core$Maybe$Nothing,
 			user: $elm$core$Maybe$Nothing
 		},
@@ -6233,12 +6233,11 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								page: $author$project$Main$Landing(
-									{
-										error: ($author$project$Main$checkUsername(
-											$elm$core$Maybe$Just(name)) !== (!$elm$core$String$length(name))) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just($author$project$Main$UsernameIncorrect),
-										username: $elm$core$Maybe$Just(name)
-									})
+								page: A2(
+									$author$project$Main$Landing,
+									$elm$core$Maybe$Just(name),
+									($author$project$Main$checkUsername(
+										$elm$core$Maybe$Just(name)) !== (!$elm$core$String$length(name))) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just($author$project$Main$UsernameIncorrect))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -6247,34 +6246,27 @@ var $author$project$Main$update = F2(
 			case 'EnteringNameDone':
 				var _v2 = model.page;
 				if (_v2.$ === 'Landing') {
-					var l = _v2.a;
-					var _v3 = l.username;
-					if (_v3.$ === 'Just') {
-						var username = _v3.a;
-						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: $author$project$Main$CoursesOverview(
-										_List_fromArray(
-											[$author$project$Main$course1])),
-									user: $elm$core$Maybe$Just(
-										{badges: _List_Nil, name: username})
-								}),
-							$elm$core$Platform$Cmd$none);
+					var maybeUsername = _v2.a;
+					var maybeError = _v2.b;
+					if (maybeError.$ === 'Just') {
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					} else {
-						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: $author$project$Main$Landing(
-										_Utils_update(
-											l,
-											{
-												error: $elm$core$Maybe$Just($author$project$Main$UsernameIncorrect)
-											}))
-								}),
-							$elm$core$Platform$Cmd$none);
+						if (maybeUsername.$ === 'Just') {
+							var name = maybeUsername.a;
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{
+										page: $author$project$Main$CoursesOverview(
+											_List_fromArray(
+												[$author$project$Main$course1])),
+										user: $elm$core$Maybe$Just(
+											{badges: _List_Nil, name: name})
+									}),
+								$elm$core$Platform$Cmd$none);
+						} else {
+							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+						}
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6291,8 +6283,8 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 			case 'SelectLecture':
 				var lecture = msg.a;
-				var _v4 = model.page;
-				if (_v4.$ === 'CoursePage') {
+				var _v5 = model.page;
+				if (_v5.$ === 'CoursePage') {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6304,10 +6296,10 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'StartLecture':
-				var _v5 = model.page;
-				switch (_v5.$) {
+				var _v6 = model.page;
+				switch (_v6.$) {
 					case 'LecturePage':
-						var lecture = _v5.a;
+						var lecture = _v6.a;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6316,7 +6308,7 @@ var $author$project$Main$update = F2(
 								}),
 							$elm$core$Platform$Cmd$none);
 					case 'FinishedQuiz':
-						var lecture = _v5.a;
+						var lecture = _v6.a;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6330,11 +6322,11 @@ var $author$project$Main$update = F2(
 			case 'SelectAnswer':
 				var exercise = msg.a;
 				var answer = msg.b;
-				var _v6 = model.page;
-				if (_v6.$ === 'RunningQuiz') {
-					var lecture = _v6.a;
-					var remainingExercises = _v6.b;
-					var answeredExercises = _v6.c;
+				var _v7 = model.page;
+				if (_v7.$ === 'RunningQuiz') {
+					var lecture = _v7.a;
+					var remainingExercises = _v7.b;
+					var answeredExercises = _v7.c;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6354,8 +6346,8 @@ var $author$project$Main$update = F2(
 											]));
 									return (!$elm$core$List$length(newRemainingExercises)) ? (A2(
 										$elm$core$List$all,
-										function (_v7) {
-											var a = _v7.b;
+										function (_v8) {
+											var a = _v8.b;
 											return a.isCorrect;
 										},
 										newAnswers) ? $author$project$Main$WinningQuiz(lecture) : A3($author$project$Main$FinishedQuiz, lecture, newAnswers, 0)) : A3($author$project$Main$RunningQuiz, lecture, newRemainingExercises, newAnswers);
@@ -6366,12 +6358,12 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'Next':
-				var _v8 = model.page;
-				switch (_v8.$) {
+				var _v9 = model.page;
+				switch (_v9.$) {
 					case 'FinishedQuiz':
-						var lecture = _v8.a;
-						var answeredExercises = _v8.b;
-						var i = _v8.c;
+						var lecture = _v9.a;
+						var answeredExercises = _v9.b;
+						var i = _v9.c;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6380,8 +6372,8 @@ var $author$project$Main$update = F2(
 										$elm$core$List$length(
 											A2(
 												$elm$core$List$filter,
-												function (_v9) {
-													var a = _v9.b;
+												function (_v10) {
+													var a = _v10.b;
 													return !a.isCorrect;
 												},
 												answeredExercises)) - 1,
@@ -6389,8 +6381,8 @@ var $author$project$Main$update = F2(
 								}),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
-						var lecture = _v8.a;
-						var i = _v8.b;
+						var lecture = _v9.a;
+						var i = _v9.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6402,12 +6394,12 @@ var $author$project$Main$update = F2(
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'Prev':
-				var _v10 = model.page;
-				switch (_v10.$) {
+				var _v11 = model.page;
+				switch (_v11.$) {
 					case 'FinishedQuiz':
-						var lecture = _v10.a;
-						var answeredExercises = _v10.b;
-						var i = _v10.c;
+						var lecture = _v11.a;
+						var answeredExercises = _v11.b;
+						var i = _v11.c;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6420,8 +6412,8 @@ var $author$project$Main$update = F2(
 								}),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
-						var lecture = _v10.a;
-						var i = _v10.b;
+						var lecture = _v11.a;
+						var i = _v11.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -6437,21 +6429,21 @@ var $author$project$Main$update = F2(
 				}
 			case 'AddBadge':
 				var badge = msg.a;
-				var _v11 = model.user;
-				if (_v11.$ === 'Just') {
-					var user = _v11.a;
+				var _v12 = model.user;
+				if (_v12.$ === 'Just') {
+					var user = _v12.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
 								page: function () {
-									var _v12 = model.selectedCourse;
-									if (_v12.$ === 'Nothing') {
+									var _v13 = model.selectedCourse;
+									if (_v13.$ === 'Nothing') {
 										return $author$project$Main$CoursesOverview(
 											_List_fromArray(
 												[$author$project$Main$course1]));
 									} else {
-										var course = _v12.a;
+										var course = _v13.a;
 										return $author$project$Main$CoursePage(course);
 									}
 								}(),
@@ -6472,9 +6464,9 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			default:
-				var _v13 = model.page;
-				if (_v13.$ === 'LearningContentPage') {
-					var lecture = _v13.a;
+				var _v14 = model.page;
+				if (_v14.$ === 'LearningContentPage') {
+					var lecture = _v14.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -10310,69 +10302,69 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $author$project$Main$landingPage = function (l) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('alert bg-danger-subtle'),
-						$elm$html$Html$Attributes$hidden(
-						function () {
-							var _v0 = l.error;
-							if (_v0.$ === 'Just') {
-								var error = _v0.a;
-								return false;
-							} else {
-								return true;
-							}
-						}())
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Dein Name muss mindestens drei Zeichen lang sein.')
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('mb-1')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onInput($author$project$Main$EnteringName),
-								$elm$html$Html$Attributes$placeholder('Gib deinen Namen ein'),
-								$elm$html$Html$Attributes$type_('text'),
-								$elm$html$Html$Attributes$class('form-control form-control-lg')
-							]),
-						_List_Nil)
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Main$EnteringNameDone),
-						$elm$html$Html$Attributes$class('btn btn-lg w-100 text-white'),
-						A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-						$author$project$Main$checkUsername(l.username) ? A2($elm$html$Html$Attributes$style, '', '') : $elm$html$Html$Attributes$disabled(true)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Start')
-					]))
-			]));
-};
+var $author$project$Main$landingPage = F2(
+	function (mu, me) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('alert bg-danger-subtle'),
+							$elm$html$Html$Attributes$hidden(
+							function () {
+								if (me.$ === 'Just') {
+									var error = me.a;
+									return false;
+								} else {
+									return true;
+								}
+							}())
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Dein Name muss mindestens drei Zeichen lang sein.')
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mb-1')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onInput($author$project$Main$EnteringName),
+									$elm$html$Html$Attributes$placeholder('Gib deinen Namen ein'),
+									$elm$html$Html$Attributes$type_('text'),
+									$elm$html$Html$Attributes$class('form-control form-control-lg')
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick($author$project$Main$EnteringNameDone),
+							$elm$html$Html$Attributes$class('btn btn-lg w-100 text-white'),
+							A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+							$author$project$Main$checkUsername(mu) ? A2($elm$html$Html$Attributes$style, '', '') : $elm$html$Html$Attributes$disabled(true)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Start')
+						]))
+				]));
+	});
 var $author$project$Main$lectureView = function (l) {
 	return A2(
 		$elm$html$Html$div,
@@ -11014,8 +11006,9 @@ var $author$project$Main$view = function (model) {
 				} else {
 					var _v7 = model.page;
 					if (_v7.$ === 'Landing') {
-						var l = _v7.a;
-						return $author$project$Main$landingPage(l);
+						var mu = _v7.a;
+						var me = _v7.b;
+						return A2($author$project$Main$landingPage, mu, me);
 					} else {
 						return A2($elm$html$Html$div, _List_Nil, _List_Nil);
 					}

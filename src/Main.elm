@@ -143,14 +143,8 @@ type Error
     = UsernameIncorrect
 
 
-type alias LandingPageModel =
-    { username : Maybe String
-    , error : Maybe Error
-    }
-
-
 type Page
-    = Landing LandingPageModel
+    = Landing (Maybe String) (Maybe Error)
     | CoursesOverview (List Course)
     | CoursePage Course
     | LecturePage Lecture
@@ -185,10 +179,7 @@ type Msg
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { page =
-            Landing
-                { username = Nothing
-                , error = Nothing
-                }
+            Landing Nothing Nothing
       , user = Nothing
       , selectedCourse = Nothing
       }
@@ -243,18 +234,17 @@ update msg model =
 
         EnteringName name ->
             case model.page of
-                Landing _ ->
+                Landing _ _ ->
                     ( { model
                         | page =
                             Landing
-                                { username = Just name
-                                , error =
-                                    if xor (checkUsername (Just name)) (String.length name == 0) then
-                                        Nothing
+                                (Just name)
+                                (if xor (checkUsername (Just name)) (String.length name == 0) then
+                                    Nothing
 
-                                    else
-                                        Just UsernameIncorrect
-                                }
+                                 else
+                                    Just UsernameIncorrect
+                                )
                       }
                     , Cmd.none
                     )
@@ -264,31 +254,50 @@ update msg model =
 
         EnteringNameDone ->
             case model.page of
-                Landing l ->
-                    case l.username of
-                        Just username ->
-                            ( { model
-                                | page =
-                                    CoursesOverview
-                                        [ course1 ]
-                                , user =
-                                    Just
-                                        { name = username, badges = [] }
-                              }
-                            , Cmd.none
-                            )
+                Landing maybeUsername maybeError ->
+                    case maybeError of
+                        Just _ ->
+                            ( model, Cmd.none )
 
                         Nothing ->
-                            ( { model
-                                | page =
-                                    Landing
-                                        { l
-                                            | error = Just UsernameIncorrect
-                                        }
-                              }
-                            , Cmd.none
-                            )
+                            case maybeUsername of
+                                Just name ->
+                                    ( { model
+                                        | page =
+                                            CoursesOverview
+                                                [ course1 ]
+                                        , user =
+                                            Just
+                                                { name = name, badges = [] }
+                                      }
+                                    , Cmd.none
+                                    )
 
+                                Nothing ->
+                                    ( model, Cmd.none )
+
+                -- case maybeUsername of
+                --     Just username ->
+                --         ( { model
+                --             | page =
+                --                 CoursesOverview
+                --                     [ course1 ]
+                --             , user =
+                --                 Just
+                --                     { name = username, badges = [] }
+                --           }
+                --         , Cmd.none
+                --         )
+                --     Nothing ->
+                --         ( { model
+                --             | page =
+                --                 Landing
+                --                     { l
+                --                         | error = Just UsernameIncorrect
+                --                     }
+                --           }
+                --         , Cmd.none
+                --         )
                 _ ->
                     ( model, Cmd.none )
 
@@ -531,26 +540,26 @@ view model =
                             [ runningLearningContentView lecture i
                             ]
 
-                    Landing _ ->
+                    Landing _ _ ->
                         text "Dieser Fall sollte nicht eintreten!"
 
             Nothing ->
                 case model.page of
-                    Landing l ->
-                        landingPage l
+                    Landing mu me ->
+                        landingPage mu me
 
                     _ ->
                         div [] []
         ]
 
 
-landingPage : LandingPageModel -> Html Msg
-landingPage l =
+landingPage : Maybe String -> Maybe Error -> Html Msg
+landingPage mu me =
     div [ Html.Attributes.class "container fixed-bottom mb-2" ]
         [ div
             [ Html.Attributes.class "alert bg-danger-subtle"
             , Html.Attributes.hidden
-                (case l.error of
+                (case me of
                     Just error ->
                         case error of
                             UsernameIncorrect ->
@@ -576,7 +585,7 @@ landingPage l =
             [ onClick EnteringNameDone
             , Html.Attributes.class "btn btn-lg w-100 text-white"
             , Html.Attributes.style "background-color" "#6f42c1"
-            , if checkUsername l.username then
+            , if checkUsername mu then
                 Html.Attributes.style "" ""
 
               else
@@ -1314,7 +1323,7 @@ header m =
                 [ Img.logo
                 ]
                 :: (case m.page of
-                        Landing _ ->
+                        Landing _ _ ->
                             []
 
                         _ ->
