@@ -6673,23 +6673,15 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'StartLecture':
-				switch (model.$) {
-					case 'LecturePage':
-						var user = model.a;
-						var course = model.b;
-						var lecture = model.c;
-						return _Utils_Tuple2(
-							A4($author$project$Main$LearningContentPage, user, course, lecture, 0),
-							$elm$core$Platform$Cmd$none);
-					case 'FinishedQuiz':
-						var user = model.a;
-						var course = model.b;
-						var lecture = model.c;
-						return _Utils_Tuple2(
-							A5($author$project$Main$RunningQuiz, user, course, lecture, lecture.exercises, _List_Nil),
-							$elm$core$Platform$Cmd$none);
-					default:
-						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				if (model.$ === 'LecturePage') {
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					return _Utils_Tuple2(
+						A4($author$project$Main$LearningContentPage, user, course, lecture, 0),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'SelectAnswer':
 				var exercise = msg.a;
@@ -6846,58 +6838,76 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'ShuffleExercises':
-				if (model.$ === 'LearningContentPage') {
-					var lecture = model.c;
-					return _Utils_Tuple2(
-						model,
-						A2(
-							$elm$random$Random$generate,
-							$author$project$Main$StartQuiz,
-							$author$project$Main$shuffle(lecture.exercises)));
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				switch (model.$) {
+					case 'LearningContentPage':
+						var lecture = model.c;
+						return _Utils_Tuple2(
+							model,
+							A2(
+								$elm$random$Random$generate,
+								$author$project$Main$StartQuiz,
+								$author$project$Main$shuffle(lecture.exercises)));
+					case 'FinishedQuiz':
+						var lecture = model.c;
+						return _Utils_Tuple2(
+							model,
+							A2(
+								$elm$random$Random$generate,
+								$author$project$Main$StartQuiz,
+								$author$project$Main$shuffle(lecture.exercises)));
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'StartQuiz':
-				var shuffled = msg.a;
-				if (model.$ === 'LearningContentPage') {
-					var user = model.a;
-					var course = model.b;
-					var lecture = model.c;
-					return _Utils_Tuple2(
-						A5($author$project$Main$RunningQuiz, user, course, lecture, shuffled, _List_Nil),
-						function () {
-							var _v19 = $elm$core$List$head(shuffled);
-							if (_v19.$ === 'Just') {
-								var h = _v19.a;
-								return A2(
-									$elm$random$Random$generate,
-									$author$project$Main$ShuffleAnswers,
-									$author$project$Main$shuffle(
-										function () {
-											switch (h.$) {
-												case 'SingleExpression':
-													var m = h.a;
-													return m.answers;
-												case 'BinaryExpression':
-													var m = h.a;
-													return m.answers;
-												case 'FunctionExpression':
-													var m = h.a;
-													return m.answers;
-												case 'GuardExpression':
-													var m = h.a;
-													return m.answers;
-												default:
-													var m = h.a;
-													return m.answers;
-											}
-										}()));
-							} else {
-								return $elm$core$Platform$Cmd$none;
-							}
-						}());
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				var shuffledExercises = msg.a;
+				var command = function () {
+					var _v19 = $elm$core$List$head(shuffledExercises);
+					if (_v19.$ === 'Just') {
+						var h = _v19.a;
+						return A2(
+							$elm$random$Random$generate,
+							$author$project$Main$ShuffleAnswers,
+							$author$project$Main$shuffle(
+								function () {
+									switch (h.$) {
+										case 'SingleExpression':
+											var m = h.a;
+											return m.answers;
+										case 'BinaryExpression':
+											var m = h.a;
+											return m.answers;
+										case 'FunctionExpression':
+											var m = h.a;
+											return m.answers;
+										case 'GuardExpression':
+											var m = h.a;
+											return m.answers;
+										default:
+											var m = h.a;
+											return m.answers;
+									}
+								}()));
+					} else {
+						return $elm$core$Platform$Cmd$none;
+					}
+				}();
+				switch (model.$) {
+					case 'LearningContentPage':
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						return _Utils_Tuple2(
+							A5($author$project$Main$RunningQuiz, user, course, lecture, shuffledExercises, _List_Nil),
+							command);
+					case 'FinishedQuiz':
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						return _Utils_Tuple2(
+							A5($author$project$Main$RunningQuiz, user, course, lecture, shuffledExercises, _List_Nil),
+							command);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			default:
 				var shuffled = msg.a;
@@ -9934,7 +9944,7 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 				},
 				answers));
 	});
-var $author$project$Main$StartLecture = {$: 'StartLecture'};
+var $author$project$Main$ShuffleExercises = {$: 'ShuffleExercises'};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $author$project$Main$haskellButton = F2(
 	function (t, msg) {
@@ -9965,11 +9975,11 @@ var $author$project$Main$finishedLectureFooter = A2(
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class('btn btn-outline-warning'),
-					$elm$html$Html$Events$onClick($author$project$Main$StartLecture)
+					$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text('Lektion neustarten')
+					$elm$html$Html$text('Quiz wiederholen')
 				])),
 			A2($author$project$Main$haskellButton, '>', $author$project$Main$Next)
 		]));
@@ -10819,6 +10829,7 @@ var $author$project$Main$landingPage = F2(
 						]))
 				]));
 	});
+var $author$project$Main$StartLecture = {$: 'StartLecture'};
 var $author$project$Main$lectureView = function (l) {
 	return A2(
 		$elm$html$Html$div,
@@ -10867,7 +10878,6 @@ var $author$project$Main$lectureView = function (l) {
 			]));
 };
 var $elm$core$Debug$log = _Debug_log;
-var $author$project$Main$ShuffleExercises = {$: 'ShuffleExercises'};
 var $author$project$Main$learningExampleView = F2(
 	function (lc, example) {
 		return A2(

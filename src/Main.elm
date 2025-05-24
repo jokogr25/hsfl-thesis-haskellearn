@@ -310,9 +310,6 @@ update msg model =
                 LecturePage user course lecture ->
                     ( LearningContentPage user course lecture 0, Cmd.none )
 
-                FinishedQuiz user course lecture _ _ ->
-                    ( RunningQuiz user course lecture lecture.exercises [], Cmd.none )
-
                 _ ->
                     ( model, Cmd.none )
 
@@ -424,14 +421,16 @@ update msg model =
                 LearningContentPage _ _ lecture _ ->
                     ( model, Random.generate StartQuiz (shuffle lecture.exercises) )
 
+                FinishedQuiz _ _ lecture _ _ ->
+                    ( model, Random.generate StartQuiz (shuffle lecture.exercises) )
+
                 _ ->
                     ( model, Cmd.none )
 
-        StartQuiz shuffled ->
-            case model of
-                LearningContentPage user course lecture _ ->
-                    ( RunningQuiz user course lecture shuffled []
-                    , case List.head shuffled of
+        StartQuiz shuffledExercises ->
+            let
+                command =
+                    case List.head shuffledExercises of
                         Just h ->
                             Random.generate
                                 ShuffleAnswers
@@ -456,7 +455,13 @@ update msg model =
 
                         Nothing ->
                             Cmd.none
-                    )
+            in
+            case model of
+                LearningContentPage user course lecture _ ->
+                    ( RunningQuiz user course lecture shuffledExercises [], command )
+
+                FinishedQuiz user course lecture _ _ ->
+                    ( RunningQuiz user course lecture shuffledExercises [], command )
 
                 _ ->
                     ( model, Cmd.none )
@@ -1377,8 +1382,8 @@ finishedLectureFooter =
         ]
         [ haskellButton "<" Prev
         , button
-            [ Html.Attributes.class "btn btn-outline-warning", onClick StartLecture ]
-            [ text "Lektion neustarten" ]
+            [ Html.Attributes.class "btn btn-outline-warning", onClick ShuffleExercises ]
+            [ text "Quiz wiederholen" ]
         , haskellButton ">" Next
         ]
 
