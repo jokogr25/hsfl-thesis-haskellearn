@@ -7,6 +7,7 @@ import Html.Attributes exposing (placeholder, type_)
 import Html.Events exposing (onClick, onInput)
 import Images.Images as Img
 import Json.Decode as Decode
+import Random
 import SyntaxHighlight as Highlight
 
 
@@ -160,7 +161,8 @@ type Msg
     | SelectCourse Course
     | SelectLecture Lecture
     | StartLecture
-    | StartQuiz
+    | ShuffleExercises
+    | StartQuiz (List Exercise)
     | SelectAnswer Exercise Answer
     | GoToCoursesOverview
     | Next
@@ -392,10 +394,18 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        StartQuiz ->
+        ShuffleExercises ->
+            case model of
+                LearningContentPage _ _ lecture _ ->
+                    ( model, Random.generate StartQuiz (shuffle lecture.exercises) )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        StartQuiz shuffled ->
             case model of
                 LearningContentPage user course lecture _ ->
-                    ( RunningQuiz user course lecture lecture.exercises [], Cmd.none )
+                    ( RunningQuiz user course lecture shuffled [], Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -769,7 +779,7 @@ runningLearningContentView lecture exampleIndex =
                 ]
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
-                    [ haskellButton ("Quiz \"" ++ lecture.title ++ "\" starten") StartQuiz
+                    [ haskellButton ("Quiz \"" ++ lecture.title ++ "\" starten") ShuffleExercises
                     ]
                 ]
 
@@ -811,7 +821,7 @@ learningExampleView lc example =
               case get lastIndex lc.examples of
                 Just last ->
                     if last == example then
-                        haskellButton "Quiz starten" StartQuiz
+                        haskellButton "Quiz starten" ShuffleExercises
 
                     else
                         haskellButton ">>" Next
@@ -1411,6 +1421,36 @@ haskellButton t msg =
         ]
         [ text t
         ]
+
+
+
+-- Helper to sequence a list of Random.Generator into a Generator of list
+
+
+sequence : List (Random.Generator a) -> Random.Generator (List a)
+sequence gens =
+    List.foldr
+        (\gen acc ->
+            Random.map2 (::) gen acc
+        )
+        (Random.constant [])
+        gens
+
+
+
+-- Shuffle function
+
+
+shuffle : List a -> Random.Generator (List a)
+shuffle list =
+    let
+        generatePairs : Random.Generator (List ( Float, a ))
+        generatePairs =
+            list
+                |> List.map (\item -> Random.map (\r -> ( r, item )) (Random.float 0 1))
+                |> sequence
+    in
+    Random.map (List.map Tuple.second << List.sortBy Tuple.first) generatePairs
 
 
 
