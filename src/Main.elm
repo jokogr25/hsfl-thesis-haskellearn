@@ -574,7 +574,13 @@ view model =
                     , Html.p
                         []
                         [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
-                    , haskellButton "Zurück zur Lektion" (AddBadge lecture.badge)
+                    , button
+                        [ Html.Attributes.class "btn btn-lg text-white w-100"
+                        , Html.Attributes.style "background-color" "#6f42c1"
+                        , onClick (AddBadge lecture.badge)
+                        ]
+                        [ text "Zurück zur Lektion"
+                        ]
                     ]
                 ]
 
@@ -867,7 +873,13 @@ lectureView l =
                     ]
                 ]
             ]
-        , haskellButton "Lektion starten" StartLecture
+        , button
+            [ Html.Attributes.class "btn btn-lg text-white"
+            , Html.Attributes.style "background-color" "#6f42c1"
+            , onClick StartLecture
+            ]
+            [ text "Lektion starten"
+            ]
         ]
 
 
@@ -895,7 +907,13 @@ runningLearningContentView lecture exampleIndex =
                 ]
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
-                    [ haskellButton ("Quiz \"" ++ lecture.title ++ "\" starten") ShuffleExercises
+                    [ button
+                        [ Html.Attributes.class "btn btn-lg text-white"
+                        , Html.Attributes.style "background-color" "#6f42c1"
+                        , onClick ShuffleExercises
+                        ]
+                        [ text ("Quiz \"" ++ lecture.title ++ "\" starten")
+                        ]
                     ]
                 ]
 
@@ -926,7 +944,13 @@ learningExampleView lc example =
                         div [] []
 
                     else
-                        haskellButton "<<" Prev
+                        button
+                            [ Html.Attributes.class "btn btn-lg text-white"
+                            , Html.Attributes.style "background-color" "#6f42c1"
+                            , onClick Prev
+                            ]
+                            [ text "<<"
+                            ]
 
                 Nothing ->
                     text ""
@@ -937,10 +961,22 @@ learningExampleView lc example =
               case get lastIndex lc.examples of
                 Just last ->
                     if last == example then
-                        haskellButton "Quiz starten" ShuffleExercises
+                        button
+                            [ Html.Attributes.class "btn btn-lg text-white"
+                            , Html.Attributes.style "background-color" "#6f42c1"
+                            , onClick ShuffleExercises
+                            ]
+                            [ text "Quiz starten"
+                            ]
 
                     else
-                        haskellButton ">>" Next
+                        button
+                            [ Html.Attributes.class "btn btn-lg text-white"
+                            , Html.Attributes.style "background-color" "#6f42c1"
+                            , onClick Next
+                            ]
+                            [ text ">>"
+                            ]
 
                 Nothing ->
                     text ""
@@ -1382,11 +1418,23 @@ finishedLectureFooter =
         [ Html.Attributes.class
             "card-footer d-flex justify-content-between align-items-center"
         ]
-        [ haskellButton "<" Prev
+        [ button
+            [ Html.Attributes.class "btn btn-lg text-white"
+            , Html.Attributes.style "background-color" "#6f42c1"
+            , onClick Prev
+            ]
+            [ text "&larr;"
+            ]
         , button
             [ Html.Attributes.class "btn btn-outline-warning", onClick ShuffleExercises ]
             [ text "Quiz wiederholen" ]
-        , haskellButton ">" Next
+        , button
+            [ Html.Attributes.class "btn btn-lg text-white"
+            , Html.Attributes.style "background-color" "#6f42c1"
+            , onClick Next
+            ]
+            [ text "&rarr;"
+            ]
         ]
 
 
@@ -1526,17 +1574,6 @@ toKey key =
 get : Int -> List a -> Maybe a
 get n xs =
     List.head (List.drop n xs)
-
-
-haskellButton : String -> Msg -> Html Msg
-haskellButton t msg =
-    button
-        [ Html.Attributes.class "btn btn-lg text-white"
-        , Html.Attributes.style "background-color" "#6f42c1"
-        , onClick msg
-        ]
-        [ text t
-        ]
 
 
 

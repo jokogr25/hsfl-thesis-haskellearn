@@ -6986,6 +6986,7 @@ var $author$project$Main$update = F2(
 var $author$project$Main$AddBadge = function (a) {
 	return {$: 'AddBadge', a: a};
 };
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -9945,22 +9946,6 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 				answers));
 	});
 var $author$project$Main$ShuffleExercises = {$: 'ShuffleExercises'};
-var $elm$html$Html$button = _VirtualDom_node('button');
-var $author$project$Main$haskellButton = F2(
-	function (t, msg) {
-		return A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-					A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-					$elm$html$Html$Events$onClick(msg)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(t)
-				]));
-	});
 var $author$project$Main$finishedLectureFooter = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -9969,7 +9954,18 @@ var $author$project$Main$finishedLectureFooter = A2(
 		]),
 	_List_fromArray(
 		[
-			A2($author$project$Main$haskellButton, '<', $author$project$Main$Prev),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+					$elm$html$Html$Events$onClick($author$project$Main$Prev)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('&larr;')
+				])),
 			A2(
 			$elm$html$Html$button,
 			_List_fromArray(
@@ -9981,7 +9977,18 @@ var $author$project$Main$finishedLectureFooter = A2(
 				[
 					$elm$html$Html$text('Quiz wiederholen')
 				])),
-			A2($author$project$Main$haskellButton, '>', $author$project$Main$Next)
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+					$elm$html$Html$Events$onClick($author$project$Main$Next)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('&rarr;')
+				]))
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(
@@ -10874,7 +10881,18 @@ var $author$project$Main$lectureView = function (l) {
 									]))
 							]))
 					])),
-				A2($author$project$Main$haskellButton, 'Lektion starten', $author$project$Main$StartLecture)
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+						A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+						$elm$html$Html$Events$onClick($author$project$Main$StartLecture)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Lektion starten')
+					]))
 			]));
 };
 var $elm$core$Debug$log = _Debug_log;
@@ -10937,7 +10955,18 @@ var $author$project$Main$learningExampleView = F2(
 							var _v0 = $elm$core$List$head(lc.examples);
 							if (_v0.$ === 'Just') {
 								var head = _v0.a;
-								return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2($author$project$Main$haskellButton, '<<', $author$project$Main$Prev);
+								return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+											$elm$html$Html$Events$onClick($author$project$Main$Prev)
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('<<')
+										]));
 							} else {
 								return $elm$html$Html$text('');
 							}
@@ -10947,7 +10976,29 @@ var $author$project$Main$learningExampleView = F2(
 							var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
 							if (_v1.$ === 'Just') {
 								var last = _v1.a;
-								return _Utils_eq(last, example) ? A2($author$project$Main$haskellButton, 'Quiz starten', $author$project$Main$ShuffleExercises) : A2($author$project$Main$haskellButton, '>>', $author$project$Main$Next);
+								return _Utils_eq(last, example) ? A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+											$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Quiz starten')
+										])) : A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+											$elm$html$Html$Events$onClick($author$project$Main$Next)
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('>>')
+										]));
 							} else {
 								return $elm$html$Html$text('');
 							}
@@ -11004,7 +11055,18 @@ var $author$project$Main$runningLearningContentView = F2(
 							]),
 						_List_fromArray(
 							[
-								A2($author$project$Main$haskellButton, 'Quiz \"' + (lecture.title + '\" starten'), $author$project$Main$ShuffleExercises)
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+										A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+										$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Quiz \"' + (lecture.title + '\" starten'))
+									]))
 							]))
 					]));
 		}
@@ -11456,9 +11518,18 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
 									])),
 								A2(
-								$author$project$Main$haskellButton,
-								'Zurück zur Lektion',
-								$author$project$Main$AddBadge(lecture.badge))
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-lg text-white w-100'),
+										A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$AddBadge(lecture.badge))
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Zurück zur Lektion')
+									]))
 							]))
 					]));
 		case 'FinishedQuiz':
