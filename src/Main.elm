@@ -143,22 +143,15 @@ type Error
     = UsernameIncorrect
 
 
-type Page
+type Model
     = Landing (Maybe String) (Maybe Error)
-    | CoursesOverview (List Course)
-    | CoursePage Course
-    | LecturePage Lecture
-    | LearningContentPage Lecture Int
-    | RunningQuiz Lecture (List Exercise) (List ( Exercise, Answer ))
-    | FinishedQuiz Lecture (List ( Exercise, Answer )) Int
-    | WinningQuiz Lecture
-
-
-type alias Model =
-    { page : Page
-    , selectedCourse : Maybe Course
-    , user : Maybe User
-    }
+    | CoursesOverview User (List Course)
+    | CoursePage User Course
+    | LecturePage User Course Lecture
+    | LearningContentPage User Course Lecture Int
+    | RunningQuiz User Course Lecture (List Exercise) (List ( Exercise, Answer ))
+    | FinishedQuiz User Course Lecture (List ( Exercise, Answer )) Int
+    | WinningQuiz User Course Lecture
 
 
 type Msg
@@ -169,7 +162,7 @@ type Msg
     | StartLecture
     | StartQuiz
     | SelectAnswer Exercise Answer
-    | GoToCourseOverview
+    | GoToCoursesOverview
     | Next
     | Prev
     | AddBadge Badge
@@ -178,13 +171,7 @@ type Msg
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { page =
-            Landing Nothing Nothing
-      , user = Nothing
-      , selectedCourse = Nothing
-      }
-    , Cmd.none
-    )
+    ( Landing Nothing Nothing, Cmd.none )
 
 
 
@@ -223,29 +210,43 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        GoToCourseOverview ->
-            ( { model
-                | page =
-                    CoursesOverview [ course1 ]
-                , selectedCourse = Nothing
-              }
-            , Cmd.none
-            )
+        GoToCoursesOverview ->
+            case model of
+                CoursesOverview user _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                CoursePage user _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                LecturePage user _ _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                LearningContentPage user _ _ _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                RunningQuiz user _ _ _ _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                FinishedQuiz user _ _ _ _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                WinningQuiz user _ _ ->
+                    ( CoursesOverview user [ course1 ], Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         EnteringName name ->
-            case model.page of
+            case model of
                 Landing _ _ ->
-                    ( { model
-                        | page =
-                            Landing
-                                (Just name)
-                                (if xor (checkUsername (Just name)) (String.length name == 0) then
-                                    Nothing
+                    ( Landing
+                        (Just name)
+                        (if xor (checkUsername (Just name)) (String.length name == 0) then
+                            Nothing
 
-                                 else
-                                    Just UsernameIncorrect
-                                )
-                      }
+                         else
+                            Just UsernameIncorrect
+                        )
                     , Cmd.none
                     )
 
@@ -253,7 +254,7 @@ update msg model =
                     ( model, Cmd.none )
 
         EnteringNameDone ->
-            case model.page of
+            case model of
                 Landing maybeUsername maybeError ->
                     case maybeError of
                         Just _ ->
@@ -262,112 +263,77 @@ update msg model =
                         Nothing ->
                             case maybeUsername of
                                 Just name ->
-                                    ( { model
-                                        | page =
-                                            CoursesOverview
-                                                [ course1 ]
-                                        , user =
-                                            Just
-                                                { name = name, badges = [] }
-                                      }
-                                    , Cmd.none
-                                    )
+                                    ( CoursesOverview (User name []) [ course1 ], Cmd.none )
 
                                 Nothing ->
                                     ( model, Cmd.none )
 
-                -- case maybeUsername of
-                --     Just username ->
-                --         ( { model
-                --             | page =
-                --                 CoursesOverview
-                --                     [ course1 ]
-                --             , user =
-                --                 Just
-                --                     { name = username, badges = [] }
-                --           }
-                --         , Cmd.none
-                --         )
-                --     Nothing ->
-                --         ( { model
-                --             | page =
-                --                 Landing
-                --                     { l
-                --                         | error = Just UsernameIncorrect
-                --                     }
-                --           }
-                --         , Cmd.none
-                --         )
                 _ ->
                     ( model, Cmd.none )
 
         SelectCourse course ->
-            ( { model
-                | page =
-                    CoursePage course
-                , selectedCourse = Just course
-              }
-            , Cmd.none
-            )
+            case model of
+                CoursesOverview user _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                LecturePage user _ _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                LearningContentPage user _ _ _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                RunningQuiz user _ _ _ _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                FinishedQuiz user _ _ _ _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                WinningQuiz user _ _ ->
+                    ( CoursePage user course, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         SelectLecture lecture ->
-            case model.page of
-                CoursePage _ ->
-                    ( { model
-                        | page =
-                            LecturePage lecture
-                      }
-                    , Cmd.none
-                    )
+            case model of
+                CoursePage user course ->
+                    ( LecturePage user course lecture, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
         StartLecture ->
-            case model.page of
-                LecturePage lecture ->
-                    ( { model
-                        | page =
-                            LearningContentPage lecture 0
-                      }
-                    , Cmd.none
-                    )
+            case model of
+                LecturePage user course lecture ->
+                    ( LearningContentPage user course lecture 0, Cmd.none )
 
-                FinishedQuiz lecture _ _ ->
-                    ( { model
-                        | page =
-                            RunningQuiz lecture lecture.exercises []
-                      }
-                    , Cmd.none
-                    )
+                FinishedQuiz user course lecture _ _ ->
+                    ( RunningQuiz user course lecture lecture.exercises [], Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
         SelectAnswer exercise answer ->
-            case model.page of
-                RunningQuiz lecture remainingExercises answeredExercises ->
-                    ( { model
-                        | page =
-                            let
-                                newAnswers =
-                                    answeredExercises ++ [ ( exercise, answer ) ]
+            case model of
+                RunningQuiz user course lecture remainingExercises answeredExercises ->
+                    let
+                        newAnswers =
+                            answeredExercises ++ [ ( exercise, answer ) ]
 
-                                newRemainingExercises =
-                                    List.filter
-                                        (\e -> e /= exercise)
-                                        remainingExercises
-                            in
-                            if List.length newRemainingExercises == 0 then
-                                if List.all (\( _, a ) -> a.isCorrect) newAnswers then
-                                    WinningQuiz lecture
+                        newRemainingExercises =
+                            List.filter
+                                (\e -> e /= exercise)
+                                remainingExercises
+                    in
+                    ( if List.length newRemainingExercises == 0 then
+                        if List.all (\( _, a ) -> a.isCorrect) newAnswers then
+                            WinningQuiz user course lecture
 
-                                else
-                                    FinishedQuiz lecture newAnswers 0
+                        else
+                            FinishedQuiz user course lecture newAnswers 0
 
-                            else
-                                RunningQuiz lecture newRemainingExercises newAnswers
-                      }
+                      else
+                        RunningQuiz user course lecture newRemainingExercises newAnswers
                     , Cmd.none
                     )
 
@@ -375,91 +341,61 @@ update msg model =
                     ( model, Cmd.none )
 
         Next ->
-            case model.page of
-                FinishedQuiz lecture answeredExercises i ->
-                    ( { model
-                        | page =
-                            if
-                                List.length
-                                    (List.filter (\( _, a ) -> not a.isCorrect) answeredExercises)
-                                    - 1
-                                    == i
-                            then
-                                FinishedQuiz lecture answeredExercises i
+            case model of
+                FinishedQuiz user course lecture answeredExercises i ->
+                    ( if
+                        List.length
+                            (List.filter (\( _, a ) -> not a.isCorrect) answeredExercises)
+                            - 1
+                            == i
+                      then
+                        FinishedQuiz user course lecture answeredExercises i
 
-                            else
-                                FinishedQuiz lecture answeredExercises (i + 1)
-                      }
+                      else
+                        FinishedQuiz user course lecture answeredExercises (i + 1)
                     , Cmd.none
                     )
 
-                LearningContentPage lecture i ->
-                    ( { model
-                        | page = LearningContentPage lecture (i + 1)
-                      }
-                    , Cmd.none
-                    )
+                LearningContentPage user course lecture i ->
+                    ( LearningContentPage user course lecture (i + 1), Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
         Prev ->
-            case model.page of
-                FinishedQuiz lecture answeredExercises i ->
-                    ( { model
-                        | page =
-                            FinishedQuiz lecture answeredExercises (max 0 (i - 1))
-                      }
-                    , Cmd.none
-                    )
+            case model of
+                FinishedQuiz user course lecture answeredExercises i ->
+                    ( FinishedQuiz user course lecture answeredExercises (max 0 (i - 1)), Cmd.none )
 
-                LearningContentPage lecture i ->
-                    ( { model
-                        | page = LearningContentPage lecture (max 0 (i - 1))
-                      }
+                LearningContentPage user course lecture i ->
+                    ( LearningContentPage user course lecture (max 0 (i - 1)), Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        AddBadge badge ->
+            case model of
+                FinishedQuiz user course _ _ _ ->
+                    ( CoursePage
+                        { user
+                            | badges =
+                                if List.any (\b -> b == badge) user.badges then
+                                    user.badges
+
+                                else
+                                    badge :: user.badges
+                        }
+                        course
                     , Cmd.none
                     )
 
                 _ ->
                     ( model, Cmd.none )
 
-        AddBadge badge ->
-            case model.user of
-                Just user ->
-                    ( { model
-                        | user =
-                            Just
-                                { user
-                                    | badges =
-                                        if List.any (\b -> b == badge) user.badges then
-                                            user.badges
-
-                                        else
-                                            badge :: user.badges
-                                }
-                        , page =
-                            case model.selectedCourse of
-                                Nothing ->
-                                    CoursesOverview [ course1 ]
-
-                                Just course ->
-                                    CoursePage course
-                      }
-                    , Cmd.none
-                    )
-
-                Nothing ->
-                    ( model, Cmd.none )
-
         StartQuiz ->
-            case model.page of
-                LearningContentPage lecture _ ->
-                    ( { model
-                        | page =
-                            RunningQuiz lecture lecture.exercises []
-                      }
-                    , Cmd.none
-                    )
+            case model of
+                LearningContentPage user course lecture _ ->
+                    ( RunningQuiz user course lecture lecture.exercises [], Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -471,86 +407,99 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ header model
-        , case model.user of
-            Just user ->
-                case model.page of
-                    CoursesOverview s ->
-                        coursesOverview s user
+    case model of
+        CoursesOverview user courses ->
+            div
+                []
+                [ header (Just user) Nothing
+                , coursesOverview user courses
+                ]
 
-                    CoursePage c ->
-                        coursePage c user
+        CoursePage user course ->
+            div
+                []
+                [ header (Just user) (Just course)
+                , coursePage user course
+                ]
 
-                    LecturePage lecture ->
-                        lectureView lecture
+        LecturePage user course lecture ->
+            div []
+                [ header (Just user) (Just course)
+                , lectureView lecture
+                ]
 
-                    RunningQuiz lecture remainingExercises _ ->
-                        case List.head remainingExercises of
-                            Just exercise ->
-                                runningQuizView lecture exercise
+        RunningQuiz user course lecture remainingExercises _ ->
+            div []
+                [ header (Just user) (Just course)
+                , case List.head remainingExercises of
+                    Just exercise ->
+                        runningQuizView lecture exercise
+
+                    Nothing ->
+                        div [] [ text "Hier gehörst du nicht hin!" ]
+                ]
+
+        WinningQuiz user course lecture ->
+            div []
+                [ header (Just user) (Just course)
+                , div
+                    [ Html.Attributes.class "container fixed-bottom mb-2" ]
+                    [ h4
+                        []
+                        [ text lecture.title ]
+                    , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
+                    , haskellButton "Zurück zur Lektion" (AddBadge lecture.badge)
+                    ]
+                ]
+
+        FinishedQuiz user course _ answeredExercises i ->
+            div []
+                [ header (Just user) (Just course)
+                , let
+                    wrongExercises =
+                        List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
+                  in
+                  case wrongExercises of
+                    [] ->
+                        text "FinishedLecture: Hier stimmt was nicht!"
+
+                    w ->
+                        case get i w of
+                            Just ( exercise, answer ) ->
+                                div
+                                    [ Html.Attributes.class "container mb-2 fixed-bottom" ]
+                                    [ text
+                                        ("Du hast "
+                                            ++ String.fromInt (List.length answeredExercises - List.length w)
+                                            ++ " von "
+                                            ++ String.fromInt
+                                                (List.length answeredExercises)
+                                            ++ " Aufgaben richtig gelöst."
+                                        )
+                                    , finishedExerciseView
+                                        exercise
+                                        answer
+                                    ]
 
                             Nothing ->
-                                div [] [ text "Hier gehörst du nicht hin!" ]
+                                Debug.log (String.fromInt (List.length wrongExercises))
+                                    text
+                                    "WARUM IST DAS HIER NULL?!"
+                ]
 
-                    WinningQuiz lecture ->
-                        div
-                            [ Html.Attributes.class "container fixed-bottom mb-2" ]
-                            [ h4
-                                []
-                                [ text lecture.title ]
-                            , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
-                            , haskellButton "Zurück zur Lektion" (AddBadge lecture.badge)
-                            ]
+        LearningContentPage user course lecture i ->
+            div []
+                [ header (Just user) (Just course)
+                , div [ Html.Attributes.class "container" ]
+                    [ runningLearningContentView lecture i
+                    ]
+                ]
 
-                    FinishedQuiz _ answeredExercises i ->
-                        let
-                            wrongExercises =
-                                List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
-                        in
-                        case wrongExercises of
-                            [] ->
-                                text "FinishedLecture: Hier stimmt was nicht!"
-
-                            w ->
-                                case get i w of
-                                    Just ( exercise, answer ) ->
-                                        div
-                                            [ Html.Attributes.class "container mb-2 fixed-bottom" ]
-                                            [ text
-                                                ("Du hast "
-                                                    ++ String.fromInt (List.length answeredExercises - List.length w)
-                                                    ++ " von "
-                                                    ++ String.fromInt
-                                                        (List.length answeredExercises)
-                                                    ++ " Aufgaben richtig gelöst."
-                                                )
-                                            , finishedExerciseView
-                                                exercise
-                                                answer
-                                            ]
-
-                                    Nothing ->
-                                        Debug.log (String.fromInt (List.length wrongExercises))
-                                            text
-                                            "WARUM IST DAS HIER NULL?!"
-
-                    LearningContentPage lecture i ->
-                        div [ Html.Attributes.class "container" ]
-                            [ runningLearningContentView lecture i
-                            ]
-
-                    Landing _ _ ->
-                        text "Dieser Fall sollte nicht eintreten!"
-
-            Nothing ->
-                case model.page of
-                    Landing mu me ->
-                        landingPage mu me
-
-                    _ ->
-                        div [] []
-        ]
+        Landing user course ->
+            div []
+                [ header Nothing Nothing
+                , landingPage user course
+                ]
 
 
 landingPage : Maybe String -> Maybe Error -> Html Msg
@@ -595,8 +544,8 @@ landingPage mu me =
         ]
 
 
-coursesOverview : List Course -> User -> Html Msg
-coursesOverview courses user =
+coursesOverview : User -> List Course -> Html Msg
+coursesOverview user courses =
     div [ Html.Attributes.class "m-1" ]
         [ Html.h1
             [ Html.Attributes.class "display-5 text-center" ]
@@ -686,8 +635,8 @@ coursesOverview courses user =
         ]
 
 
-coursePage : Course -> User -> Html Msg
-coursePage course user =
+coursePage : User -> Course -> Html Msg
+coursePage user course =
     div []
         [ h4
             [ Html.Attributes.class "display-5 text-center" ]
@@ -1313,105 +1262,87 @@ finishedLectureFooter =
         ]
 
 
-header : Model -> Html Msg
-header m =
+header : Maybe User -> Maybe Course -> Html Msg
+header user course =
     nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
         [ div
             [ Html.Attributes.class "container-fluid" ]
-            (a
+            [ a
                 [ Html.Attributes.class "navbar-brand" ]
                 [ Img.logo
                 ]
-                :: (case m.page of
-                        Landing _ _ ->
-                            []
+            , h5
+                []
+                [ text (Maybe.withDefault "" (Maybe.map .name user))
+                ]
+            , Maybe.withDefault (text "")
+                (Maybe.map
+                    (\us ->
+                        if List.length us.badges == 0 then
+                            text ""
 
-                        _ ->
-                            [ h5
-                                []
-                                [ text (Maybe.withDefault "" (Maybe.map .name m.user))
-                                ]
-                            , Maybe.withDefault (text "")
-                                (Maybe.map
-                                    (\user ->
-                                        if List.length user.badges == 0 then
-                                            text ""
-
-                                        else
-                                            div
-                                                [ Html.Attributes.class "bg-success rounded" ]
-                                                [ Html.span
-                                                    [ Html.Attributes.class "badge badge-pill" ]
-                                                    [ text (String.fromInt (List.length user.badges))
-                                                    , Img.badgeSvg
-                                                    ]
-                                                ]
-                                    )
-                                    m.user
-                                )
-                            , button
-                                [ Html.Attributes.class "navbar-toggler"
-                                , Html.Attributes.attribute "data-bs-toggle" "collapse"
-                                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
-                                ]
+                        else
+                            div
+                                [ Html.Attributes.class "bg-success rounded" ]
                                 [ Html.span
-                                    [ Html.Attributes.class "navbar-toggler-icon"
+                                    [ Html.Attributes.class "badge badge-pill" ]
+                                    [ text (String.fromInt (List.length us.badges))
+                                    , Img.badgeSvg
                                     ]
-                                    []
                                 ]
-                            , div
-                                [ Html.Attributes.class "collapse navbar-collapse"
-                                , Html.Attributes.id "navbarNav"
+                    )
+                    user
+                )
+            , button
+                [ Html.Attributes.class "navbar-toggler"
+                , Html.Attributes.attribute "data-bs-toggle" "collapse"
+                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
+                ]
+                [ Html.span
+                    [ Html.Attributes.class "navbar-toggler-icon"
+                    ]
+                    []
+                ]
+            , div
+                [ Html.Attributes.class "collapse navbar-collapse"
+                , Html.Attributes.id "navbarNav"
+                ]
+                [ Html.ul
+                    [ Html.Attributes.class "navbar-nav" ]
+                    [ case user of
+                        Just _ ->
+                            Html.li
+                                [ Html.Attributes.class "nav-item" ]
+                                [ a
+                                    [ Html.Attributes.class "nav-link"
+                                    , onClick GoToCoursesOverview
+                                    ]
+                                    [ text "Kursübersicht"
+                                    ]
                                 ]
-                                [ Html.ul
-                                    [ Html.Attributes.class "navbar-nav" ]
-                                    [ Html.li
-                                        [ Html.Attributes.class "nav-item" ]
-                                        [ a
-                                            [ Html.Attributes.class "nav-link"
-                                            , Html.Attributes.classList
-                                                [ ( "nav-link", True )
-                                                , ( "active"
-                                                  , case m.page of
-                                                        CoursesOverview _ ->
-                                                            True
 
-                                                        _ ->
-                                                            False
-                                                  )
-                                                ]
-                                            , onClick GoToCourseOverview
-                                            ]
-                                            [ text "Kursübersicht"
-                                            ]
+                        Nothing ->
+                            text ""
+                    , case course of
+                        Just c ->
+                            Html.li
+                                [ Html.Attributes.class "nav-item" ]
+                                [ a
+                                    [ Html.Attributes.class "nav-link"
+                                    , Html.Attributes.classList
+                                        [ ( "nav-link", True )
                                         ]
-                                    , case m.selectedCourse of
-                                        Just course ->
-                                            case m.page of
-                                                CoursePage _ ->
-                                                    text ""
-
-                                                _ ->
-                                                    Html.li
-                                                        [ Html.Attributes.class "nav-item" ]
-                                                        [ a
-                                                            [ Html.Attributes.class "nav-link"
-                                                            , Html.Attributes.classList
-                                                                [ ( "nav-link", True )
-                                                                ]
-                                                            , onClick (SelectCourse course)
-                                                            ]
-                                                            [ text course.title
-                                                            ]
-                                                        ]
-
-                                        Nothing ->
-                                            text ""
+                                    , onClick (SelectCourse c)
+                                    ]
+                                    [ text c.title
                                     ]
                                 ]
-                            ]
-                   )
-            )
+
+                        Nothing ->
+                            text ""
+                    ]
+                ]
+            ]
         ]
 
 
