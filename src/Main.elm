@@ -443,7 +443,7 @@ view model =
             div []
                 [ header (Just user) (Just course)
                 , div
-                    [ Html.Attributes.class "container fixed-bottom mb-2" ]
+                    [ Html.Attributes.class "fixed-bottom m-3" ]
                     [ h4
                         []
                         [ text lecture.title ]
@@ -469,7 +469,7 @@ view model =
                         case get i w of
                             Just ( exercise, answer ) ->
                                 div
-                                    [ Html.Attributes.class "mb-2 fixed-bottom" ]
+                                    [ Html.Attributes.class "fixed-bottom mb-3" ]
                                     [ text
                                         ("Du hast "
                                             ++ String.fromInt (List.length answeredExercises - List.length w)
@@ -492,7 +492,7 @@ view model =
         LearningContentPage user course lecture i ->
             div []
                 [ header (Just user) (Just course)
-                , div [ Html.Attributes.class "container" ]
+                , div []
                     [ runningLearningContentView lecture i
                     ]
                 ]
@@ -506,7 +506,7 @@ view model =
 
 landingPage : Maybe String -> Maybe Error -> Html Msg
 landingPage mu me =
-    div [ Html.Attributes.class "container fixed-bottom mb-2" ]
+    div [ Html.Attributes.class "fixed-bottom m-3" ]
         [ div
             [ Html.Attributes.class "alert bg-danger-subtle"
             , Html.Attributes.hidden
@@ -719,7 +719,7 @@ coursePage user course =
 
 lectureView : Lecture -> Html Msg
 lectureView l =
-    div [ Html.Attributes.class "container fixed-bottom mb-2" ]
+    div [ Html.Attributes.class "fixed-bottom m-3" ]
         [ h4 []
             [ text l.title
             ]
@@ -751,7 +751,7 @@ runningLearningContentView lecture exampleIndex =
     case get exampleIndex lecture.learningContent.examples of
         Just example ->
             div
-                [ Html.Attributes.class "container"
+                [ Html.Attributes.class "m-5"
                 ]
                 [ h4
                     []
@@ -765,7 +765,7 @@ runningLearningContentView lecture exampleIndex =
 
         Nothing ->
             div
-                [ Html.Attributes.class "container fixed-bottom mb-2"
+                [ Html.Attributes.class "fixed-bottom m-3"
                 ]
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
@@ -824,7 +824,7 @@ learningExampleView lc example =
 
 runningQuizView : Lecture -> Exercise -> Html Msg
 runningQuizView l e =
-    div [ Html.Attributes.class "container" ]
+    div [ Html.Attributes.class "m-3" ]
         [ h4 []
             [ text l.title
             ]
