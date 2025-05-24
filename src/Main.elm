@@ -447,7 +447,9 @@ view model =
                     [ h4
                         []
                         [ text lecture.title ]
-                    , Html.p [] [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
+                    , Html.p
+                        []
+                        [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
                     , haskellButton "Zurück zur Lektion" (AddBadge lecture.badge)
                     ]
                 ]
