@@ -10891,7 +10891,7 @@ var $author$project$Main$lectureView = function (l) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Lektion start')
+						$elm$html$Html$text('Lektion starten')
 					]))
 			]));
 };

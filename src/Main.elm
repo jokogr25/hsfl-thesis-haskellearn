@@ -878,7 +878,7 @@ lectureView l =
             , Html.Attributes.style "background-color" "#6f42c1"
             , onClick StartLecture
             ]
-            [ text "Lektion start"
+            [ text "Lektion starten"
             ]
         ]
 
