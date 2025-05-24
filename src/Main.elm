@@ -874,11 +874,11 @@ lectureView l =
                 ]
             ]
         , button
-            [ Html.Attributes.class "btn btn-lg text-white"
+            [ Html.Attributes.class "btn btn-lg text-white w-100"
             , Html.Attributes.style "background-color" "#6f42c1"
             , onClick StartLecture
             ]
-            [ text "Lektion starten"
+            [ text "Lektion start"
             ]
         ]
 
@@ -905,15 +905,12 @@ runningLearningContentView lecture exampleIndex =
             div
                 [ Html.Attributes.class "fixed-bottom m-2"
                 ]
-                [ div
-                    [ Html.Attributes.class "d-grid gap-2" ]
-                    [ button
-                        [ Html.Attributes.class "btn btn-lg text-white"
-                        , Html.Attributes.style "background-color" "#6f42c1"
-                        , onClick ShuffleExercises
-                        ]
-                        [ text ("Quiz \"" ++ lecture.title ++ "\" starten")
-                        ]
+                [ button
+                    [ Html.Attributes.class "btn btn-lg text-white w-100"
+                    , Html.Attributes.style "background-color" "#6f42c1"
+                    , onClick ShuffleExercises
+                    ]
+                    [ text ("Quiz \"" ++ lecture.title ++ "\" starten")
                     ]
                 ]
 

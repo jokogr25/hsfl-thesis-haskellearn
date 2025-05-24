@@ -10885,13 +10885,13 @@ var $author$project$Main$lectureView = function (l) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+						$elm$html$Html$Attributes$class('btn btn-lg text-white w-100'),
 						A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
 						$elm$html$Html$Events$onClick($author$project$Main$StartLecture)
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Lektion starten')
+						$elm$html$Html$text('Lektion start')
 					]))
 			]));
 };
@@ -11048,25 +11048,16 @@ var $author$project$Main$runningLearningContentView = F2(
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$div,
+						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('d-grid gap-2')
+								$elm$html$Html$Attributes$class('btn btn-lg text-white w-100'),
+								A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+								$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
 							]),
 						_List_fromArray(
 							[
-								A2(
-								$elm$html$Html$button,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-										A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-										$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Quiz \"' + (lecture.title + '\" starten'))
-									]))
+								$elm$html$Html$text('Quiz \"' + (lecture.title + '\" starten'))
 							]))
 					]));
 		}
