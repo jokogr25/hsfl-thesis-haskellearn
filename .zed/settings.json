@@ -12,6 +12,11 @@
       }
     }
   },
+  "languages": {
+    "Elm": {
+      "linked_edits": false
+    }
+  },
   "soft_wrap": "editor_width",
   "base_keymap": "VSCode",
   "show_completions_on_input": false
