@@ -375,7 +375,7 @@ update msg model =
 
         AddBadge badge ->
             case model of
-                FinishedQuiz user course _ _ _ ->
+                WinningQuiz user course _ ->
                     ( CoursePage
                         { user
                             | badges =
@@ -467,7 +467,7 @@ view model =
                         case get i w of
                             Just ( exercise, answer ) ->
                                 div
-                                    [ Html.Attributes.class "container mb-2 fixed-bottom" ]
+                                    [ Html.Attributes.class "mb-2 fixed-bottom" ]
                                     [ text
                                         ("Du hast "
                                             ++ String.fromInt (List.length answeredExercises - List.length w)
