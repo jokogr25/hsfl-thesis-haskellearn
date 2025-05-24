@@ -770,9 +770,9 @@ coursePage user course =
             [ text course.title
             ]
         , div
-            [ Html.Attributes.class "album" ]
+            [ Html.Attributes.class "album m-2" ]
             [ div
-                [ Html.Attributes.class "container" ]
+                []
                 [ div
                     [ Html.Attributes.class
                         " row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
@@ -876,15 +876,16 @@ runningLearningContentView lecture exampleIndex =
     case get exampleIndex lecture.learningContent.examples of
         Just example ->
             div
-                [ Html.Attributes.class "m-5"
+                [ Html.Attributes.class "m-2 h-100"
                 ]
                 [ h4
                     []
                     [ text lecture.learningContent.title
                     ]
                 , div
-                    []
-                    [ text lecture.learningContent.description ]
+                    [ Html.Attributes.class "overflow-auto" ]
+                    [ text lecture.learningContent.description
+                    ]
                 , learningExampleView lecture.learningContent example
                 ]
 
