@@ -7115,16 +7115,13 @@ var $author$project$Main$coursePage = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('album')
+							$elm$html$Html$Attributes$class('album m-2')
 						]),
 					_List_fromArray(
 						[
 							A2(
 							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('container')
-								]),
+							_List_Nil,
 							_List_fromArray(
 								[
 									A2(
@@ -9912,7 +9909,10 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 	function (answers, studentAnswer) {
 		return A2(
 			$elm$html$Html$div,
-			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card-footer btn-toolbar d-flex gap-2')
+				]),
 			A2(
 				$elm$core$List$map,
 				function (answer) {
@@ -9920,7 +9920,7 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn bg-white m-1 pe-none'),
+								$elm$html$Html$Attributes$class('btn btn-lg bg-white m-1 pe-none w-100'),
 								$elm$html$Html$Attributes$classList(
 								_List_fromArray(
 									[
@@ -9932,7 +9932,7 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn bg-white m-1 pe-none'),
+								$elm$html$Html$Attributes$class('btn btn-lg bg-white m-1 pe-none w-100'),
 								$elm$html$Html$Attributes$classList(
 								_List_fromArray(
 									[
@@ -10772,7 +10772,7 @@ var $author$project$Main$landingPage = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('fixed-bottom m-3')
+					$elm$html$Html$Attributes$class('fixed-bottom m-2')
 				]),
 			_List_fromArray(
 				[
@@ -10835,7 +10835,7 @@ var $author$project$Main$lectureView = function (l) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('fixed-bottom m-3')
+				$elm$html$Html$Attributes$class('fixed-bottom m-2')
 			]),
 		_List_fromArray(
 			[
@@ -10964,7 +10964,7 @@ var $author$project$Main$runningLearningContentView = F2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('m-5')
+						$elm$html$Html$Attributes$class('m-2 h-100')
 					]),
 				_List_fromArray(
 					[
@@ -10977,7 +10977,10 @@ var $author$project$Main$runningLearningContentView = F2(
 							])),
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('overflow-auto')
+							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(lecture.learningContent.description)
@@ -10989,7 +10992,7 @@ var $author$project$Main$runningLearningContentView = F2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('fixed-bottom m-3')
+						$elm$html$Html$Attributes$class('fixed-bottom m-2')
 					]),
 				_List_fromArray(
 					[
@@ -11025,7 +11028,7 @@ var $author$project$Main$runningExerciseAnswerView = F2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn bg-white btn-outline-dark w-100'),
+								$elm$html$Html$Attributes$class('btn btn-lg bg-white btn-outline-dark w-100'),
 								$elm$html$Html$Events$onClick(
 								A2($author$project$Main$SelectAnswer, exercise, answer))
 							]),
@@ -11322,7 +11325,7 @@ var $author$project$Main$runningQuizView = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('m-3')
+					$elm$html$Html$Attributes$class('m-2')
 				]),
 			_List_fromArray(
 				[
@@ -11434,7 +11437,7 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('fixed-bottom m-3')
+								$elm$html$Html$Attributes$class('fixed-bottom m-2')
 							]),
 						_List_fromArray(
 							[
@@ -11493,14 +11496,23 @@ var $author$project$Main$view = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('fixed-bottom mb-3')
+											$elm$html$Html$Attributes$class('fixed-bottom m-2')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(
-											'Du hast ' + ($elm$core$String$fromInt(
-												$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
-												$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.')))),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('m-2')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													'Du hast ' + ($elm$core$String$fromInt(
+														$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
+														$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.'))))
+												])),
 											A2($author$project$Main$finishedExerciseView, exercise, answer)
 										]));
 							} else {
