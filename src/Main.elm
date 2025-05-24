@@ -567,7 +567,7 @@ view model =
             div []
                 [ header (Just user) (Just course)
                 , div
-                    [ Html.Attributes.class "fixed-bottom m-3" ]
+                    [ Html.Attributes.class "fixed-bottom m-2" ]
                     [ h4
                         []
                         [ text lecture.title ]
@@ -593,18 +593,19 @@ view model =
                         case get i w of
                             Just ( exercise, answer ) ->
                                 div
-                                    [ Html.Attributes.class "fixed-bottom mb-3" ]
-                                    [ text
-                                        ("Du hast "
-                                            ++ String.fromInt (List.length answeredExercises - List.length w)
-                                            ++ " von "
-                                            ++ String.fromInt
-                                                (List.length answeredExercises)
-                                            ++ " Aufgaben richtig gelöst."
-                                        )
-                                    , finishedExerciseView
-                                        exercise
-                                        answer
+                                    [ Html.Attributes.class "fixed-bottom m-2" ]
+                                    [ div
+                                        [ Html.Attributes.class "m-2" ]
+                                        [ text
+                                            ("Du hast "
+                                                ++ String.fromInt (List.length answeredExercises - List.length w)
+                                                ++ " von "
+                                                ++ String.fromInt
+                                                    (List.length answeredExercises)
+                                                ++ " Aufgaben richtig gelöst."
+                                            )
+                                        ]
+                                    , finishedExerciseView exercise answer
                                     ]
 
                             Nothing ->
@@ -630,7 +631,7 @@ view model =
 
 landingPage : Maybe String -> Maybe Error -> Html Msg
 landingPage mu me =
-    div [ Html.Attributes.class "fixed-bottom m-3" ]
+    div [ Html.Attributes.class "fixed-bottom m-2" ]
         [ div
             [ Html.Attributes.class "alert bg-danger-subtle"
             , Html.Attributes.hidden
@@ -843,7 +844,7 @@ coursePage user course =
 
 lectureView : Lecture -> Html Msg
 lectureView l =
-    div [ Html.Attributes.class "fixed-bottom m-3" ]
+    div [ Html.Attributes.class "fixed-bottom m-2" ]
         [ h4 []
             [ text l.title
             ]
@@ -889,7 +890,7 @@ runningLearningContentView lecture exampleIndex =
 
         Nothing ->
             div
-                [ Html.Attributes.class "fixed-bottom m-3"
+                [ Html.Attributes.class "fixed-bottom m-2"
                 ]
                 [ div
                     [ Html.Attributes.class "d-grid gap-2" ]
@@ -948,7 +949,7 @@ learningExampleView lc example =
 
 runningQuizView : Lecture -> Exercise -> Html Msg
 runningQuizView l e =
-    div [ Html.Attributes.class "m-3" ]
+    div [ Html.Attributes.class "m-2" ]
         [ h4 []
             [ text l.title
             ]
@@ -1122,7 +1123,7 @@ runningExerciseAnswerView exercise answers =
         (List.map
             (\answer ->
                 div
-                    [ Html.Attributes.class "btn bg-white btn-outline-dark w-100"
+                    [ Html.Attributes.class "btn btn-lg bg-white btn-outline-dark w-100"
                     , onClick (SelectAnswer exercise answer)
                     ]
                     (highlightedInlineView answer.code)
@@ -1168,12 +1169,12 @@ highlightedInlineView expression =
 finishedExerciseAnswerView : List Answer -> Answer -> Html Msg
 finishedExerciseAnswerView answers studentAnswer =
     div
-        []
+        [ Html.Attributes.class "card-footer btn-toolbar d-flex gap-2" ]
         (List.map
             (\answer ->
                 if answer == studentAnswer then
                     div
-                        [ Html.Attributes.class "btn bg-white m-1 pe-none"
+                        [ Html.Attributes.class "btn btn-lg bg-white m-1 pe-none w-100"
                         , Html.Attributes.classList
                             [ ( "btn-outline-success", answer.isCorrect )
                             , ( "btn-outline-danger", not answer.isCorrect )
@@ -1183,7 +1184,7 @@ finishedExerciseAnswerView answers studentAnswer =
 
                 else if answer.isCorrect then
                     div
-                        [ Html.Attributes.class "btn bg-white m-1 pe-none"
+                        [ Html.Attributes.class "btn btn-lg bg-white m-1 pe-none w-100"
                         , Html.Attributes.classList
                             [ ( "btn-outline-danger", not answer.isCorrect )
                             , ( "btn-outline-success", answer.isCorrect )
