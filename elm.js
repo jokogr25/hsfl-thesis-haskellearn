@@ -4373,6 +4373,89 @@ function _Browser_load(url)
 
 
 
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
+
+
+
+function _Time_now(millisToPosix)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		callback(_Scheduler_succeed(millisToPosix(Date.now())));
+	});
+}
+
+var _Time_setInterval = F2(function(interval, task)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var id = setInterval(function() { _Scheduler_rawSpawn(task); }, interval);
+		return function() { clearInterval(id); };
+	});
+});
+
+function _Time_here()
+{
+	return _Scheduler_binding(function(callback)
+	{
+		callback(_Scheduler_succeed(
+			A2($elm$time$Time$customZone, -(new Date().getTimezoneOffset()), _List_Nil)
+		));
+	});
+}
+
+
+function _Time_getZoneName()
+{
+	return _Scheduler_binding(function(callback)
+	{
+		try
+		{
+			var name = $elm$time$Time$Name(Intl.DateTimeFormat().resolvedOptions().timeZone);
+		}
+		catch (e)
+		{
+			var name = $elm$time$Time$Offset(new Date().getTimezoneOffset());
+		}
+		callback(_Scheduler_succeed(name));
+	});
+}
+
+
+
 
 // STRINGS
 
@@ -5297,11 +5380,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{
-			page: A2($author$project$Main$Landing, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
-			selectedCourse: $elm$core$Maybe$Nothing,
-			user: $elm$core$Maybe$Nothing
-		},
+		A2($author$project$Main$Landing, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Main$EnteringNameDone = {$: 'EnteringNameDone'};
@@ -5754,31 +5833,60 @@ var $author$project$Main$subscriptions = function (_v0) {
 				$elm$browser$Browser$Events$onKeyDown($author$project$Main$keyDecoder))
 			]));
 };
-var $author$project$Main$CoursePage = function (a) {
-	return {$: 'CoursePage', a: a};
+var $author$project$Main$BinaryExpression = function (a) {
+	return {$: 'BinaryExpression', a: a};
 };
-var $author$project$Main$CoursesOverview = function (a) {
-	return {$: 'CoursesOverview', a: a};
-};
-var $author$project$Main$FinishedQuiz = F3(
-	function (a, b, c) {
-		return {$: 'FinishedQuiz', a: a, b: b, c: c};
-	});
-var $author$project$Main$LearningContentPage = F2(
+var $author$project$Main$CoursePage = F2(
 	function (a, b) {
-		return {$: 'LearningContentPage', a: a, b: b};
+		return {$: 'CoursePage', a: a, b: b};
 	});
-var $author$project$Main$LecturePage = function (a) {
-	return {$: 'LecturePage', a: a};
+var $author$project$Main$CoursesOverview = F2(
+	function (a, b) {
+		return {$: 'CoursesOverview', a: a, b: b};
+	});
+var $author$project$Main$FinishedQuiz = F5(
+	function (a, b, c, d, e) {
+		return {$: 'FinishedQuiz', a: a, b: b, c: c, d: d, e: e};
+	});
+var $author$project$Main$FunctionExpression = function (a) {
+	return {$: 'FunctionExpression', a: a};
 };
-var $author$project$Main$RunningQuiz = F3(
+var $author$project$Main$GuardExpression = function (a) {
+	return {$: 'GuardExpression', a: a};
+};
+var $author$project$Main$LearningContentPage = F4(
+	function (a, b, c, d) {
+		return {$: 'LearningContentPage', a: a, b: b, c: c, d: d};
+	});
+var $author$project$Main$LecturePage = F3(
 	function (a, b, c) {
-		return {$: 'RunningQuiz', a: a, b: b, c: c};
+		return {$: 'LecturePage', a: a, b: b, c: c};
+	});
+var $author$project$Main$PatternMatchingExpression = function (a) {
+	return {$: 'PatternMatchingExpression', a: a};
+};
+var $author$project$Main$RunningQuiz = F5(
+	function (a, b, c, d, e) {
+		return {$: 'RunningQuiz', a: a, b: b, c: c, d: d, e: e};
+	});
+var $author$project$Main$ShuffleAnswers = function (a) {
+	return {$: 'ShuffleAnswers', a: a};
+};
+var $author$project$Main$SingleExpression = function (a) {
+	return {$: 'SingleExpression', a: a};
+};
+var $author$project$Main$StartQuiz = function (a) {
+	return {$: 'StartQuiz', a: a};
+};
+var $author$project$Main$User = F2(
+	function (name, badges) {
+		return {badges: badges, name: name};
 	});
 var $author$project$Main$UsernameIncorrect = {$: 'UsernameIncorrect'};
-var $author$project$Main$WinningQuiz = function (a) {
-	return {$: 'WinningQuiz', a: a};
-};
+var $author$project$Main$WinningQuiz = F3(
+	function (a, b, c) {
+		return {$: 'WinningQuiz', a: a, b: b, c: c};
+	});
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -5822,9 +5930,6 @@ var $author$project$Main$checkUsername = function (name) {
 	}
 };
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$Main$SingleExpression = function (a) {
-	return {$: 'SingleExpression', a: a};
-};
 var $author$project$Main$exercise1 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
@@ -5954,9 +6059,6 @@ var $author$project$Main$lecture1 = {
 	},
 	title: 'Typen von einfachen Ausdrücken'
 };
-var $author$project$Main$BinaryExpression = function (a) {
-	return {$: 'BinaryExpression', a: a};
-};
 var $author$project$Main$lecture2 = {
 	badge: {
 		id: 'binaryexpression',
@@ -6051,9 +6153,6 @@ var $author$project$Main$lecture2 = {
 	learningContent: {description: 'In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr. In dieser Lektion wirst du sehen, wie diese Operatoren in Haskell aussehen.', examples: _List_Nil, id: 1, title: 'Zweistellige Ausdrücke'},
 	title: 'Typen von zweistelligen Ausdrücken'
 };
-var $author$project$Main$FunctionExpression = function (a) {
-	return {$: 'FunctionExpression', a: a};
-};
 var $author$project$Main$lecture3 = {
 	badge: {
 		id: '',
@@ -6096,9 +6195,6 @@ var $author$project$Main$lecture3 = {
 		title: 'Funktionen in Haskell'
 	},
 	title: 'Funktionen'
-};
-var $author$project$Main$GuardExpression = function (a) {
-	return {$: 'GuardExpression', a: a};
 };
 var $author$project$Main$lecture4 = {
 	badge: {
@@ -6143,9 +6239,6 @@ var $author$project$Main$lecture4 = {
 		title: 'Guards in Haskell'
 	},
 	title: 'Guards'
-};
-var $author$project$Main$PatternMatchingExpression = function (a) {
-	return {$: 'PatternMatchingExpression', a: a};
 };
 var $author$project$Main$lecture5 = {
 	badge: {
@@ -6207,62 +6300,323 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var $elm$random$Random$Generate = function (a) {
+	return {$: 'Generate', a: a};
+};
+var $elm$random$Random$Seed = F2(
+	function (a, b) {
+		return {$: 'Seed', a: a, b: b};
+	});
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$random$Random$next = function (_v0) {
+	var state0 = _v0.a;
+	var incr = _v0.b;
+	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
+};
+var $elm$random$Random$initialSeed = function (x) {
+	var _v0 = $elm$random$Random$next(
+		A2($elm$random$Random$Seed, 0, 1013904223));
+	var state1 = _v0.a;
+	var incr = _v0.b;
+	var state2 = (state1 + x) >>> 0;
+	return $elm$random$Random$next(
+		A2($elm$random$Random$Seed, state2, incr));
+};
+var $elm$time$Time$Name = function (a) {
+	return {$: 'Name', a: a};
+};
+var $elm$time$Time$Offset = function (a) {
+	return {$: 'Offset', a: a};
+};
+var $elm$time$Time$Zone = F2(
+	function (a, b) {
+		return {$: 'Zone', a: a, b: b};
+	});
+var $elm$time$Time$customZone = $elm$time$Time$Zone;
+var $elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
+var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
+var $elm$time$Time$posixToMillis = function (_v0) {
+	var millis = _v0.a;
+	return millis;
+};
+var $elm$random$Random$init = A2(
+	$elm$core$Task$andThen,
+	function (time) {
+		return $elm$core$Task$succeed(
+			$elm$random$Random$initialSeed(
+				$elm$time$Time$posixToMillis(time)));
+	},
+	$elm$time$Time$now);
+var $elm$random$Random$step = F2(
+	function (_v0, seed) {
+		var generator = _v0.a;
+		return generator(seed);
+	});
+var $elm$random$Random$onEffects = F3(
+	function (router, commands, seed) {
+		if (!commands.b) {
+			return $elm$core$Task$succeed(seed);
+		} else {
+			var generator = commands.a.a;
+			var rest = commands.b;
+			var _v1 = A2($elm$random$Random$step, generator, seed);
+			var value = _v1.a;
+			var newSeed = _v1.b;
+			return A2(
+				$elm$core$Task$andThen,
+				function (_v2) {
+					return A3($elm$random$Random$onEffects, router, rest, newSeed);
+				},
+				A2($elm$core$Platform$sendToApp, router, value));
+		}
+	});
+var $elm$random$Random$onSelfMsg = F3(
+	function (_v0, _v1, seed) {
+		return $elm$core$Task$succeed(seed);
+	});
+var $elm$random$Random$Generator = function (a) {
+	return {$: 'Generator', a: a};
+};
+var $elm$random$Random$map = F2(
+	function (func, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v1 = genA(seed0);
+				var a = _v1.a;
+				var seed1 = _v1.b;
+				return _Utils_Tuple2(
+					func(a),
+					seed1);
+			});
+	});
+var $elm$random$Random$cmdMap = F2(
+	function (func, _v0) {
+		var generator = _v0.a;
+		return $elm$random$Random$Generate(
+			A2($elm$random$Random$map, func, generator));
+	});
+_Platform_effectManagers['Random'] = _Platform_createManager($elm$random$Random$init, $elm$random$Random$onEffects, $elm$random$Random$onSelfMsg, $elm$random$Random$cmdMap);
+var $elm$random$Random$command = _Platform_leaf('Random');
+var $elm$random$Random$generate = F2(
+	function (tagger, generator) {
+		return $elm$random$Random$command(
+			$elm$random$Random$Generate(
+				A2($elm$random$Random$map, tagger, generator)));
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
 var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$xor = _Bitwise_xor;
+var $elm$random$Random$peel = function (_v0) {
+	var state = _v0.a;
+	var word = (state ^ (state >>> ((state >>> 28) + 4))) * 277803737;
+	return ((word >>> 22) ^ word) >>> 0;
+};
+var $elm$random$Random$float = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var seed1 = $elm$random$Random$next(seed0);
+				var range = $elm$core$Basics$abs(b - a);
+				var n1 = $elm$random$Random$peel(seed1);
+				var n0 = $elm$random$Random$peel(seed0);
+				var lo = (134217727 & n1) * 1.0;
+				var hi = (67108863 & n0) * 1.0;
+				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
+				var scaled = (val * range) + a;
+				return _Utils_Tuple2(
+					scaled,
+					$elm$random$Random$next(seed1));
+			});
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$random$Random$constant = function (value) {
+	return $elm$random$Random$Generator(
+		function (seed) {
+			return _Utils_Tuple2(value, seed);
+		});
+};
+var $elm$random$Random$map2 = F3(
+	function (func, _v0, _v1) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v2 = genA(seed0);
+				var a = _v2.a;
+				var seed1 = _v2.b;
+				var _v3 = genB(seed1);
+				var b = _v3.a;
+				var seed2 = _v3.b;
+				return _Utils_Tuple2(
+					A2(func, a, b),
+					seed2);
+			});
+	});
+var $author$project$Main$sequence = function (gens) {
+	return A3(
+		$elm$core$List$foldr,
+		F2(
+			function (gen, acc) {
+				return A3($elm$random$Random$map2, $elm$core$List$cons, gen, acc);
+			}),
+		$elm$random$Random$constant(_List_Nil),
+		gens);
+};
+var $elm$core$List$sortBy = _List_sortBy;
+var $author$project$Main$shuffle = function (list) {
+	var generatePairs = $author$project$Main$sequence(
+		A2(
+			$elm$core$List$map,
+			function (item) {
+				return A2(
+					$elm$random$Random$map,
+					function (r) {
+						return _Utils_Tuple2(r, item);
+					},
+					A2($elm$random$Random$float, 0, 1));
+			},
+			list));
+	return A2(
+		$elm$random$Random$map,
+		A2(
+			$elm$core$Basics$composeL,
+			$elm$core$List$map($elm$core$Tuple$second),
+			$elm$core$List$sortBy($elm$core$Tuple$first)),
+		generatePairs);
+};
+var $elm$core$List$tail = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(xs);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
 var $elm$core$Basics$xor = _Basics_xor;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'NoOp':
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 'GoToCourseOverview':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							page: $author$project$Main$CoursesOverview(
+			case 'GoToCoursesOverview':
+				switch (model.$) {
+					case 'CoursesOverview':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
 								_List_fromArray(
 									[$author$project$Main$course1])),
-							selectedCourse: $elm$core$Maybe$Nothing
-						}),
-					$elm$core$Platform$Cmd$none);
+							$elm$core$Platform$Cmd$none);
+					case 'CoursePage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					case 'LecturePage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					case 'LearningContentPage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					case 'RunningQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					case 'FinishedQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					case 'WinningQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2(
+								$author$project$Main$CoursesOverview,
+								user,
+								_List_fromArray(
+									[$author$project$Main$course1])),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 			case 'EnteringName':
 				var name = msg.a;
-				var _v1 = model.page;
-				if (_v1.$ === 'Landing') {
+				if (model.$ === 'Landing') {
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: A2(
-									$author$project$Main$Landing,
-									$elm$core$Maybe$Just(name),
-									($author$project$Main$checkUsername(
-										$elm$core$Maybe$Just(name)) !== (!$elm$core$String$length(name))) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just($author$project$Main$UsernameIncorrect))
-							}),
+						A2(
+							$author$project$Main$Landing,
+							$elm$core$Maybe$Just(name),
+							($author$project$Main$checkUsername(
+								$elm$core$Maybe$Just(name)) !== (!$elm$core$String$length(name))) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just($author$project$Main$UsernameIncorrect)),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'EnteringNameDone':
-				var _v2 = model.page;
-				if (_v2.$ === 'Landing') {
-					var maybeUsername = _v2.a;
-					var maybeError = _v2.b;
+				if (model.$ === 'Landing') {
+					var maybeUsername = model.a;
+					var maybeError = model.b;
 					if (maybeError.$ === 'Just') {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					} else {
 						if (maybeUsername.$ === 'Just') {
 							var name = maybeUsername.a;
 							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{
-										page: $author$project$Main$CoursesOverview(
-											_List_fromArray(
-												[$author$project$Main$course1])),
-										user: $elm$core$Maybe$Just(
-											{badges: _List_Nil, name: name})
-									}),
+								A2(
+									$author$project$Main$CoursesOverview,
+									A2($author$project$Main$User, name, _List_Nil),
+									_List_fromArray(
+										[$author$project$Main$course1])),
 								$elm$core$Platform$Cmd$none);
 						} else {
 							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6273,48 +6627,66 @@ var $author$project$Main$update = F2(
 				}
 			case 'SelectCourse':
 				var course = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							page: $author$project$Main$CoursePage(course),
-							selectedCourse: $elm$core$Maybe$Just(course)
-						}),
-					$elm$core$Platform$Cmd$none);
+				switch (model.$) {
+					case 'CoursesOverview':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					case 'LecturePage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					case 'LearningContentPage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					case 'RunningQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					case 'FinishedQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					case 'WinningQuiz':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 			case 'SelectLecture':
 				var lecture = msg.a;
-				var _v5 = model.page;
-				if (_v5.$ === 'CoursePage') {
+				if (model.$ === 'CoursePage') {
+					var user = model.a;
+					var course = model.b;
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: $author$project$Main$LecturePage(lecture)
-							}),
+						A3($author$project$Main$LecturePage, user, course, lecture),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'StartLecture':
-				var _v6 = model.page;
-				switch (_v6.$) {
+				switch (model.$) {
 					case 'LecturePage':
-						var lecture = _v6.a;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: A2($author$project$Main$LearningContentPage, lecture, 0)
-								}),
+							A4($author$project$Main$LearningContentPage, user, course, lecture, 0),
 							$elm$core$Platform$Cmd$none);
 					case 'FinishedQuiz':
-						var lecture = _v6.a;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: A3($author$project$Main$RunningQuiz, lecture, lecture.exercises, _List_Nil)
-								}),
+							A5($author$project$Main$RunningQuiz, user, course, lecture, lecture.exercises, _List_Nil),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6322,157 +6694,279 @@ var $author$project$Main$update = F2(
 			case 'SelectAnswer':
 				var exercise = msg.a;
 				var answer = msg.b;
-				var _v7 = model.page;
-				if (_v7.$ === 'RunningQuiz') {
-					var lecture = _v7.a;
-					var remainingExercises = _v7.b;
-					var answeredExercises = _v7.c;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: function () {
-									var newRemainingExercises = A2(
-										$elm$core$List$filter,
-										function (e) {
-											return !_Utils_eq(e, exercise);
-										},
-										remainingExercises);
-									var newAnswers = _Utils_ap(
-										answeredExercises,
-										_List_fromArray(
-											[
-												_Utils_Tuple2(exercise, answer)
-											]));
-									return (!$elm$core$List$length(newRemainingExercises)) ? (A2(
-										$elm$core$List$all,
-										function (_v8) {
-											var a = _v8.b;
-											return a.isCorrect;
-										},
-										newAnswers) ? $author$project$Main$WinningQuiz(lecture) : A3($author$project$Main$FinishedQuiz, lecture, newAnswers, 0)) : A3($author$project$Main$RunningQuiz, lecture, newRemainingExercises, newAnswers);
-								}()
-							}),
-						$elm$core$Platform$Cmd$none);
+				if (model.$ === 'RunningQuiz') {
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					var remainingExercises = model.d;
+					var answeredExercises = model.e;
+					var newRemainingExercises = A2(
+						$elm$core$List$filter,
+						function (e) {
+							return !_Utils_eq(e, exercise);
+						},
+						remainingExercises);
+					var newAnswers = _Utils_ap(
+						answeredExercises,
+						_List_fromArray(
+							[
+								_Utils_Tuple2(exercise, answer)
+							]));
+					return (!$elm$core$List$length(newRemainingExercises)) ? (A2(
+						$elm$core$List$all,
+						function (_v10) {
+							var a = _v10.b;
+							return a.isCorrect;
+						},
+						newAnswers) ? _Utils_Tuple2(
+						A3($author$project$Main$WinningQuiz, user, course, lecture),
+						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+						A5($author$project$Main$FinishedQuiz, user, course, lecture, newAnswers, 0),
+						$elm$core$Platform$Cmd$none)) : _Utils_Tuple2(
+						A5($author$project$Main$RunningQuiz, user, course, lecture, newRemainingExercises, newAnswers),
+						function () {
+							var _v11 = $elm$core$List$head(newRemainingExercises);
+							if (_v11.$ === 'Just') {
+								var h = _v11.a;
+								return A2(
+									$elm$random$Random$generate,
+									$author$project$Main$ShuffleAnswers,
+									$author$project$Main$shuffle(
+										function () {
+											switch (h.$) {
+												case 'SingleExpression':
+													var m = h.a;
+													return m.answers;
+												case 'BinaryExpression':
+													var m = h.a;
+													return m.answers;
+												case 'FunctionExpression':
+													var m = h.a;
+													return m.answers;
+												case 'GuardExpression':
+													var m = h.a;
+													return m.answers;
+												default:
+													var m = h.a;
+													return m.answers;
+											}
+										}()));
+							} else {
+								return $elm$core$Platform$Cmd$none;
+							}
+						}());
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'Next':
-				var _v9 = model.page;
-				switch (_v9.$) {
+				switch (model.$) {
 					case 'FinishedQuiz':
-						var lecture = _v9.a;
-						var answeredExercises = _v9.b;
-						var i = _v9.c;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						var answeredExercises = model.d;
+						var i = model.e;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: _Utils_eq(
-										$elm$core$List$length(
-											A2(
-												$elm$core$List$filter,
-												function (_v10) {
-													var a = _v10.b;
-													return !a.isCorrect;
-												},
-												answeredExercises)) - 1,
-										i) ? A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i) : A3($author$project$Main$FinishedQuiz, lecture, answeredExercises, i + 1)
-								}),
+							_Utils_eq(
+								$elm$core$List$length(
+									A2(
+										$elm$core$List$filter,
+										function (_v14) {
+											var a = _v14.b;
+											return !a.isCorrect;
+										},
+										answeredExercises)) - 1,
+								i) ? A5($author$project$Main$FinishedQuiz, user, course, lecture, answeredExercises, i) : A5($author$project$Main$FinishedQuiz, user, course, lecture, answeredExercises, i + 1),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
-						var lecture = _v9.a;
-						var i = _v9.b;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						var i = model.d;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: A2($author$project$Main$LearningContentPage, lecture, i + 1)
-								}),
+							A4($author$project$Main$LearningContentPage, user, course, lecture, i + 1),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'Prev':
-				var _v11 = model.page;
-				switch (_v11.$) {
+				switch (model.$) {
 					case 'FinishedQuiz':
-						var lecture = _v11.a;
-						var answeredExercises = _v11.b;
-						var i = _v11.c;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						var answeredExercises = model.d;
+						var i = model.e;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: A3(
-										$author$project$Main$FinishedQuiz,
-										lecture,
-										answeredExercises,
-										A2($elm$core$Basics$max, 0, i - 1))
-								}),
+							A5(
+								$author$project$Main$FinishedQuiz,
+								user,
+								course,
+								lecture,
+								answeredExercises,
+								A2($elm$core$Basics$max, 0, i - 1)),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
-						var lecture = _v11.a;
-						var i = _v11.b;
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						var i = model.d;
 						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									page: A2(
-										$author$project$Main$LearningContentPage,
-										lecture,
-										A2($elm$core$Basics$max, 0, i - 1))
-								}),
+							A4(
+								$author$project$Main$LearningContentPage,
+								user,
+								course,
+								lecture,
+								A2($elm$core$Basics$max, 0, i - 1)),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'AddBadge':
 				var badge = msg.a;
-				var _v12 = model.user;
-				if (_v12.$ === 'Just') {
-					var user = _v12.a;
+				if (model.$ === 'WinningQuiz') {
+					var user = model.a;
+					var course = model.b;
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: function () {
-									var _v13 = model.selectedCourse;
-									if (_v13.$ === 'Nothing') {
-										return $author$project$Main$CoursesOverview(
-											_List_fromArray(
-												[$author$project$Main$course1]));
-									} else {
-										var course = _v13.a;
-										return $author$project$Main$CoursePage(course);
-									}
-								}(),
-								user: $elm$core$Maybe$Just(
-									_Utils_update(
-										user,
-										{
-											badges: A2(
-												$elm$core$List$any,
-												function (b) {
-													return _Utils_eq(b, badge);
-												},
-												user.badges) ? user.badges : A2($elm$core$List$cons, badge, user.badges)
-										}))
-							}),
+						A2(
+							$author$project$Main$CoursePage,
+							_Utils_update(
+								user,
+								{
+									badges: A2(
+										$elm$core$List$any,
+										function (b) {
+											return _Utils_eq(b, badge);
+										},
+										user.badges) ? user.badges : A2($elm$core$List$cons, badge, user.badges)
+								}),
+							course),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
-				var _v14 = model.page;
-				if (_v14.$ === 'LearningContentPage') {
-					var lecture = _v14.a;
+			case 'ShuffleExercises':
+				if (model.$ === 'LearningContentPage') {
+					var lecture = model.c;
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								page: A3($author$project$Main$RunningQuiz, lecture, lecture.exercises, _List_Nil)
-							}),
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Main$StartQuiz,
+							$author$project$Main$shuffle(lecture.exercises)));
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			case 'StartQuiz':
+				var shuffled = msg.a;
+				if (model.$ === 'LearningContentPage') {
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					return _Utils_Tuple2(
+						A5($author$project$Main$RunningQuiz, user, course, lecture, shuffled, _List_Nil),
+						function () {
+							var _v19 = $elm$core$List$head(shuffled);
+							if (_v19.$ === 'Just') {
+								var h = _v19.a;
+								return A2(
+									$elm$random$Random$generate,
+									$author$project$Main$ShuffleAnswers,
+									$author$project$Main$shuffle(
+										function () {
+											switch (h.$) {
+												case 'SingleExpression':
+													var m = h.a;
+													return m.answers;
+												case 'BinaryExpression':
+													var m = h.a;
+													return m.answers;
+												case 'FunctionExpression':
+													var m = h.a;
+													return m.answers;
+												case 'GuardExpression':
+													var m = h.a;
+													return m.answers;
+												default:
+													var m = h.a;
+													return m.answers;
+											}
+										}()));
+							} else {
+								return $elm$core$Platform$Cmd$none;
+							}
+						}());
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			default:
+				var shuffled = msg.a;
+				if (model.$ === 'RunningQuiz') {
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					var exercises = model.d;
+					var studentAnswers = model.e;
+					return _Utils_Tuple2(
+						A5(
+							$author$project$Main$RunningQuiz,
+							user,
+							course,
+							lecture,
+							function () {
+								var _v22 = $elm$core$List$head(exercises);
+								if (_v22.$ === 'Just') {
+									var h = _v22.a;
+									return A2(
+										$elm$core$List$cons,
+										function () {
+											switch (h.$) {
+												case 'SingleExpression':
+													var m = h.a;
+													return $author$project$Main$SingleExpression(
+														_Utils_update(
+															m,
+															{answers: shuffled}));
+												case 'BinaryExpression':
+													var m = h.a;
+													return $author$project$Main$BinaryExpression(
+														_Utils_update(
+															m,
+															{answers: shuffled}));
+												case 'FunctionExpression':
+													var m = h.a;
+													return $author$project$Main$FunctionExpression(
+														_Utils_update(
+															m,
+															{answers: shuffled}));
+												case 'GuardExpression':
+													var m = h.a;
+													return $author$project$Main$GuardExpression(
+														_Utils_update(
+															m,
+															{answers: shuffled}));
+												default:
+													var m = h.a;
+													return $author$project$Main$PatternMatchingExpression(
+														_Utils_update(
+															m,
+															{answers: shuffled}));
+											}
+										}(),
+										function () {
+											var _v24 = $elm$core$List$tail(exercises);
+											if (_v24.$ === 'Just') {
+												var tail = _v24.a;
+												return tail;
+											} else {
+												return _List_Nil;
+											}
+										}());
+								} else {
+									return _List_Nil;
+								}
+							}(),
+							studentAnswers),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6586,13 +7080,12 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$small = _VirtualDom_node('small');
-var $elm$core$List$sortBy = _List_sortBy;
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$coursePage = F2(
-	function (course, user) {
+	function (user, course) {
 		return A2(
 			$elm$html$Html$div,
 			_List_Nil,
@@ -6769,10 +7262,6 @@ var $author$project$Images$Images$checkSvg = A2(
 				]),
 			_List_Nil)
 		]));
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $elm$html$Html$Attributes$classList = function (classes) {
 	return $elm$html$Html$Attributes$class(
 		A2(
@@ -6796,7 +7285,7 @@ var $author$project$Main$foot = A2(
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$coursesOverview = F2(
-	function (courses, user) {
+	function (user, courses) {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -7394,9 +7883,6 @@ var $elm$parser$Parser$Advanced$fromState = F2(
 			A4($elm$parser$Parser$Advanced$DeadEnd, s.row, s.col, x, s.context));
 	});
 var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var str = _v0.a;
 	var expecting = _v0.b;
@@ -9944,21 +10430,12 @@ var $elm$core$List$drop = F2(
 			}
 		}
 	});
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $author$project$Main$get = F2(
 	function (n, xs) {
 		return $elm$core$List$head(
 			A2($elm$core$List$drop, n, xs));
 	});
-var $author$project$Main$GoToCourseOverview = {$: 'GoToCourseOverview'};
+var $author$project$Main$GoToCoursesOverview = {$: 'GoToCoursesOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$li = _VirtualDom_node('li');
@@ -10061,120 +10538,143 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var $author$project$Main$header = function (m) {
-	return A2(
-		$elm$html$Html$nav,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('navbar navbar-expand-lg bg-body-tertiary')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('container-fluid')
-					]),
-				A2(
-					$elm$core$List$cons,
+var $author$project$Main$header = F2(
+	function (user, course) {
+		return A2(
+			$elm$html$Html$nav,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('navbar navbar-expand-lg bg-body-tertiary')
+				]),
+			_List_fromArray(
+				[
 					A2(
-						$elm$html$Html$a,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('navbar-brand')
-							]),
-						_List_fromArray(
-							[$author$project$Images$Images$logo])),
-					function () {
-						var _v0 = m.page;
-						if (_v0.$ === 'Landing') {
-							return _List_Nil;
-						} else {
-							return _List_fromArray(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('container-fluid')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$a,
+							_List_fromArray(
 								[
+									$elm$html$Html$Attributes$class('navbar-brand')
+								]),
+							_List_fromArray(
+								[$author$project$Images$Images$logo])),
+							A2(
+							$elm$html$Html$h5,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
 									A2(
-									$elm$html$Html$h5,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											A2(
-												$elm$core$Maybe$withDefault,
-												'',
+										$elm$core$Maybe$withDefault,
+										'',
+										A2(
+											$elm$core$Maybe$map,
+											function ($) {
+												return $.name;
+											},
+											user)))
+								])),
+							A2(
+							$elm$core$Maybe$withDefault,
+							$elm$html$Html$text(''),
+							A2(
+								$elm$core$Maybe$map,
+								function (us) {
+									return (!$elm$core$List$length(us.badges)) ? $elm$html$Html$text('') : A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('bg-success rounded')
+											]),
+										_List_fromArray(
+											[
 												A2(
-													$elm$core$Maybe$map,
-													function ($) {
-														return $.name;
-													},
-													m.user)))
-										])),
-									A2(
-									$elm$core$Maybe$withDefault,
-									$elm$html$Html$text(''),
-									A2(
-										$elm$core$Maybe$map,
-										function (user) {
-											return (!$elm$core$List$length(user.badges)) ? $elm$html$Html$text('') : A2(
-												$elm$html$Html$div,
+												$elm$html$Html$span,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('bg-success rounded')
+														$elm$html$Html$Attributes$class('badge badge-pill')
 													]),
 												_List_fromArray(
 													[
-														A2(
-														$elm$html$Html$span,
-														_List_fromArray(
-															[
-																$elm$html$Html$Attributes$class('badge badge-pill')
-															]),
-														_List_fromArray(
-															[
-																$elm$html$Html$text(
-																$elm$core$String$fromInt(
-																	$elm$core$List$length(user.badges))),
-																$author$project$Images$Images$badgeSvg
-															]))
-													]));
-										},
-										m.user)),
+														$elm$html$Html$text(
+														$elm$core$String$fromInt(
+															$elm$core$List$length(us.badges))),
+														$author$project$Images$Images$badgeSvg
+													]))
+											]));
+								},
+								user)),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('navbar-toggler'),
+									A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
+									A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
+								]),
+							_List_fromArray(
+								[
 									A2(
-									$elm$html$Html$button,
+									$elm$html$Html$span,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('navbar-toggler'),
-											A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
-											A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
+											$elm$html$Html$Attributes$class('navbar-toggler-icon')
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('collapse navbar-collapse'),
+									$elm$html$Html$Attributes$id('navbarNav')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$ul,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('navbar-nav')
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('navbar-toggler-icon')
-												]),
-											_List_Nil)
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('collapse navbar-collapse'),
-											$elm$html$Html$Attributes$id('navbarNav')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$ul,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('navbar-nav')
-												]),
-											_List_fromArray(
-												[
-													A2(
+											function () {
+											if (user.$ === 'Just') {
+												return A2(
+													$elm$html$Html$li,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('nav-item')
+														]),
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$a,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('nav-link'),
+																	$elm$html$Html$Events$onClick($author$project$Main$GoToCoursesOverview)
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('Kursübersicht')
+																]))
+														]));
+											} else {
+												return $elm$html$Html$text('');
+											}
+										}(),
+											function () {
+											if (course.$ === 'Just') {
+												var c = course.a;
+												return A2(
 													$elm$html$Html$li,
 													_List_fromArray(
 														[
@@ -10190,71 +10690,25 @@ var $author$project$Main$header = function (m) {
 																	$elm$html$Html$Attributes$classList(
 																	_List_fromArray(
 																		[
-																			_Utils_Tuple2('nav-link', true),
-																			_Utils_Tuple2(
-																			'active',
-																			function () {
-																				var _v1 = m.page;
-																				if (_v1.$ === 'CoursesOverview') {
-																					return true;
-																				} else {
-																					return false;
-																				}
-																			}())
+																			_Utils_Tuple2('nav-link', true)
 																		])),
-																	$elm$html$Html$Events$onClick($author$project$Main$GoToCourseOverview)
+																	$elm$html$Html$Events$onClick(
+																	$author$project$Main$SelectCourse(c))
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text('Kursübersicht')
+																	$elm$html$Html$text(c.title)
 																]))
-														])),
-													function () {
-													var _v2 = m.selectedCourse;
-													if (_v2.$ === 'Just') {
-														var course = _v2.a;
-														var _v3 = m.page;
-														if (_v3.$ === 'CoursePage') {
-															return $elm$html$Html$text('');
-														} else {
-															return A2(
-																$elm$html$Html$li,
-																_List_fromArray(
-																	[
-																		$elm$html$Html$Attributes$class('nav-item')
-																	]),
-																_List_fromArray(
-																	[
-																		A2(
-																		$elm$html$Html$a,
-																		_List_fromArray(
-																			[
-																				$elm$html$Html$Attributes$class('nav-link'),
-																				$elm$html$Html$Attributes$classList(
-																				_List_fromArray(
-																					[
-																						_Utils_Tuple2('nav-link', true)
-																					])),
-																				$elm$html$Html$Events$onClick(
-																				$author$project$Main$SelectCourse(course))
-																			]),
-																		_List_fromArray(
-																			[
-																				$elm$html$Html$text(course.title)
-																			]))
-																	]));
-														}
-													} else {
-														return $elm$html$Html$text('');
-													}
-												}()
-												]))
+														]));
+											} else {
+												return $elm$html$Html$text('');
+											}
+										}()
 										]))
-								]);
-						}
-					}()))
-			]));
-};
+								]))
+						]))
+				]));
+	});
 var $author$project$Main$EnteringName = function (a) {
 	return {$: 'EnteringName', a: a};
 };
@@ -10308,7 +10762,7 @@ var $author$project$Main$landingPage = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+					$elm$html$Html$Attributes$class('fixed-bottom m-3')
 				]),
 			_List_fromArray(
 				[
@@ -10370,7 +10824,7 @@ var $author$project$Main$lectureView = function (l) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+				$elm$html$Html$Attributes$class('fixed-bottom m-3')
 			]),
 		_List_fromArray(
 			[
@@ -10413,7 +10867,7 @@ var $author$project$Main$lectureView = function (l) {
 			]));
 };
 var $elm$core$Debug$log = _Debug_log;
-var $author$project$Main$StartQuiz = {$: 'StartQuiz'};
+var $author$project$Main$ShuffleExercises = {$: 'ShuffleExercises'};
 var $author$project$Main$learningExampleView = F2(
 	function (lc, example) {
 		return A2(
@@ -10483,7 +10937,7 @@ var $author$project$Main$learningExampleView = F2(
 							var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
 							if (_v1.$ === 'Just') {
 								var last = _v1.a;
-								return _Utils_eq(last, example) ? A2($author$project$Main$haskellButton, 'Quiz starten', $author$project$Main$StartQuiz) : A2($author$project$Main$haskellButton, '>>', $author$project$Main$Next);
+								return _Utils_eq(last, example) ? A2($author$project$Main$haskellButton, 'Quiz starten', $author$project$Main$ShuffleExercises) : A2($author$project$Main$haskellButton, '>>', $author$project$Main$Next);
 							} else {
 								return $elm$html$Html$text('');
 							}
@@ -10500,7 +10954,7 @@ var $author$project$Main$runningLearningContentView = F2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('container')
+						$elm$html$Html$Attributes$class('m-5')
 					]),
 				_List_fromArray(
 					[
@@ -10525,7 +10979,7 @@ var $author$project$Main$runningLearningContentView = F2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
+						$elm$html$Html$Attributes$class('fixed-bottom m-3')
 					]),
 				_List_fromArray(
 					[
@@ -10537,7 +10991,7 @@ var $author$project$Main$runningLearningContentView = F2(
 							]),
 						_List_fromArray(
 							[
-								A2($author$project$Main$haskellButton, 'Quiz \"' + (lecture.title + '\" starten'), $author$project$Main$StartQuiz)
+								A2($author$project$Main$haskellButton, 'Quiz \"' + (lecture.title + '\" starten'), $author$project$Main$ShuffleExercises)
 							]))
 					]));
 		}
@@ -10858,7 +11312,7 @@ var $author$project$Main$runningQuizView = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('container')
+					$elm$html$Html$Attributes$class('m-3')
 				]),
 			_List_fromArray(
 				[
@@ -10879,142 +11333,211 @@ var $author$project$Main$runningQuizView = F2(
 				]));
 	});
 var $author$project$Main$view = function (model) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				$author$project$Main$header(model),
-				function () {
-				var _v0 = model.user;
-				if (_v0.$ === 'Just') {
-					var user = _v0.a;
-					var _v1 = model.page;
-					switch (_v1.$) {
-						case 'CoursesOverview':
-							var s = _v1.a;
-							return A2($author$project$Main$coursesOverview, s, user);
-						case 'CoursePage':
-							var c = _v1.a;
-							return A2($author$project$Main$coursePage, c, user);
-						case 'LecturePage':
-							var lecture = _v1.a;
-							return $author$project$Main$lectureView(lecture);
-						case 'RunningQuiz':
-							var lecture = _v1.a;
-							var remainingExercises = _v1.b;
-							var _v2 = $elm$core$List$head(remainingExercises);
-							if (_v2.$ === 'Just') {
-								var exercise = _v2.a;
-								return A2($author$project$Main$runningQuizView, lecture, exercise);
-							} else {
+	switch (model.$) {
+		case 'CoursesOverview':
+			var user = model.a;
+			var courses = model.b;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Nothing),
+						A2($author$project$Main$coursesOverview, user, courses)
+					]));
+		case 'CoursePage':
+			var user = model.a;
+			var course = model.b;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						A2($author$project$Main$coursePage, user, course)
+					]));
+		case 'LecturePage':
+			var user = model.a;
+			var course = model.b;
+			var lecture = model.c;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						$author$project$Main$lectureView(lecture)
+					]));
+		case 'RunningQuiz':
+			var user = model.a;
+			var course = model.b;
+			var lecture = model.c;
+			var remainingExercises = model.d;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						function () {
+						var _v1 = $elm$core$List$head(remainingExercises);
+						if (_v1.$ === 'Just') {
+							var exercise = _v1.a;
+							return A2($author$project$Main$runningQuizView, lecture, exercise);
+						} else {
+							return A2(
+								$elm$html$Html$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Hier gehörst du nicht hin!')
+									]));
+						}
+					}()
+					]));
+		case 'WinningQuiz':
+			var user = model.a;
+			var course = model.b;
+			var lecture = model.c;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('fixed-bottom m-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h4,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(lecture.title)
+									])),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
+									])),
+								A2(
+								$author$project$Main$haskellButton,
+								'Zurück zur Lektion',
+								$author$project$Main$AddBadge(lecture.badge))
+							]))
+					]));
+		case 'FinishedQuiz':
+			var user = model.a;
+			var course = model.b;
+			var answeredExercises = model.d;
+			var i = model.e;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						function () {
+						var wrongExercises = A2(
+							$elm$core$List$filter,
+							function (_v5) {
+								var a = _v5.b;
+								return !a.isCorrect;
+							},
+							answeredExercises);
+						if (!wrongExercises.b) {
+							return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
+						} else {
+							var w = wrongExercises;
+							var _v3 = A2($author$project$Main$get, i, w);
+							if (_v3.$ === 'Just') {
+								var _v4 = _v3.a;
+								var exercise = _v4.a;
+								var answer = _v4.b;
 								return A2(
 									$elm$html$Html$div,
-									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Hier gehörst du nicht hin!')
+											$elm$html$Html$Attributes$class('fixed-bottom mb-3')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(
+											'Du hast ' + ($elm$core$String$fromInt(
+												$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
+												$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.')))),
+											A2($author$project$Main$finishedExerciseView, exercise, answer)
 										]));
-							}
-						case 'WinningQuiz':
-							var lecture = _v1.a;
-							return A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('container fixed-bottom mb-2')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h4,
-										_List_Nil,
-										_List_fromArray(
-											[
-												$elm$html$Html$text(lecture.title)
-											])),
-										A2(
-										$elm$html$Html$p,
-										_List_Nil,
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
-											])),
-										A2(
-										$author$project$Main$haskellButton,
-										'Zurück zur Lektion',
-										$author$project$Main$AddBadge(lecture.badge))
-									]));
-						case 'FinishedQuiz':
-							var answeredExercises = _v1.b;
-							var i = _v1.c;
-							var wrongExercises = A2(
-								$elm$core$List$filter,
-								function (_v6) {
-									var a = _v6.b;
-									return !a.isCorrect;
-								},
-								answeredExercises);
-							if (!wrongExercises.b) {
-								return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
 							} else {
-								var w = wrongExercises;
-								var _v4 = A2($author$project$Main$get, i, w);
-								if (_v4.$ === 'Just') {
-									var _v5 = _v4.a;
-									var exercise = _v5.a;
-									var answer = _v5.b;
-									return A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('container mb-2 fixed-bottom')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(
-												'Du hast ' + ($elm$core$String$fromInt(
-													$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
-													$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.')))),
-												A2($author$project$Main$finishedExerciseView, exercise, answer)
-											]));
-								} else {
-									return A3(
-										$elm$core$Debug$log,
-										$elm$core$String$fromInt(
-											$elm$core$List$length(wrongExercises)),
-										$elm$html$Html$text,
-										'WARUM IST DAS HIER NULL?!');
-								}
+								return A3(
+									$elm$core$Debug$log,
+									$elm$core$String$fromInt(
+										$elm$core$List$length(wrongExercises)),
+									$elm$html$Html$text,
+									'WARUM IST DAS HIER NULL?!');
 							}
-						case 'LearningContentPage':
-							var lecture = _v1.a;
-							var i = _v1.b;
-							return A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('container')
-									]),
-								_List_fromArray(
-									[
-										A2($author$project$Main$runningLearningContentView, lecture, i)
-									]));
-						default:
-							return $elm$html$Html$text('Dieser Fall sollte nicht eintreten!');
-					}
-				} else {
-					var _v7 = model.page;
-					if (_v7.$ === 'Landing') {
-						var mu = _v7.a;
-						var me = _v7.b;
-						return A2($author$project$Main$landingPage, mu, me);
-					} else {
-						return A2($elm$html$Html$div, _List_Nil, _List_Nil);
-					}
-				}
-			}()
-			]));
+						}
+					}()
+					]));
+		case 'LearningContentPage':
+			var user = model.a;
+			var course = model.b;
+			var lecture = model.c;
+			var i = model.d;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Main$header,
+						$elm$core$Maybe$Just(user),
+						$elm$core$Maybe$Just(course)),
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2($author$project$Main$runningLearningContentView, lecture, i)
+							]))
+					]));
+		default:
+			var user = model.a;
+			var course = model.b;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2($author$project$Main$header, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
+						A2($author$project$Main$landingPage, user, course)
+					]));
+	}
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});

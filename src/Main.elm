@@ -162,6 +162,7 @@ type Msg
     | SelectLecture Lecture
     | StartLecture
     | ShuffleExercises
+    | ShuffleAnswers (List Answer)
     | StartQuiz (List Exercise)
     | SelectAnswer Exercise Answer
     | GoToCoursesOverview
@@ -327,17 +328,41 @@ update msg model =
                                 (\e -> e /= exercise)
                                 remainingExercises
                     in
-                    ( if List.length newRemainingExercises == 0 then
+                    if List.length newRemainingExercises == 0 then
                         if List.all (\( _, a ) -> a.isCorrect) newAnswers then
-                            WinningQuiz user course lecture
+                            ( WinningQuiz user course lecture, Cmd.none )
 
                         else
-                            FinishedQuiz user course lecture newAnswers 0
+                            ( FinishedQuiz user course lecture newAnswers 0, Cmd.none )
 
-                      else
-                        RunningQuiz user course lecture newRemainingExercises newAnswers
-                    , Cmd.none
-                    )
+                    else
+                        ( RunningQuiz user course lecture newRemainingExercises newAnswers
+                        , case List.head newRemainingExercises of
+                            Just h ->
+                                Random.generate
+                                    ShuffleAnswers
+                                    (shuffle
+                                        (case h of
+                                            SingleExpression m ->
+                                                m.answers
+
+                                            BinaryExpression m ->
+                                                m.answers
+
+                                            FunctionExpression m ->
+                                                m.answers
+
+                                            GuardExpression m ->
+                                                m.answers
+
+                                            PatternMatchingExpression m ->
+                                                m.answers
+                                        )
+                                    )
+
+                            Nothing ->
+                                Cmd.none
+                        )
 
                 _ ->
                     ( model, Cmd.none )
@@ -405,7 +430,91 @@ update msg model =
         StartQuiz shuffled ->
             case model of
                 LearningContentPage user course lecture _ ->
-                    ( RunningQuiz user course lecture shuffled [], Cmd.none )
+                    ( RunningQuiz user course lecture shuffled []
+                    , case List.head shuffled of
+                        Just h ->
+                            Random.generate
+                                ShuffleAnswers
+                                (shuffle
+                                    (case h of
+                                        SingleExpression m ->
+                                            m.answers
+
+                                        BinaryExpression m ->
+                                            m.answers
+
+                                        FunctionExpression m ->
+                                            m.answers
+
+                                        GuardExpression m ->
+                                            m.answers
+
+                                        PatternMatchingExpression m ->
+                                            m.answers
+                                    )
+                                )
+
+                        Nothing ->
+                            Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        ShuffleAnswers shuffled ->
+            case model of
+                RunningQuiz user course lecture exercises studentAnswers ->
+                    ( RunningQuiz
+                        user
+                        course
+                        lecture
+                        (case List.head exercises of
+                            Just h ->
+                                (case h of
+                                    SingleExpression m ->
+                                        SingleExpression
+                                            { m
+                                                | answers = shuffled
+                                            }
+
+                                    BinaryExpression m ->
+                                        BinaryExpression
+                                            { m
+                                                | answers = shuffled
+                                            }
+
+                                    FunctionExpression m ->
+                                        FunctionExpression
+                                            { m
+                                                | answers = shuffled
+                                            }
+
+                                    GuardExpression m ->
+                                        GuardExpression
+                                            { m
+                                                | answers = shuffled
+                                            }
+
+                                    PatternMatchingExpression m ->
+                                        PatternMatchingExpression
+                                            { m
+                                                | answers = shuffled
+                                            }
+                                )
+                                    :: (case List.tail exercises of
+                                            Just tail ->
+                                                tail
+
+                                            Nothing ->
+                                                []
+                                       )
+
+                            Nothing ->
+                                []
+                        )
+                        studentAnswers
+                    , Cmd.none
+                    )
 
                 _ ->
                     ( model, Cmd.none )
