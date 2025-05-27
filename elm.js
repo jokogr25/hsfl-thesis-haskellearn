@@ -6039,7 +6039,7 @@ var $author$project$Main$lecture1 = {
 		[$author$project$Main$exercise1, $author$project$Main$exercise2, $author$project$Main$exercise3, $author$project$Main$exercise4, $author$project$Main$exercise5, $author$project$Main$exercise6, $author$project$Main$exercise7]),
 	id: 1,
 	learningContent: {
-		description: 'In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert. \". Einfache Ausdrücke sind Ausdrücke, die nur einen Wert haben. Das bedeutet, dass sie keine Funktionen oder Operatoren enthalten. Einfache Ausdrücke sind z.B. Zahlen, Strings, Listen und Tupel. Im folgenden wirst du sehen, wie einfache Ausdrück in Haskell aussehen können. Das \"x\" ist in jedem Beispiel eine Konstante, hinter der ein Wert steckt. Der Typ des Wertes wird durch den Typ des Ausdrucks bestimmt. Das bedeutet, dass der Typ des Ausdrucks immer dem Typ der Variable entspricht. Wenn du also den Ausdruck \"x = 1\" hast, dann ist der Typ von \"x\" immer \"Int\". Wenn du den Ausdruck \"x = 1.0\" hast, dann ist der Typ von \"x\" immer \"Float\".',
+		description: 'In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert.\".',
 		examples: _List_fromArray(
 			[
 				{description: $elm$core$Maybe$Nothing, expression: 'x :: Int\nx = 1', id: 1, title: 'Ganzzahliger Ausdruck'},
@@ -11521,7 +11521,10 @@ var $author$project$Main$view = function (model) {
 							$elm$core$Maybe$Just(course)),
 							A2(
 							$elm$html$Html$main_,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('container-fluid')
+								]),
 							_List_fromArray(
 								[
 									A2(
