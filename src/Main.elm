@@ -531,47 +531,51 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    case model of
-        CoursesOverview user courses ->
-            div
-                []
+    div
+        [ Html.Attributes.class "d-flex flex-column min-vh-100" ]
+        (case model of
+            CoursesOverview user courses ->
                 [ header (Just user) Nothing
                 , coursesOverview user courses
                 ]
 
-        CoursePage user course ->
-            div
-                []
+            CoursePage user course ->
                 [ header (Just user) (Just course)
                 , coursePage user course
                 ]
 
-        LecturePage user course lecture ->
-            div []
+            LecturePage user course lecture ->
                 [ header (Just user) (Just course)
                 , lectureView lecture
                 ]
 
-        RunningQuiz user course lecture remainingExercises _ ->
-            div []
+            RunningQuiz user course lecture remainingExercises _ ->
                 [ header (Just user) (Just course)
+                , Html.main_
+                    [ Html.Attributes.class "m-2" ]
+                    [ h4 []
+                        [ text lecture.title
+                        ]
+                    ]
                 , case List.head remainingExercises of
-                    Just exercise ->
-                        runningQuizView lecture exercise
+                    Just e ->
+                        exerciseView e
 
                     Nothing ->
                         div [] [ text "Hier gehörst du nicht hin!" ]
                 ]
 
-        WinningQuiz user course lecture ->
-            div []
+            WinningQuiz user course lecture ->
                 [ header (Just user) (Just course)
-                , div
-                    [ Html.Attributes.class "fixed-bottom m-2" ]
+                , Html.main_
+                    [ Html.Attributes.class "m-2" ]
                     [ h4
                         []
                         [ text lecture.title ]
-                    , Html.p
+                    ]
+                , Html.footer
+                    [ Html.Attributes.class "footer mt-auto m-2" ]
+                    [ Html.p
                         []
                         [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
                     , button
@@ -584,8 +588,7 @@ view model =
                     ]
                 ]
 
-        FinishedQuiz user course _ answeredExercises i ->
-            div []
+            FinishedQuiz user course _ answeredExercises i ->
                 [ header (Just user) (Just course)
                 , let
                     wrongExercises =
@@ -598,16 +601,15 @@ view model =
                     w ->
                         case get i w of
                             Just ( exercise, answer ) ->
-                                div
-                                    [ Html.Attributes.class "fixed-bottom m-2" ]
+                                Html.footer
+                                    [ Html.Attributes.class "footer m-2" ]
                                     [ div
                                         [ Html.Attributes.class "m-2" ]
                                         [ text
                                             ("Du hast "
                                                 ++ String.fromInt (List.length answeredExercises - List.length w)
                                                 ++ " von "
-                                                ++ String.fromInt
-                                                    (List.length answeredExercises)
+                                                ++ String.fromInt (List.length answeredExercises)
                                                 ++ " Aufgaben richtig gelöst."
                                             )
                                         ]
@@ -615,66 +617,71 @@ view model =
                                     ]
 
                             Nothing ->
-                                Debug.log (String.fromInt (List.length wrongExercises))
-                                    text
-                                    "WARUM IST DAS HIER NULL?!"
+                                text "WARUM IST DAS HIER NULL?!"
                 ]
 
-        LearningContentPage user course lecture i ->
-            div []
+            LearningContentPage user course lecture i ->
                 [ header (Just user) (Just course)
-                , div []
-                    [ runningLearningContentView lecture i
+                , Html.main_
+                    []
+                    [ h4
+                        []
+                        [ text lecture.learningContent.title
+                        ]
+                    , div
+                        []
+                        [ text lecture.learningContent.description
+                        ]
+                    ]
+                , runningLearningContentView lecture i
+                ]
+
+            Landing user error ->
+                [ header Nothing Nothing
+                , Html.main_
+                    [ Html.Attributes.class "main fill-height"
+                    ]
+                    [ div
+                        []
+                        [ text "content" ]
+                    ]
+                , Html.footer
+                    [ Html.Attributes.class "footer mt-auto m-2" ]
+                    [ div
+                        [ Html.Attributes.class "alert bg-danger-subtle"
+                        , Html.Attributes.hidden
+                            (case error of
+                                Just err ->
+                                    case err of
+                                        UsernameIncorrect ->
+                                            False
+
+                                Nothing ->
+                                    True
+                            )
+                        ]
+                        [ text "Dein Name muss mindestens drei Zeichen lang sein."
+                        ]
+                    , div
+                        [ Html.Attributes.class "mb-1" ]
+                        [ Html.input
+                            [ onInput EnteringName
+                            , placeholder "Gib deinen Namen ein"
+                            , type_ "text"
+                            , Html.Attributes.class "form-control form-control-lg"
+                            ]
+                            []
+                        ]
+                    , button
+                        [ onClick EnteringNameDone
+                        , Html.Attributes.class "btn btn-lg w-100 text-white"
+                        , Html.Attributes.style "background-color" "#6f42c1"
+                        , Html.Attributes.disabled (not (checkUsername user))
+                        ]
+                        [ text "Start" ]
                     ]
                 ]
-
-        Landing user course ->
-            div []
-                [ header Nothing Nothing
-                , landingPage user course
-                ]
-
-
-landingPage : Maybe String -> Maybe Error -> Html Msg
-landingPage mu me =
-    div [ Html.Attributes.class "fixed-bottom m-2" ]
-        [ div
-            [ Html.Attributes.class "alert bg-danger-subtle"
-            , Html.Attributes.hidden
-                (case me of
-                    Just error ->
-                        case error of
-                            UsernameIncorrect ->
-                                False
-
-                    Nothing ->
-                        True
-                )
-            ]
-            [ text "Dein Name muss mindestens drei Zeichen lang sein."
-            ]
-        , div
-            [ Html.Attributes.class "mb-1" ]
-            [ Html.input
-                [ onInput EnteringName
-                , placeholder "Gib deinen Namen ein"
-                , type_ "text"
-                , Html.Attributes.class "form-control form-control-lg"
-                ]
-                []
-            ]
-        , button
-            [ onClick EnteringNameDone
-            , Html.Attributes.class "btn btn-lg w-100 text-white"
-            , Html.Attributes.style "background-color" "#6f42c1"
-            , if checkUsername mu then
-                Html.Attributes.style "" ""
-
-              else
-                Html.Attributes.disabled True
-            ]
-            [ text "Start" ]
-        ]
+        )
 
 
 coursesOverview : User -> List Course -> Html Msg
@@ -887,23 +894,11 @@ runningLearningContentView : Lecture -> Int -> Html Msg
 runningLearningContentView lecture exampleIndex =
     case get exampleIndex lecture.learningContent.examples of
         Just example ->
-            div
-                [ Html.Attributes.class "m-2 h-100"
-                ]
-                [ h4
-                    []
-                    [ text lecture.learningContent.title
-                    ]
-                , div
-                    [ Html.Attributes.class "overflow-auto" ]
-                    [ text lecture.learningContent.description
-                    ]
-                , learningExampleView lecture.learningContent example
-                ]
+            learningExampleView lecture.learningContent example
 
         Nothing ->
-            div
-                [ Html.Attributes.class "fixed-bottom m-2"
+            Html.footer
+                [ Html.Attributes.class "mt-auto m-2"
                 ]
                 [ button
                     [ Html.Attributes.class "btn btn-lg text-white w-100"
@@ -917,237 +912,231 @@ runningLearningContentView lecture exampleIndex =
 
 learningExampleView : LearningContent -> LearningExample -> Html Msg
 learningExampleView lc example =
-    div
-        [ Html.Attributes.class "card m-2 fixed-bottom"
-        ]
+    Html.footer
+        [ Html.Attributes.class "mt-auto m-2" ]
         [ div
-            [ Html.Attributes.class "card-header" ]
-            [ text example.title ]
-        , div
-            [ Html.Attributes.class "card-body" ]
+            [ Html.Attributes.class "card"
+            ]
             [ div
-                [ Html.Attributes.class "card-title" ]
-                [ text (Maybe.withDefault "" example.description) ]
+                [ Html.Attributes.class "card-header" ]
+                [ text example.title ]
             , div
-                [ Html.Attributes.class "card-content" ]
-                (highlightedExpressionView example.expression Nothing)
-            ]
-        , div
-            [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
-            ]
-            [ case List.head lc.examples of
-                Just head ->
-                    if head == example then
-                        div [] []
-
-                    else
-                        button
-                            [ Html.Attributes.class "btn btn-lg text-white"
-                            , Html.Attributes.style "background-color" "#6f42c1"
-                            , onClick Prev
-                            ]
-                            [ text "<<"
-                            ]
-
-                Nothing ->
-                    text ""
-            , let
-                lastIndex =
-                    List.length lc.examples - 1
-              in
-              case get lastIndex lc.examples of
-                Just last ->
-                    if last == example then
-                        button
-                            [ Html.Attributes.class "btn btn-lg text-white"
-                            , Html.Attributes.style "background-color" "#6f42c1"
-                            , onClick ShuffleExercises
-                            ]
-                            [ text "Quiz starten"
-                            ]
-
-                    else
-                        button
-                            [ Html.Attributes.class "btn btn-lg text-white"
-                            , Html.Attributes.style "background-color" "#6f42c1"
-                            , onClick Next
-                            ]
-                            [ text ">>"
-                            ]
-
-                Nothing ->
-                    text ""
-            ]
-        ]
-
-
-runningQuizView : Lecture -> Exercise -> Html Msg
-runningQuizView l e =
-    div [ Html.Attributes.class "m-2" ]
-        [ h4 []
-            [ text l.title
-            ]
-        , div
-            []
-            [ excerciseView e
-            ]
-        ]
-
-
-excerciseView : Exercise -> Html Msg
-excerciseView exercise =
-    div [ Html.Attributes.class "card m-2 fixed-bottom" ]
-        (case exercise of
-            SingleExpression singleExpression ->
+                [ Html.Attributes.class "card-body" ]
                 [ div
-                    [ Html.Attributes.class "card-header text-center" ]
-                    [ text singleExpression.title
-                    ]
+                    [ Html.Attributes.class "card-title" ]
+                    [ text (Maybe.withDefault "" example.description) ]
                 , div
-                    [ Html.Attributes.class "card-body" ]
-                    [ div
-                        [ Html.Attributes.class "card-title" ]
-                        [ text
-                            (case singleExpression.description of
-                                Just d ->
-                                    d
-
-                                Nothing ->
-                                    ""
-                            )
-                        ]
-                    , div
-                        [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView singleExpression.expression Nothing)
-                    ]
-                , runningExerciseAnswerView exercise singleExpression.answers
+                    [ Html.Attributes.class "card-content" ]
+                    (highlightedExpressionView example.expression Nothing)
                 ]
+            , div
+                [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
+                ]
+                [ case List.head lc.examples of
+                    Just head ->
+                        if head == example then
+                            div [] []
 
-            BinaryExpression binaryExpression ->
-                [ div
-                    [ Html.Attributes.class "card-header text-center" ]
-                    [ text binaryExpression.title
-                    ]
-                , div
-                    [ Html.Attributes.class "card-body" ]
-                    [ div
-                        [ Html.Attributes.class "card-title" ]
-                        [ text
-                            (case binaryExpression.description of
-                                Just d ->
-                                    d
-
-                                Nothing ->
-                                    ""
-                            )
-                        ]
-                    , div
-                        [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView
-                            (String.join
-                                " "
-                                [ binaryExpression.leftExpression
-                                , binaryExpression.operator
-                                , binaryExpression.rightExpression
+                        else
+                            button
+                                [ Html.Attributes.class "btn btn-lg text-white"
+                                , Html.Attributes.style "background-color" "#6f42c1"
+                                , onClick Prev
                                 ]
-                            )
-                            Nothing
-                        )
-                    ]
-                , runningExerciseAnswerView exercise binaryExpression.answers
+                                [ text "<<"
+                                ]
+
+                    Nothing ->
+                        text ""
+                , let
+                    lastIndex =
+                        List.length lc.examples - 1
+                  in
+                  case get lastIndex lc.examples of
+                    Just last ->
+                        if last == example then
+                            button
+                                [ Html.Attributes.class "btn btn-lg text-white"
+                                , Html.Attributes.style "background-color" "#6f42c1"
+                                , onClick ShuffleExercises
+                                ]
+                                [ text "Quiz starten"
+                                ]
+
+                        else
+                            button
+                                [ Html.Attributes.class "btn btn-lg text-white"
+                                , Html.Attributes.style "background-color" "#6f42c1"
+                                , onClick Next
+                                ]
+                                [ text ">>"
+                                ]
+
+                    Nothing ->
+                        text ""
                 ]
+            ]
+        ]
 
-            FunctionExpression functionExpression ->
-                [ div
-                    [ Html.Attributes.class "card-header text-center" ]
-                    [ text functionExpression.title
-                    ]
-                , div
-                    [ Html.Attributes.class "card-body" ]
+
+exerciseView : Exercise -> Html Msg
+exerciseView exercise =
+    Html.footer
+        [ Html.Attributes.class "mt-auto m-2" ]
+        [ div
+            [ Html.Attributes.class "card" ]
+            (case exercise of
+                SingleExpression singleExpression ->
                     [ div
-                        [ Html.Attributes.class "card-title" ]
-                        [ text
-                            (case functionExpression.description of
-                                Just d ->
-                                    d
-
-                                Nothing ->
-                                    ""
-                            )
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ text singleExpression.title
                         ]
                     , div
-                        [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView
-                            (functionExpression.functionName
-                                ++ " "
-                                ++ String.join " " functionExpression.arguments
-                            )
-                            Nothing
-                        )
-                    ]
-                , runningExerciseAnswerView exercise functionExpression.answers
-                ]
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text
+                                (case singleExpression.description of
+                                    Just d ->
+                                        d
 
-            GuardExpression guardExpression ->
-                [ div
-                    [ Html.Attributes.class "card-header text-center" ]
-                    [ text guardExpression.title
+                                    Nothing ->
+                                        ""
+                                )
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView singleExpression.expression Nothing)
+                        ]
+                    , runningExerciseAnswerView exercise singleExpression.answers
                     ]
-                , div
-                    [ Html.Attributes.class "card-body" ]
+
+                BinaryExpression binaryExpression ->
                     [ div
-                        [ Html.Attributes.class "card-title" ]
-                        [ text
-                            (case guardExpression.description of
-                                Just d ->
-                                    d
-
-                                Nothing ->
-                                    ""
-                            )
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ text binaryExpression.title
                         ]
                     , div
-                        [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView
-                            (guardExpression.functionName
-                                ++ " "
-                                ++ String.join " " guardExpression.arguments
-                                ++ guardExpression.expression
-                            )
-                            Nothing
-                        )
-                    ]
-                , runningExerciseAnswerView exercise guardExpression.answers
-                ]
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text
+                                (case binaryExpression.description of
+                                    Just d ->
+                                        d
 
-            PatternMatchingExpression patternMatchingExpression ->
-                [ div
-                    [ Html.Attributes.class "card-header text-center" ]
-                    [ text patternMatchingExpression.title
-                    ]
-                , div
-                    [ Html.Attributes.class "card-body" ]
-                    [ div
-                        [ Html.Attributes.class "card-title" ]
-                        [ text
-                            (case patternMatchingExpression.description of
-                                Just d ->
-                                    d
-
-                                Nothing ->
-                                    ""
+                                    Nothing ->
+                                        ""
+                                )
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView
+                                (String.join
+                                    " "
+                                    [ binaryExpression.leftExpression
+                                    , binaryExpression.operator
+                                    , binaryExpression.rightExpression
+                                    ]
+                                )
+                                Nothing
                             )
                         ]
-                    , div
-                        [ Html.Attributes.class "card-content" ]
-                        (highlightedExpressionView
-                            (String.join "\n" patternMatchingExpression.patterns)
-                            Nothing
-                        )
+                    , runningExerciseAnswerView exercise binaryExpression.answers
                     ]
-                , runningExerciseAnswerView exercise patternMatchingExpression.answers
-                ]
-        )
+
+                FunctionExpression functionExpression ->
+                    [ div
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ text functionExpression.title
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text
+                                (case functionExpression.description of
+                                    Just d ->
+                                        d
+
+                                    Nothing ->
+                                        ""
+                                )
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView
+                                (functionExpression.functionName
+                                    ++ " "
+                                    ++ String.join " " functionExpression.arguments
+                                )
+                                Nothing
+                            )
+                        ]
+                    , runningExerciseAnswerView exercise functionExpression.answers
+                    ]
+
+                GuardExpression guardExpression ->
+                    [ div
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ text guardExpression.title
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text
+                                (case guardExpression.description of
+                                    Just d ->
+                                        d
+
+                                    Nothing ->
+                                        ""
+                                )
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView
+                                (guardExpression.functionName
+                                    ++ " "
+                                    ++ String.join " " guardExpression.arguments
+                                    ++ guardExpression.expression
+                                )
+                                Nothing
+                            )
+                        ]
+                    , runningExerciseAnswerView exercise guardExpression.answers
+                    ]
+
+                PatternMatchingExpression patternMatchingExpression ->
+                    [ div
+                        [ Html.Attributes.class "card-header text-center" ]
+                        [ text patternMatchingExpression.title
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text
+                                (case patternMatchingExpression.description of
+                                    Just d ->
+                                        d
+
+                                    Nothing ->
+                                        ""
+                                )
+                            ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView
+                                (String.join "\n" patternMatchingExpression.patterns)
+                                Nothing
+                            )
+                        ]
+                    , runningExerciseAnswerView exercise patternMatchingExpression.answers
+                    ]
+            )
+        ]
 
 
 runningExerciseAnswerView : Exercise -> List Answer -> Html Msg
@@ -1437,82 +1426,85 @@ finishedLectureFooter =
 
 header : Maybe User -> Maybe Course -> Html Msg
 header user course =
-    nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
-        [ div
-            [ Html.Attributes.class "container-fluid" ]
-            [ a
-                [ Html.Attributes.class "navbar-brand" ]
-                [ Img.logo
-                ]
-            , h5
-                []
-                [ text (Maybe.withDefault "" (Maybe.map .name user))
-                ]
-            , Maybe.withDefault (text "")
-                (Maybe.map
-                    (\us ->
-                        if List.length us.badges == 0 then
-                            text ""
-
-                        else
-                            div
-                                [ Html.Attributes.class "bg-success rounded" ]
-                                [ Html.span
-                                    [ Html.Attributes.class "badge badge-pill" ]
-                                    [ text (String.fromInt (List.length us.badges))
-                                    , Img.badgeSvg
-                                    ]
-                                ]
-                    )
-                    user
-                )
-            , button
-                [ Html.Attributes.class "navbar-toggler"
-                , Html.Attributes.attribute "data-bs-toggle" "collapse"
-                , Html.Attributes.attribute "data-bs-target" "#navbarNav"
-                ]
-                [ Html.span
-                    [ Html.Attributes.class "navbar-toggler-icon"
+    Html.header
+        []
+        [ nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
+            [ div
+                [ Html.Attributes.class "container-fluid" ]
+                [ a
+                    [ Html.Attributes.class "navbar-brand" ]
+                    [ Img.logo
                     ]
+                , h5
                     []
-                ]
-            , div
-                [ Html.Attributes.class "collapse navbar-collapse"
-                , Html.Attributes.id "navbarNav"
-                ]
-                [ Html.ul
-                    [ Html.Attributes.class "navbar-nav" ]
-                    [ case user of
-                        Just _ ->
-                            Html.li
-                                [ Html.Attributes.class "nav-item" ]
-                                [ a
-                                    [ Html.Attributes.class "nav-link"
-                                    , onClick GoToCoursesOverview
-                                    ]
-                                    [ text "Kursübersicht"
-                                    ]
-                                ]
+                    [ text (Maybe.withDefault "" (Maybe.map .name user))
+                    ]
+                , Maybe.withDefault (text "")
+                    (Maybe.map
+                        (\us ->
+                            if List.length us.badges == 0 then
+                                text ""
 
-                        Nothing ->
-                            text ""
-                    , case course of
-                        Just c ->
-                            Html.li
-                                [ Html.Attributes.class "nav-item" ]
-                                [ a
-                                    [ Html.Attributes.class "nav-link"
-                                    , Html.Attributes.classList
-                                        [ ( "nav-link", True )
+                            else
+                                div
+                                    [ Html.Attributes.class "bg-success rounded" ]
+                                    [ Html.span
+                                        [ Html.Attributes.class "badge badge-pill" ]
+                                        [ text (String.fromInt (List.length us.badges))
+                                        , Img.badgeSvg
                                         ]
-                                    , onClick (SelectCourse c)
                                     ]
-                                    [ text c.title
+                        )
+                        user
+                    )
+                , button
+                    [ Html.Attributes.class "navbar-toggler"
+                    , Html.Attributes.attribute "data-bs-toggle" "collapse"
+                    , Html.Attributes.attribute "data-bs-target" "#navbarNav"
+                    ]
+                    [ Html.span
+                        [ Html.Attributes.class "navbar-toggler-icon"
+                        ]
+                        []
+                    ]
+                , div
+                    [ Html.Attributes.class "collapse navbar-collapse"
+                    , Html.Attributes.id "navbarNav"
+                    ]
+                    [ Html.ul
+                        [ Html.Attributes.class "navbar-nav" ]
+                        [ case user of
+                            Just _ ->
+                                Html.li
+                                    [ Html.Attributes.class "nav-item" ]
+                                    [ a
+                                        [ Html.Attributes.class "nav-link"
+                                        , onClick GoToCoursesOverview
+                                        ]
+                                        [ text "Kursübersicht"
+                                        ]
                                     ]
-                                ]
 
-                        Nothing ->
-                            text ""
+                            Nothing ->
+                                text ""
+                        , case course of
+                            Just c ->
+                                Html.li
+                                    [ Html.Attributes.class "nav-item" ]
+                                    [ a
+                                        [ Html.Attributes.class "nav-link"
+                                        , Html.Attributes.classList
+                                            [ ( "nav-link", True )
+                                            ]
+                                        , onClick (SelectCourse c)
+                                        ]
+                                        [ text c.title
+                                        ]
+                                    ]
+
+                            Nothing ->
+                                text ""
+                        ]
                     ]
                 ]
             ]

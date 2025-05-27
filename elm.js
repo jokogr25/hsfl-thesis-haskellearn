@@ -6986,6 +6986,9 @@ var $author$project$Main$update = F2(
 var $author$project$Main$AddBadge = function (a) {
 	return {$: 'AddBadge', a: a};
 };
+var $author$project$Main$EnteringName = function (a) {
+	return {$: 'EnteringName', a: a};
+};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -7479,6 +7482,16 @@ var $author$project$Main$coursesOverview = F2(
 					$author$project$Main$foot
 				]));
 	});
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
+var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$code = _VirtualDom_node('code');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$HCode = function (a) {
 	return {$: 'HCode', a: a};
@@ -9750,17 +9763,6 @@ var $elm$html$Html$pre = _VirtualDom_node('pre');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Add = {$: 'Add'};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Del = {$: 'Del'};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Normal = {$: 'Normal'};
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$requiredStyleToString = function (required) {
 	return 'elmsh' + function () {
 		switch (required.$) {
@@ -9808,6 +9810,56 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$fragmentView = func
 				$elm$html$Html$text(text)
 			]));
 };
+var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(
+	function (start, index, _v0) {
+		var fragments = _v0.fragments;
+		var highlight = _v0.highlight;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$classList(
+					_List_fromArray(
+						[
+							_Utils_Tuple2('elmsh-line', true),
+							_Utils_Tuple2(
+							'elmsh-hl',
+							_Utils_eq(
+								highlight,
+								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Normal))),
+							_Utils_Tuple2(
+							'elmsh-add',
+							_Utils_eq(
+								highlight,
+								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Add))),
+							_Utils_Tuple2(
+							'elmsh-del',
+							_Utils_eq(
+								highlight,
+								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Del)))
+						])),
+					A2(
+					$elm$html$Html$Attributes$attribute,
+					'data-elmsh-lc',
+					$elm$core$String$fromInt(start + index))
+				]),
+			A2($elm$core$List$map, $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$fragmentView, fragments));
+	});
+var $elm$core$List$singleton = function (value) {
+	return _List_fromArray(
+		[value]);
+};
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml = function (lines) {
 	return A2(
 		$elm$html$Html$code,
@@ -9852,10 +9904,42 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml = func
 				},
 				lines)));
 };
-var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toInlineHtml = function (_v0) {
-	var lines = _v0.a;
-	return $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml(lines);
-};
+var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toBlockHtml = F2(
+	function (maybeStart, lines) {
+		if (maybeStart.$ === 'Nothing') {
+			return A2(
+				$elm$html$Html$pre,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('elmsh')
+					]),
+				_List_fromArray(
+					[
+						$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml(lines)
+					]));
+		} else {
+			var start = maybeStart.a;
+			return A2(
+				$elm$html$Html$pre,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('elmsh')
+					]),
+				$elm$core$List$singleton(
+					A2(
+						$elm$html$Html$code,
+						_List_Nil,
+						A2(
+							$elm$core$List$indexedMap,
+							$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView(start),
+							lines))));
+		}
+	});
+var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toBlockHtml = F2(
+	function (maybeStart, _v0) {
+		var lines = _v0.a;
+		return A2($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toBlockHtml, maybeStart, lines);
+	});
 var $elm$virtual_dom$VirtualDom$node = function (tag) {
 	return _VirtualDom_node(
 		_VirtualDom_noScript(tag));
@@ -9881,6 +9965,40 @@ var $elm$core$Result$withDefault = F2(
 			return def;
 		}
 	});
+var $author$project$Main$highlightedExpressionView = F2(
+	function (expression, line) {
+		return _List_fromArray(
+			[
+				$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$useTheme($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$gitHub),
+				A2(
+				$elm$core$Result$withDefault,
+				A2(
+					$elm$html$Html$pre,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$code,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(expression)
+								]))
+						])),
+				A2(
+					$elm$core$Result$map,
+					$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toBlockHtml(line),
+					$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$elm(expression)))
+			]);
+	});
+var $author$project$Main$SelectAnswer = F2(
+	function (a, b) {
+		return {$: 'SelectAnswer', a: a, b: b};
+	});
+var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toInlineHtml = function (_v0) {
+	var lines = _v0.a;
+	return $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml(lines);
+};
 var $author$project$Main$highlightedInlineView = function (expression) {
 	return _List_fromArray(
 		[
@@ -9905,6 +10023,321 @@ var $author$project$Main$highlightedInlineView = function (expression) {
 				$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toInlineHtml,
 				$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$elm(expression)))
 		]);
+};
+var $author$project$Main$runningExerciseAnswerView = F2(
+	function (exercise, answers) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card-footer btn-toolbar d-flex gap-2')
+				]),
+			A2(
+				$elm$core$List$map,
+				function (answer) {
+					return A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-lg bg-white btn-outline-dark w-100'),
+								$elm$html$Html$Events$onClick(
+								A2($author$project$Main$SelectAnswer, exercise, answer))
+							]),
+						$author$project$Main$highlightedInlineView(answer.code));
+				},
+				answers));
+	});
+var $author$project$Main$exerciseView = function (exercise) {
+	return A2(
+		$elm$html$Html$footer,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('mt-auto m-2')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card')
+					]),
+				function () {
+					switch (exercise.$) {
+						case 'SingleExpression':
+							var singleExpression = exercise.a;
+							return _List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-header text-center')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(singleExpression.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-body')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-title')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													function () {
+														var _v1 = singleExpression.description;
+														if (_v1.$ === 'Just') {
+															var d = _v1.a;
+															return d;
+														} else {
+															return '';
+														}
+													}())
+												])),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-content')
+												]),
+											A2($author$project$Main$highlightedExpressionView, singleExpression.expression, $elm$core$Maybe$Nothing))
+										])),
+									A2($author$project$Main$runningExerciseAnswerView, exercise, singleExpression.answers)
+								]);
+						case 'BinaryExpression':
+							var binaryExpression = exercise.a;
+							return _List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-header text-center')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(binaryExpression.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-body')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-title')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													function () {
+														var _v2 = binaryExpression.description;
+														if (_v2.$ === 'Just') {
+															var d = _v2.a;
+															return d;
+														} else {
+															return '';
+														}
+													}())
+												])),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-content')
+												]),
+											A2(
+												$author$project$Main$highlightedExpressionView,
+												A2(
+													$elm$core$String$join,
+													' ',
+													_List_fromArray(
+														[binaryExpression.leftExpression, binaryExpression.operator, binaryExpression.rightExpression])),
+												$elm$core$Maybe$Nothing))
+										])),
+									A2($author$project$Main$runningExerciseAnswerView, exercise, binaryExpression.answers)
+								]);
+						case 'FunctionExpression':
+							var functionExpression = exercise.a;
+							return _List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-header text-center')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(functionExpression.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-body')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-title')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													function () {
+														var _v3 = functionExpression.description;
+														if (_v3.$ === 'Just') {
+															var d = _v3.a;
+															return d;
+														} else {
+															return '';
+														}
+													}())
+												])),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-content')
+												]),
+											A2(
+												$author$project$Main$highlightedExpressionView,
+												functionExpression.functionName + (' ' + A2($elm$core$String$join, ' ', functionExpression._arguments)),
+												$elm$core$Maybe$Nothing))
+										])),
+									A2($author$project$Main$runningExerciseAnswerView, exercise, functionExpression.answers)
+								]);
+						case 'GuardExpression':
+							var guardExpression = exercise.a;
+							return _List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-header text-center')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(guardExpression.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-body')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-title')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													function () {
+														var _v4 = guardExpression.description;
+														if (_v4.$ === 'Just') {
+															var d = _v4.a;
+															return d;
+														} else {
+															return '';
+														}
+													}())
+												])),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-content')
+												]),
+											A2(
+												$author$project$Main$highlightedExpressionView,
+												guardExpression.functionName + (' ' + (A2($elm$core$String$join, ' ', guardExpression._arguments) + guardExpression.expression)),
+												$elm$core$Maybe$Nothing))
+										])),
+									A2($author$project$Main$runningExerciseAnswerView, exercise, guardExpression.answers)
+								]);
+						default:
+							var patternMatchingExpression = exercise.a;
+							return _List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-header text-center')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(patternMatchingExpression.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('card-body')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-title')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(
+													function () {
+														var _v5 = patternMatchingExpression.description;
+														if (_v5.$ === 'Just') {
+															var d = _v5.a;
+															return d;
+														} else {
+															return '';
+														}
+													}())
+												])),
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('card-content')
+												]),
+											A2(
+												$author$project$Main$highlightedExpressionView,
+												A2($elm$core$String$join, '\n', patternMatchingExpression.patterns),
+												$elm$core$Maybe$Nothing))
+										])),
+									A2($author$project$Main$runningExerciseAnswerView, exercise, patternMatchingExpression.answers)
+								]);
+					}
+				}())
+			]));
 };
 var $author$project$Main$finishedExerciseAnswerView = F2(
 	function (answers, studentAnswer) {
@@ -9991,107 +10424,6 @@ var $author$project$Main$finishedLectureFooter = A2(
 				]))
 		]));
 var $elm$html$Html$h5 = _VirtualDom_node('h5');
-var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView = F3(
-	function (start, index, _v0) {
-		var fragments = _v0.fragments;
-		var highlight = _v0.highlight;
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$classList(
-					_List_fromArray(
-						[
-							_Utils_Tuple2('elmsh-line', true),
-							_Utils_Tuple2(
-							'elmsh-hl',
-							_Utils_eq(
-								highlight,
-								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Normal))),
-							_Utils_Tuple2(
-							'elmsh-add',
-							_Utils_eq(
-								highlight,
-								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Add))),
-							_Utils_Tuple2(
-							'elmsh-del',
-							_Utils_eq(
-								highlight,
-								$elm$core$Maybe$Just($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Del)))
-						])),
-					A2(
-					$elm$html$Html$Attributes$attribute,
-					'data-elmsh-lc',
-					$elm$core$String$fromInt(start + index))
-				]),
-			A2($elm$core$List$map, $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$fragmentView, fragments));
-	});
-var $elm$core$List$singleton = function (value) {
-	return _List_fromArray(
-		[value]);
-};
-var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toBlockHtml = F2(
-	function (maybeStart, lines) {
-		if (maybeStart.$ === 'Nothing') {
-			return A2(
-				$elm$html$Html$pre,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('elmsh')
-					]),
-				_List_fromArray(
-					[
-						$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toInlineHtml(lines)
-					]));
-		} else {
-			var start = maybeStart.a;
-			return A2(
-				$elm$html$Html$pre,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('elmsh')
-					]),
-				$elm$core$List$singleton(
-					A2(
-						$elm$html$Html$code,
-						_List_Nil,
-						A2(
-							$elm$core$List$indexedMap,
-							$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$lineView(start),
-							lines))));
-		}
-	});
-var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toBlockHtml = F2(
-	function (maybeStart, _v0) {
-		var lines = _v0.a;
-		return A2($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$toBlockHtml, maybeStart, lines);
-	});
-var $author$project$Main$highlightedExpressionView = F2(
-	function (expression, line) {
-		return _List_fromArray(
-			[
-				$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$useTheme($pablohirafuji$elm_syntax_highlight$SyntaxHighlight$gitHub),
-				A2(
-				$elm$core$Result$withDefault,
-				A2(
-					$elm$html$Html$pre,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$code,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(expression)
-								]))
-						])),
-				A2(
-					$elm$core$Result$map,
-					$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$toBlockHtml(line),
-					$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$elm(expression)))
-			]);
-	});
 var $author$project$Main$finishedExerciseView = F2(
 	function (exercise, answer) {
 		switch (exercise.$) {
@@ -10454,6 +10786,7 @@ var $author$project$Main$get = F2(
 	});
 var $author$project$Main$GoToCoursesOverview = {$: 'GoToCoursesOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
@@ -10558,284 +10891,182 @@ var $elm$core$Maybe$withDefault = F2(
 var $author$project$Main$header = F2(
 	function (user, course) {
 		return A2(
-			$elm$html$Html$nav,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('navbar navbar-expand-lg bg-body-tertiary')
-				]),
+			$elm$html$Html$header,
+			_List_Nil,
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$div,
+					$elm$html$Html$nav,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('container-fluid')
+							$elm$html$Html$Attributes$class('navbar navbar-expand-lg bg-body-tertiary')
 						]),
 					_List_fromArray(
 						[
 							A2(
-							$elm$html$Html$a,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('navbar-brand')
-								]),
-							_List_fromArray(
-								[$author$project$Images$Images$logo])),
-							A2(
-							$elm$html$Html$h5,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(
-									A2(
-										$elm$core$Maybe$withDefault,
-										'',
-										A2(
-											$elm$core$Maybe$map,
-											function ($) {
-												return $.name;
-											},
-											user)))
-								])),
-							A2(
-							$elm$core$Maybe$withDefault,
-							$elm$html$Html$text(''),
-							A2(
-								$elm$core$Maybe$map,
-								function (us) {
-									return (!$elm$core$List$length(us.badges)) ? $elm$html$Html$text('') : A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('bg-success rounded')
-											]),
-										_List_fromArray(
-											[
-												A2(
-												$elm$html$Html$span,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('badge badge-pill')
-													]),
-												_List_fromArray(
-													[
-														$elm$html$Html$text(
-														$elm$core$String$fromInt(
-															$elm$core$List$length(us.badges))),
-														$author$project$Images$Images$badgeSvg
-													]))
-											]));
-								},
-								user)),
-							A2(
-							$elm$html$Html$button,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('navbar-toggler'),
-									A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
-									A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$span,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('navbar-toggler-icon')
-										]),
-									_List_Nil)
-								])),
-							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('collapse navbar-collapse'),
-									$elm$html$Html$Attributes$id('navbarNav')
+									$elm$html$Html$Attributes$class('container-fluid')
 								]),
 							_List_fromArray(
 								[
 									A2(
-									$elm$html$Html$ul,
+									$elm$html$Html$a,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('navbar-nav')
+											$elm$html$Html$Attributes$class('navbar-brand')
+										]),
+									_List_fromArray(
+										[$author$project$Images$Images$logo])),
+									A2(
+									$elm$html$Html$h5,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text(
+											A2(
+												$elm$core$Maybe$withDefault,
+												'',
+												A2(
+													$elm$core$Maybe$map,
+													function ($) {
+														return $.name;
+													},
+													user)))
+										])),
+									A2(
+									$elm$core$Maybe$withDefault,
+									$elm$html$Html$text(''),
+									A2(
+										$elm$core$Maybe$map,
+										function (us) {
+											return (!$elm$core$List$length(us.badges)) ? $elm$html$Html$text('') : A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('bg-success rounded')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('badge badge-pill')
+															]),
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$elm$core$String$fromInt(
+																	$elm$core$List$length(us.badges))),
+																$author$project$Images$Images$badgeSvg
+															]))
+													]));
+										},
+										user)),
+									A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('navbar-toggler'),
+											A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
+											A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
 										]),
 									_List_fromArray(
 										[
-											function () {
-											if (user.$ === 'Just') {
-												return A2(
-													$elm$html$Html$li,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$class('nav-item')
-														]),
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$a,
+											A2(
+											$elm$html$Html$span,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('navbar-toggler-icon')
+												]),
+											_List_Nil)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('collapse navbar-collapse'),
+											$elm$html$Html$Attributes$id('navbarNav')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$ul,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('navbar-nav')
+												]),
+											_List_fromArray(
+												[
+													function () {
+													if (user.$ === 'Just') {
+														return A2(
+															$elm$html$Html$li,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('nav-link'),
-																	$elm$html$Html$Events$onClick($author$project$Main$GoToCoursesOverview)
+																	$elm$html$Html$Attributes$class('nav-item')
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text('Kursübersicht')
-																]))
-														]));
-											} else {
-												return $elm$html$Html$text('');
-											}
-										}(),
-											function () {
-											if (course.$ === 'Just') {
-												var c = course.a;
-												return A2(
-													$elm$html$Html$li,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$class('nav-item')
-														]),
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$a,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('nav-link'),
-																	$elm$html$Html$Attributes$classList(
+																	A2(
+																	$elm$html$Html$a,
 																	_List_fromArray(
 																		[
-																			_Utils_Tuple2('nav-link', true)
-																		])),
-																	$elm$html$Html$Events$onClick(
-																	$author$project$Main$SelectCourse(c))
+																			$elm$html$Html$Attributes$class('nav-link'),
+																			$elm$html$Html$Events$onClick($author$project$Main$GoToCoursesOverview)
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Kursübersicht')
+																		]))
+																]));
+													} else {
+														return $elm$html$Html$text('');
+													}
+												}(),
+													function () {
+													if (course.$ === 'Just') {
+														var c = course.a;
+														return A2(
+															$elm$html$Html$li,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('nav-item')
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text(c.title)
-																]))
-														]));
-											} else {
-												return $elm$html$Html$text('');
-											}
-										}()
+																	A2(
+																	$elm$html$Html$a,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('nav-link'),
+																			$elm$html$Html$Attributes$classList(
+																			_List_fromArray(
+																				[
+																					_Utils_Tuple2('nav-link', true)
+																				])),
+																			$elm$html$Html$Events$onClick(
+																			$author$project$Main$SelectCourse(c))
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text(c.title)
+																		]))
+																]));
+													} else {
+														return $elm$html$Html$text('');
+													}
+												}()
+												]))
 										]))
 								]))
 						]))
 				]));
 	});
-var $author$project$Main$EnteringName = function (a) {
-	return {$: 'EnteringName', a: a};
-};
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
-	});
-var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
 var $elm$html$Html$Attributes$hidden = $elm$html$Html$Attributes$boolProperty('hidden');
 var $elm$html$Html$input = _VirtualDom_node('input');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $author$project$Main$landingPage = F2(
-	function (mu, me) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('fixed-bottom m-2')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('alert bg-danger-subtle'),
-							$elm$html$Html$Attributes$hidden(
-							function () {
-								if (me.$ === 'Just') {
-									var error = me.a;
-									return false;
-								} else {
-									return true;
-								}
-							}())
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Dein Name muss mindestens drei Zeichen lang sein.')
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('mb-1')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$input,
-							_List_fromArray(
-								[
-									$elm$html$Html$Events$onInput($author$project$Main$EnteringName),
-									$elm$html$Html$Attributes$placeholder('Gib deinen Namen ein'),
-									$elm$html$Html$Attributes$type_('text'),
-									$elm$html$Html$Attributes$class('form-control form-control-lg')
-								]),
-							_List_Nil)
-						])),
-					A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick($author$project$Main$EnteringNameDone),
-							$elm$html$Html$Attributes$class('btn btn-lg w-100 text-white'),
-							A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-							$author$project$Main$checkUsername(mu) ? A2($elm$html$Html$Attributes$style, '', '') : $elm$html$Html$Attributes$disabled(true)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Start')
-						]))
-				]));
-	});
 var $author$project$Main$StartLecture = {$: 'StartLecture'};
 var $author$project$Main$lectureView = function (l) {
 	return A2(
@@ -10895,14 +11126,46 @@ var $author$project$Main$lectureView = function (l) {
 					]))
 			]));
 };
-var $elm$core$Debug$log = _Debug_log;
+var $elm$html$Html$main_ = _VirtualDom_node('main');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $author$project$Main$learningExampleView = F2(
 	function (lc, example) {
 		return A2(
-			$elm$html$Html$div,
+			$elm$html$Html$footer,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('card m-2 fixed-bottom')
+					$elm$html$Html$Attributes$class('mt-auto m-2')
 				]),
 			_List_fromArray(
 				[
@@ -10910,17 +11173,7 @@ var $author$project$Main$learningExampleView = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('card-header')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(example.title)
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('card-body')
+							$elm$html$Html$Attributes$class('card')
 						]),
 					_List_fromArray(
 						[
@@ -10928,81 +11181,100 @@ var $author$project$Main$learningExampleView = F2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card-title')
+									$elm$html$Html$Attributes$class('card-header')
 								]),
 							_List_fromArray(
 								[
-									$elm$html$Html$text(
-									A2($elm$core$Maybe$withDefault, '', example.description))
+									$elm$html$Html$text(example.title)
 								])),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card-content')
+									$elm$html$Html$Attributes$class('card-body')
 								]),
-							A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
-						]),
-					_List_fromArray(
-						[
-							function () {
-							var _v0 = $elm$core$List$head(lc.examples);
-							if (_v0.$ === 'Just') {
-								var head = _v0.a;
-								return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
-									$elm$html$Html$button,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-											$elm$html$Html$Events$onClick($author$project$Main$Prev)
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('<<')
-										]));
-							} else {
-								return $elm$html$Html$text('');
-							}
-						}(),
-							function () {
-							var lastIndex = $elm$core$List$length(lc.examples) - 1;
-							var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
-							if (_v1.$ === 'Just') {
-								var last = _v1.a;
-								return _Utils_eq(last, example) ? A2(
-									$elm$html$Html$button,
+											$elm$html$Html$text(
+											A2($elm$core$Maybe$withDefault, '', example.description))
+										])),
+									A2(
+									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-											$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Quiz starten')
-										])) : A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-											$elm$html$Html$Events$onClick($author$project$Main$Next)
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text('>>')
-										]));
-							} else {
-								return $elm$html$Html$text('');
-							}
-						}()
+									A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
+								]),
+							_List_fromArray(
+								[
+									function () {
+									var _v0 = $elm$core$List$head(lc.examples);
+									if (_v0.$ === 'Just') {
+										var head = _v0.a;
+										return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+													$elm$html$Html$Events$onClick($author$project$Main$Prev)
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('<<')
+												]));
+									} else {
+										return $elm$html$Html$text('');
+									}
+								}(),
+									function () {
+									var lastIndex = $elm$core$List$length(lc.examples) - 1;
+									var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
+									if (_v1.$ === 'Just') {
+										var last = _v1.a;
+										return _Utils_eq(last, example) ? A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+													$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('Quiz starten')
+												])) : A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+													$elm$html$Html$Events$onClick($author$project$Main$Next)
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('>>')
+												]));
+									} else {
+										return $elm$html$Html$text('');
+									}
+								}()
+								]))
 						]))
 				]));
 	});
@@ -11011,39 +11283,13 @@ var $author$project$Main$runningLearningContentView = F2(
 		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
 		if (_v0.$ === 'Just') {
 			var example = _v0.a;
-			return A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('m-2 h-100')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$h4,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$elm$html$Html$text(lecture.learningContent.title)
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('overflow-auto')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(lecture.learningContent.description)
-							])),
-						A2($author$project$Main$learningExampleView, lecture.learningContent, example)
-					]));
+			return A2($author$project$Main$learningExampleView, lecture.learningContent, example);
 		} else {
 			return A2(
-				$elm$html$Html$div,
+				$elm$html$Html$footer,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('fixed-bottom m-2')
+						$elm$html$Html$Attributes$class('mt-auto m-2')
 					]),
 				_List_fromArray(
 					[
@@ -11062,566 +11308,325 @@ var $author$project$Main$runningLearningContentView = F2(
 					]));
 		}
 	});
-var $author$project$Main$SelectAnswer = F2(
-	function (a, b) {
-		return {$: 'SelectAnswer', a: a, b: b};
-	});
-var $author$project$Main$runningExerciseAnswerView = F2(
-	function (exercise, answers) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('card-footer btn-toolbar d-flex gap-2')
-				]),
-			A2(
-				$elm$core$List$map,
-				function (answer) {
-					return A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-lg bg-white btn-outline-dark w-100'),
-								$elm$html$Html$Events$onClick(
-								A2($author$project$Main$SelectAnswer, exercise, answer))
-							]),
-						$author$project$Main$highlightedInlineView(answer.code));
-				},
-				answers));
-	});
-var $author$project$Main$excerciseView = function (exercise) {
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('card m-2 fixed-bottom')
+				$elm$html$Html$Attributes$class('d-flex flex-column min-vh-100')
 			]),
 		function () {
-			switch (exercise.$) {
-				case 'SingleExpression':
-					var singleExpression = exercise.a;
+			switch (model.$) {
+				case 'CoursesOverview':
+					var user = model.a;
+					var courses = model.b;
 					return _List_fromArray(
 						[
 							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header text-center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(singleExpression.title)
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-body')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											function () {
-												var _v1 = singleExpression.description;
-												if (_v1.$ === 'Just') {
-													var d = _v1.a;
-													return d;
-												} else {
-													return '';
-												}
-											}())
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2($author$project$Main$highlightedExpressionView, singleExpression.expression, $elm$core$Maybe$Nothing))
-								])),
-							A2($author$project$Main$runningExerciseAnswerView, exercise, singleExpression.answers)
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Nothing),
+							A2($author$project$Main$coursesOverview, user, courses)
 						]);
-				case 'BinaryExpression':
-					var binaryExpression = exercise.a;
+				case 'CoursePage':
+					var user = model.a;
+					var course = model.b;
 					return _List_fromArray(
 						[
 							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header text-center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(binaryExpression.title)
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-body')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											function () {
-												var _v2 = binaryExpression.description;
-												if (_v2.$ === 'Just') {
-													var d = _v2.a;
-													return d;
-												} else {
-													return '';
-												}
-											}())
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2(
-										$author$project$Main$highlightedExpressionView,
-										A2(
-											$elm$core$String$join,
-											' ',
-											_List_fromArray(
-												[binaryExpression.leftExpression, binaryExpression.operator, binaryExpression.rightExpression])),
-										$elm$core$Maybe$Nothing))
-								])),
-							A2($author$project$Main$runningExerciseAnswerView, exercise, binaryExpression.answers)
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
+							A2($author$project$Main$coursePage, user, course)
 						]);
-				case 'FunctionExpression':
-					var functionExpression = exercise.a;
+				case 'LecturePage':
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
 					return _List_fromArray(
 						[
 							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header text-center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(functionExpression.title)
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-body')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											function () {
-												var _v3 = functionExpression.description;
-												if (_v3.$ === 'Just') {
-													var d = _v3.a;
-													return d;
-												} else {
-													return '';
-												}
-											}())
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2(
-										$author$project$Main$highlightedExpressionView,
-										functionExpression.functionName + (' ' + A2($elm$core$String$join, ' ', functionExpression._arguments)),
-										$elm$core$Maybe$Nothing))
-								])),
-							A2($author$project$Main$runningExerciseAnswerView, exercise, functionExpression.answers)
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
+							$author$project$Main$lectureView(lecture)
 						]);
-				case 'GuardExpression':
-					var guardExpression = exercise.a;
+				case 'RunningQuiz':
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					var remainingExercises = model.d;
 					return _List_fromArray(
 						[
 							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header text-center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(guardExpression.title)
-								])),
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
 							A2(
-							$elm$html$Html$div,
+							$elm$html$Html$main_,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card-body')
+									$elm$html$Html$Attributes$class('m-2')
 								]),
 							_List_fromArray(
 								[
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$h4,
+									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											function () {
-												var _v4 = guardExpression.description;
-												if (_v4.$ === 'Just') {
-													var d = _v4.a;
-													return d;
-												} else {
-													return '';
-												}
-											}())
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2(
-										$author$project$Main$highlightedExpressionView,
-										guardExpression.functionName + (' ' + (A2($elm$core$String$join, ' ', guardExpression._arguments) + guardExpression.expression)),
-										$elm$core$Maybe$Nothing))
+											$elm$html$Html$text(lecture.title)
+										]))
 								])),
-							A2($author$project$Main$runningExerciseAnswerView, exercise, guardExpression.answers)
-						]);
-				default:
-					var patternMatchingExpression = exercise.a;
-					return _List_fromArray(
-						[
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header text-center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(patternMatchingExpression.title)
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-body')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											function () {
-												var _v5 = patternMatchingExpression.description;
-												if (_v5.$ === 'Just') {
-													var d = _v5.a;
-													return d;
-												} else {
-													return '';
-												}
-											}())
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2(
-										$author$project$Main$highlightedExpressionView,
-										A2($elm$core$String$join, '\n', patternMatchingExpression.patterns),
-										$elm$core$Maybe$Nothing))
-								])),
-							A2($author$project$Main$runningExerciseAnswerView, exercise, patternMatchingExpression.answers)
-						]);
-			}
-		}());
-};
-var $author$project$Main$runningQuizView = F2(
-	function (l, e) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('m-2')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$h4,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text(l.title)
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$author$project$Main$excerciseView(e)
-						]))
-				]));
-	});
-var $author$project$Main$view = function (model) {
-	switch (model.$) {
-		case 'CoursesOverview':
-			var user = model.a;
-			var courses = model.b;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Nothing),
-						A2($author$project$Main$coursesOverview, user, courses)
-					]));
-		case 'CoursePage':
-			var user = model.a;
-			var course = model.b;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						A2($author$project$Main$coursePage, user, course)
-					]));
-		case 'LecturePage':
-			var user = model.a;
-			var course = model.b;
-			var lecture = model.c;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						$author$project$Main$lectureView(lecture)
-					]));
-		case 'RunningQuiz':
-			var user = model.a;
-			var course = model.b;
-			var lecture = model.c;
-			var remainingExercises = model.d;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						function () {
-						var _v1 = $elm$core$List$head(remainingExercises);
-						if (_v1.$ === 'Just') {
-							var exercise = _v1.a;
-							return A2($author$project$Main$runningQuizView, lecture, exercise);
-						} else {
-							return A2(
-								$elm$html$Html$div,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Hier gehörst du nicht hin!')
-									]));
-						}
-					}()
-					]));
-		case 'WinningQuiz':
-			var user = model.a;
-			var course = model.b;
-			var lecture = model.c;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('fixed-bottom m-2')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$h4,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text(lecture.title)
-									])),
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
-									])),
-								A2(
-								$elm$html$Html$button,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('btn btn-lg text-white w-100'),
-										A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-										$elm$html$Html$Events$onClick(
-										$author$project$Main$AddBadge(lecture.badge))
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Zurück zur Lektion')
-									]))
-							]))
-					]));
-		case 'FinishedQuiz':
-			var user = model.a;
-			var course = model.b;
-			var answeredExercises = model.d;
-			var i = model.e;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						function () {
-						var wrongExercises = A2(
-							$elm$core$List$filter,
-							function (_v5) {
-								var a = _v5.b;
-								return !a.isCorrect;
-							},
-							answeredExercises);
-						if (!wrongExercises.b) {
-							return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
-						} else {
-							var w = wrongExercises;
-							var _v3 = A2($author$project$Main$get, i, w);
-							if (_v3.$ === 'Just') {
-								var _v4 = _v3.a;
-								var exercise = _v4.a;
-								var answer = _v4.b;
+							function () {
+							var _v1 = $elm$core$List$head(remainingExercises);
+							if (_v1.$ === 'Just') {
+								var e = _v1.a;
+								return $author$project$Main$exerciseView(e);
+							} else {
 								return A2(
 									$elm$html$Html$div,
+									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('fixed-bottom m-2')
+											$elm$html$Html$text('Hier gehörst du nicht hin!')
+										]));
+							}
+						}()
+						]);
+				case 'WinningQuiz':
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					return _List_fromArray(
+						[
+							A2(
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
+							A2(
+							$elm$html$Html$main_,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('m-2')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$h4,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text(lecture.title)
+										]))
+								])),
+							A2(
+							$elm$html$Html$footer,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('footer mt-auto m-2')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$p,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
+										])),
+									A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('btn btn-lg text-white w-100'),
+											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+											$elm$html$Html$Events$onClick(
+											$author$project$Main$AddBadge(lecture.badge))
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Zurück zur Lektion')
+										]))
+								]))
+						]);
+				case 'FinishedQuiz':
+					var user = model.a;
+					var course = model.b;
+					var answeredExercises = model.d;
+					var i = model.e;
+					return _List_fromArray(
+						[
+							A2(
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
+							function () {
+							var wrongExercises = A2(
+								$elm$core$List$filter,
+								function (_v5) {
+									var a = _v5.b;
+									return !a.isCorrect;
+								},
+								answeredExercises);
+							if (!wrongExercises.b) {
+								return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
+							} else {
+								var w = wrongExercises;
+								var _v3 = A2($author$project$Main$get, i, w);
+								if (_v3.$ === 'Just') {
+									var _v4 = _v3.a;
+									var exercise = _v4.a;
+									var answer = _v4.b;
+									return A2(
+										$elm$html$Html$footer,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('footer m-2')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('m-2')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text(
+														'Du hast ' + ($elm$core$String$fromInt(
+															$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
+															$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.'))))
+													])),
+												A2($author$project$Main$finishedExerciseView, exercise, answer)
+											]));
+								} else {
+									return $elm$html$Html$text('WARUM IST DAS HIER NULL?!');
+								}
+							}
+						}()
+						]);
+				case 'LearningContentPage':
+					var user = model.a;
+					var course = model.b;
+					var lecture = model.c;
+					var i = model.d;
+					return _List_fromArray(
+						[
+							A2(
+							$author$project$Main$header,
+							$elm$core$Maybe$Just(user),
+							$elm$core$Maybe$Just(course)),
+							A2(
+							$elm$html$Html$main_,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$h4,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text(lecture.learningContent.title)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text(lecture.learningContent.description)
+										]))
+								])),
+							A2($author$project$Main$runningLearningContentView, lecture, i)
+						]);
+				default:
+					var user = model.a;
+					var error = model.b;
+					return _List_fromArray(
+						[
+							A2($author$project$Main$header, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
+							A2(
+							$elm$html$Html$main_,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('main fill-height')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('content')
+										]))
+								])),
+							A2(
+							$elm$html$Html$footer,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('footer mt-auto m-2')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('alert bg-danger-subtle'),
+											$elm$html$Html$Attributes$hidden(
+											function () {
+												if (error.$ === 'Just') {
+													var err = error.a;
+													return false;
+												} else {
+													return true;
+												}
+											}())
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Dein Name muss mindestens drei Zeichen lang sein.')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('mb-1')
 										]),
 									_List_fromArray(
 										[
 											A2(
-											$elm$html$Html$div,
+											$elm$html$Html$input,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('m-2')
+													$elm$html$Html$Events$onInput($author$project$Main$EnteringName),
+													$elm$html$Html$Attributes$placeholder('Gib deinen Namen ein'),
+													$elm$html$Html$Attributes$type_('text'),
+													$elm$html$Html$Attributes$class('form-control form-control-lg')
 												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													'Du hast ' + ($elm$core$String$fromInt(
-														$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
-														$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.'))))
-												])),
-											A2($author$project$Main$finishedExerciseView, exercise, answer)
-										]));
-							} else {
-								return A3(
-									$elm$core$Debug$log,
-									$elm$core$String$fromInt(
-										$elm$core$List$length(wrongExercises)),
-									$elm$html$Html$text,
-									'WARUM IST DAS HIER NULL?!');
-							}
-						}
-					}()
-					]));
-		case 'LearningContentPage':
-			var user = model.a;
-			var course = model.b;
-			var lecture = model.c;
-			var i = model.d;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$author$project$Main$header,
-						$elm$core$Maybe$Just(user),
-						$elm$core$Maybe$Just(course)),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2($author$project$Main$runningLearningContentView, lecture, i)
-							]))
-					]));
-		default:
-			var user = model.a;
-			var course = model.b;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2($author$project$Main$header, $elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
-						A2($author$project$Main$landingPage, user, course)
-					]));
-	}
+											_List_Nil)
+										])),
+									A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Events$onClick($author$project$Main$EnteringNameDone),
+											$elm$html$Html$Attributes$class('btn btn-lg w-100 text-white'),
+											A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+											$elm$html$Html$Attributes$disabled(
+											!$author$project$Main$checkUsername(user))
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Start')
+										]))
+								]))
+						]);
+			}
+		}());
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
