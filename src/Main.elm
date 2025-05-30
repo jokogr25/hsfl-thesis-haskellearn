@@ -636,10 +636,7 @@ view model =
                 , Html.main_
                     [ Html.Attributes.class "main fill-height"
                     ]
-                    [ div
-                        []
-                        [ text "content" ]
-                    ]
+                    []
                 , Html.footer
                     [ Html.Attributes.class "footer mt-auto m-2" ]
                     [ div

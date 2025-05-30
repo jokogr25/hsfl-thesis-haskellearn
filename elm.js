@@ -11931,16 +11931,7 @@ var $author$project$Main$view = function (model) {
 								[
 									$elm$html$Html$Attributes$class('main fill-height')
 								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('content')
-										]))
-								])),
+							_List_Nil),
 							A2(
 							$elm$html$Html$footer,
 							_List_fromArray(
