@@ -889,7 +889,71 @@ runningLearningContentView : Lecture -> Int -> Html Msg
 runningLearningContentView lecture exampleIndex =
     case get exampleIndex lecture.learningContent.examples of
         Just example ->
-            learningExampleView lecture.learningContent example
+            Html.footer
+                [ Html.Attributes.class "mt-auto m-2" ]
+                [ div
+                    [ Html.Attributes.class "card"
+                    ]
+                    [ div
+                        [ Html.Attributes.class "card-header" ]
+                        [ text example.title ]
+                    , div
+                        [ Html.Attributes.class "card-body" ]
+                        [ div
+                            [ Html.Attributes.class "card-title" ]
+                            [ text (Maybe.withDefault "" example.description) ]
+                        , div
+                            [ Html.Attributes.class "card-content" ]
+                            (highlightedExpressionView example.expression Nothing)
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
+                        ]
+                        [ case List.head lecture.learningContent.examples of
+                            Just head ->
+                                if head == example then
+                                    div [] []
+
+                                else
+                                    button
+                                        [ Html.Attributes.class "btn btn-lg text-white"
+                                        , Html.Attributes.style "background-color" "#6f42c1"
+                                        , onClick Prev
+                                        ]
+                                        [ text "<<"
+                                        ]
+
+                            Nothing ->
+                                text ""
+                        , let
+                            lastIndex =
+                                List.length lecture.learningContent.examples - 1
+                          in
+                          case get lastIndex lecture.learningContent.examples of
+                            Just last ->
+                                if last == example then
+                                    button
+                                        [ Html.Attributes.class "btn btn-lg text-white"
+                                        , Html.Attributes.style "background-color" "#6f42c1"
+                                        , onClick ShuffleExercises
+                                        ]
+                                        [ text "Quiz starten"
+                                        ]
+
+                                else
+                                    button
+                                        [ Html.Attributes.class "btn btn-lg text-white"
+                                        , Html.Attributes.style "background-color" "#6f42c1"
+                                        , onClick Next
+                                        ]
+                                        [ text ">>"
+                                        ]
+
+                            Nothing ->
+                                text ""
+                        ]
+                    ]
+                ]
 
         Nothing ->
             Html.footer
@@ -903,75 +967,6 @@ runningLearningContentView lecture exampleIndex =
                     [ text ("Quiz \"" ++ lecture.title ++ "\" starten")
                     ]
                 ]
-
-
-learningExampleView : LearningContent -> LearningExample -> Html Msg
-learningExampleView lc example =
-    Html.footer
-        [ Html.Attributes.class "mt-auto m-2" ]
-        [ div
-            [ Html.Attributes.class "card"
-            ]
-            [ div
-                [ Html.Attributes.class "card-header" ]
-                [ text example.title ]
-            , div
-                [ Html.Attributes.class "card-body" ]
-                [ div
-                    [ Html.Attributes.class "card-title" ]
-                    [ text (Maybe.withDefault "" example.description) ]
-                , div
-                    [ Html.Attributes.class "card-content" ]
-                    (highlightedExpressionView example.expression Nothing)
-                ]
-            , div
-                [ Html.Attributes.class "card-footer d-flex justify-content-between align-items-center"
-                ]
-                [ case List.head lc.examples of
-                    Just head ->
-                        if head == example then
-                            div [] []
-
-                        else
-                            button
-                                [ Html.Attributes.class "btn btn-lg text-white"
-                                , Html.Attributes.style "background-color" "#6f42c1"
-                                , onClick Prev
-                                ]
-                                [ text "<<"
-                                ]
-
-                    Nothing ->
-                        text ""
-                , let
-                    lastIndex =
-                        List.length lc.examples - 1
-                  in
-                  case get lastIndex lc.examples of
-                    Just last ->
-                        if last == example then
-                            button
-                                [ Html.Attributes.class "btn btn-lg text-white"
-                                , Html.Attributes.style "background-color" "#6f42c1"
-                                , onClick ShuffleExercises
-                                ]
-                                [ text "Quiz starten"
-                                ]
-
-                        else
-                            button
-                                [ Html.Attributes.class "btn btn-lg text-white"
-                                , Html.Attributes.style "background-color" "#6f42c1"
-                                , onClick Next
-                                ]
-                                [ text ">>"
-                                ]
-
-                    Nothing ->
-                        text ""
-                ]
-            ]
-        ]
 
 
 exerciseView : Exercise -> Html Msg

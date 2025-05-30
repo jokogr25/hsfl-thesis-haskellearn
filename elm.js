@@ -11545,131 +11545,127 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $author$project$Main$learningExampleView = F2(
-	function (lc, example) {
-		return A2(
-			$elm$html$Html$footer,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('mt-auto m-2')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('card')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-header')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(example.title)
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-body')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-title')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											A2($elm$core$Maybe$withDefault, '', example.description))
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('card-content')
-										]),
-									A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
-								]),
-							_List_fromArray(
-								[
-									function () {
-									var _v0 = $elm$core$List$head(lc.examples);
-									if (_v0.$ === 'Just') {
-										var head = _v0.a;
-										return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
-											$elm$html$Html$button,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-													$elm$html$Html$Events$onClick($author$project$Main$Prev)
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('<<')
-												]));
-									} else {
-										return $elm$html$Html$text('');
-									}
-								}(),
-									function () {
-									var lastIndex = $elm$core$List$length(lc.examples) - 1;
-									var _v1 = A2($author$project$Main$get, lastIndex, lc.examples);
-									if (_v1.$ === 'Just') {
-										var last = _v1.a;
-										return _Utils_eq(last, example) ? A2(
-											$elm$html$Html$button,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-													$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Quiz starten')
-												])) : A2(
-											$elm$html$Html$button,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('btn btn-lg text-white'),
-													A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
-													$elm$html$Html$Events$onClick($author$project$Main$Next)
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('>>')
-												]));
-									} else {
-										return $elm$html$Html$text('');
-									}
-								}()
-								]))
-						]))
-				]));
-	});
 var $author$project$Main$runningLearningContentView = F2(
 	function (lecture, exampleIndex) {
 		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
 		if (_v0.$ === 'Just') {
 			var example = _v0.a;
-			return A2($author$project$Main$learningExampleView, lecture.learningContent, example);
+			return A2(
+				$elm$html$Html$footer,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('mt-auto m-2')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('card')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('card-header')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(example.title)
+									])),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('card-body')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('card-title')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												A2($elm$core$Maybe$withDefault, '', example.description))
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('card-content')
+											]),
+										A2($author$project$Main$highlightedExpressionView, example.expression, $elm$core$Maybe$Nothing))
+									])),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('card-footer d-flex justify-content-between align-items-center')
+									]),
+								_List_fromArray(
+									[
+										function () {
+										var _v1 = $elm$core$List$head(lecture.learningContent.examples);
+										if (_v1.$ === 'Just') {
+											var head = _v1.a;
+											return _Utils_eq(head, example) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+														A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+														$elm$html$Html$Events$onClick($author$project$Main$Prev)
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('<<')
+													]));
+										} else {
+											return $elm$html$Html$text('');
+										}
+									}(),
+										function () {
+										var lastIndex = $elm$core$List$length(lecture.learningContent.examples) - 1;
+										var _v2 = A2($author$project$Main$get, lastIndex, lecture.learningContent.examples);
+										if (_v2.$ === 'Just') {
+											var last = _v2.a;
+											return _Utils_eq(last, example) ? A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+														A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+														$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Quiz starten')
+													])) : A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('btn btn-lg text-white'),
+														A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
+														$elm$html$Html$Events$onClick($author$project$Main$Next)
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('>>')
+													]));
+										} else {
+											return $elm$html$Html$text('');
+										}
+									}()
+									]))
+							]))
+					]));
 		} else {
 			return A2(
 				$elm$html$Html$footer,
