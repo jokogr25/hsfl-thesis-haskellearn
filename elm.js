@@ -6351,25 +6351,25 @@ var $author$project$Main$dataTypesLecture = {
 			},
 				{
 				description: $elm$core$Maybe$Just('Das Schlüsselwort `data` leitet einen neuen Datentyp ein, gefolgt vom Namen. Daann folgenden die möglichen Werte (Typkonstruktoren) des Datentyps, die durch das Pipe-Zeichen (`|`) getrennt sind.'),
-				expression: 'data Auto = Audi \n | BMW \n | Mercedes \n | Tesla \n\n\n x = Mercedes',
+				expression: 'data Auto = Audi \n | BMW \n | Mercedes \n | Tesla \n\nx = Mercedes',
 				id: 0,
 				title: 'Auto-Datentyp'
 			},
 				{
 				description: $elm$core$Maybe$Just('Hier wird ein Datentyp `Person` mit einem Typkonstruktor definiert, der zwei Felder hat: einen `String` für den Namen und einen `Int` für das Alter. Der Ausdruck `joscha = Person \"Joscha\" 20` erstellt eine Instanz des Datentyps `Person` mit dem Namen \"Joscha\" und dem Alter 32.'),
-				expression: 'data Person = Person String Int\n\n\n joscha = Person \"Joscha\" 32',
+				expression: 'data Person = Person String Int\n\njoscha = Person \"Joscha\" 32',
 				id: 1,
 				title: 'Person-Datentyp mit Feldern'
 			},
 				{
 				description: $elm$core$Maybe$Just('Hier wird ein generischer Datentyp `Maybe` definiert, der entweder den Wert `Nothing` oder einen Wert des Typs `a` enthalten kann. Der Ausdruck `x = Just 42` erstellt eine Instanz des Datentyps `Maybe Int`, die den Wert `42` enthält. Der Typ `Maybe` ist ein Beispiel für einen parametrisierten Datentyp, der es ermöglicht, verschiedene Typen zu verwenden.'),
-				expression: 'data Maybe a = Nothing | Just a\n\n\n x = Just 42',
+				expression: 'data Maybe a = Nothing | Just a\n\nx = Just 42',
 				id: 2,
 				title: 'Generische Datentypen - Beispiel Maybe'
 			},
 				{
 				description: $elm$core$Maybe$Just('Hier wird ein generischer Datentyp `List` definiert, der entweder leer (`Nil`) oder ein Element (`Cons a (List a)`) enthalten kann. Der Ausdruck `x = Cons 1 (Cons 2 (Cons 3 Nil))` erstellt eine Instanz des Datentyps `List Int`, die die Werte `1`, `2` und `3` enthält. Dieser Datentyp ist zugleich generisch und rekursiv, da der Typkonstruktor Cons als zweiten Parameter den Typen List selbst enthält.'),
-				expression: 'data List a = Nil | Cons a (List a)\n\n\n x = Cons 1 (Cons 2 (Cons 3 Nil))',
+				expression: 'data List a = Nil | Cons a (List a)\n\nx = Cons 1 (Cons 2 (Cons 3 Nil))',
 				id: 3,
 				title: 'Generische Datentypen - Liste'
 			}
@@ -6461,7 +6461,7 @@ var $author$project$Main$simpleHaskellProgramLecture = {
 		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
 		name: 'Einfaches Haskell-Programm'
 	},
-	description: 'In dieser Lektion',
+	description: 'In dieser Lektion wird ein einfaches Haskell-Programm vorgestellt.',
 	exercises: _List_fromArray(
 		[
 			$author$project$Main$SingleExpression(
