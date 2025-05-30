@@ -6039,9 +6039,14 @@ var $author$project$Main$lecture1 = {
 		[$author$project$Main$exercise1, $author$project$Main$exercise2, $author$project$Main$exercise3, $author$project$Main$exercise4, $author$project$Main$exercise5, $author$project$Main$exercise6, $author$project$Main$exercise7]),
 	id: 1,
 	learningContent: {
-		description: 'In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert.\".',
 		examples: _List_fromArray(
 			[
+				{
+				description: $elm$core$Maybe$Just('In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert.\".'),
+				expression: '',
+				id: 1,
+				title: 'Ausdrücke'
+			},
 				{description: $elm$core$Maybe$Nothing, expression: 'x :: Int\nx = 1', id: 1, title: 'Ganzzahliger Ausdruck'},
 				{description: $elm$core$Maybe$Nothing, expression: 'x :: Float\nx = 1.0', id: 2, title: 'Gleitkommazahl-Ausdruck'},
 				{description: $elm$core$Maybe$Nothing, expression: 'x :: String\nx = \"Hallo\"', id: 3, title: 'String-Ausdruck'},
@@ -6150,7 +6155,19 @@ var $author$project$Main$lecture2 = {
 			})
 		]),
 	id: 2,
-	learningContent: {description: 'In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr. In dieser Lektion wirst du sehen, wie diese Operatoren in Haskell aussehen.', examples: _List_Nil, id: 1, title: 'Zweistellige Ausdrücke'},
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr.'),
+				expression: 'x :: Int\nx = 1 + 2',
+				id: 1,
+				title: 'Zweistelliger Ausdruck'
+			}
+			]),
+		id: 1,
+		title: 'Zweistellige Ausdrücke'
+	},
 	title: 'Typen von zweistelligen Ausdrücken'
 };
 var $author$project$Main$lecture3 = {
@@ -6181,11 +6198,10 @@ var $author$project$Main$lecture3 = {
 		]),
 	id: 3,
 	learningContent: {
-		description: 'Funktionen sind ein zentraler Bestandteil von Haskell. Sie ermöglichen es, Eingaben zu verarbeiten und Ausgaben zu erzeugen. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In dieser Lektion lernst du, wie Funktionen in Haskell definiert und verwendet werden.',
 		examples: _List_fromArray(
 			[
 				{
-				description: $elm$core$Maybe$Just('Diese Funktion nimmt zwei Ganzzahlen als Eingabe und gibt ihre Summe zurück.'),
+				description: $elm$core$Maybe$Just('Funktionen sind ein zentraler Bestandteil von Haskell. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In diesem Beispiel wird eine Funktion `add` definiert, die zwei Ganzzahlen addiert und das Ergebnis zurückgibt.'),
 				expression: 'add :: Int -> Int -> Int\nadd x y = x + y',
 				id: 1,
 				title: 'Einfache Funktion'
@@ -6225,9 +6241,14 @@ var $author$project$Main$lecture4 = {
 		]),
 	id: 4,
 	learningContent: {
-		description: 'Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden.',
 		examples: _List_fromArray(
 			[
+				{
+				description: $elm$core$Maybe$Just('Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden.'),
+				expression: 'absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x',
+				id: 0,
+				title: 'Guard-Ausdrücke'
+			},
 				{
 				description: $elm$core$Maybe$Just('Diese Funktion berechnet den absoluten Wert einer Zahl. Wenn die Zahl größer oder gleich 0 ist, wird sie direkt zurückgegeben. Andernfalls wird ihr negatives Pendant zurückgegeben.'),
 				expression: 'absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x',
@@ -6267,9 +6288,14 @@ var $author$project$Main$lecture5 = {
 		]),
 	id: 5,
 	learningContent: {
-		description: 'Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln.',
 		examples: _List_fromArray(
 			[
+				{
+				description: $elm$core$Maybe$Just('Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln.'),
+				expression: '',
+				id: 1,
+				title: 'Einfaches Pattern Matching'
+			},
 				{
 				description: $elm$core$Maybe$Just('In diesem Beispiel wird die Funktion `f` definiert, die eine Ganzzahl als Eingabe nimmt und einen String zurückgibt. Für die Eingabe `0` gibt sie \"Null\" zurück, für `1` \"Eins\" und für alle anderen Werte \"Andere Zahl\".'),
 				expression: 'f :: Int -> String\nf 0 = \"Null\"\nf 1 = \"Eins\"\nf _ = \"Andere Zahl\"',
@@ -6289,6 +6315,242 @@ var $author$project$Main$course1 = {
 		[$author$project$Main$lecture1, $author$project$Main$lecture2, $author$project$Main$lecture3, $author$project$Main$lecture4, $author$project$Main$lecture5]),
 	title: 'Ausdrücke'
 };
+var $author$project$Main$dataTypesLecture = {
+	badge: {
+		id: 'data-types',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Datentypen'
+	},
+	description: 'In dieser Lektion lernst du Datentypen in Haskell kennen und wie man sie selbst definiert.',
+	exercises: _List_fromArray(
+		[
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'Ja', isCorrect: true},
+						{code: 'Nein', isCorrect: false},
+						{code: 'Weiß nicht', isCorrect: false},
+						{code: 'Wo ist meine Hose?', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Bist du bereit weiter zu machen?'),
+				expression: '42',
+				id: 20,
+				title: 'Verstanden?'
+			})
+		]),
+	id: 8,
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('Haskell erlaubt es, eigene Datentypen zu definieren. Diese können komplexe Strukturen repräsentieren und ermöglichen eine klare und präzise Modellierung von Daten.'),
+				expression: '',
+				id: 0,
+				title: 'Datentypen in Haskell'
+			},
+				{
+				description: $elm$core$Maybe$Just('Das Schlüsselwort `data` leitet einen neuen Datentyp ein, gefolgt vom Namen. Daann folgenden die möglichen Werte (Typkonstruktoren) des Datentyps, die durch das Pipe-Zeichen (`|`) getrennt sind.'),
+				expression: 'data Auto = Audi \n | BMW \n | Mercedes \n | Tesla \n\n\n x = Mercedes',
+				id: 0,
+				title: 'Auto-Datentyp'
+			},
+				{
+				description: $elm$core$Maybe$Just('Hier wird ein Datentyp `Person` mit einem Typkonstruktor definiert, der zwei Felder hat: einen `String` für den Namen und einen `Int` für das Alter. Der Ausdruck `joscha = Person \"Joscha\" 20` erstellt eine Instanz des Datentyps `Person` mit dem Namen \"Joscha\" und dem Alter 32.'),
+				expression: 'data Person = Person String Int\n\n\n joscha = Person \"Joscha\" 32',
+				id: 1,
+				title: 'Person-Datentyp mit Feldern'
+			},
+				{
+				description: $elm$core$Maybe$Just('Hier wird ein generischer Datentyp `Maybe` definiert, der entweder den Wert `Nothing` oder einen Wert des Typs `a` enthalten kann. Der Ausdruck `x = Just 42` erstellt eine Instanz des Datentyps `Maybe Int`, die den Wert `42` enthält. Der Typ `Maybe` ist ein Beispiel für einen parametrisierten Datentyp, der es ermöglicht, verschiedene Typen zu verwenden.'),
+				expression: 'data Maybe a = Nothing | Just a\n\n\n x = Just 42',
+				id: 2,
+				title: 'Generische Datentypen - Beispiel Maybe'
+			},
+				{
+				description: $elm$core$Maybe$Just('Hier wird ein generischer Datentyp `List` definiert, der entweder leer (`Nil`) oder ein Element (`Cons a (List a)`) enthalten kann. Der Ausdruck `x = Cons 1 (Cons 2 (Cons 3 Nil))` erstellt eine Instanz des Datentyps `List Int`, die die Werte `1`, `2` und `3` enthält. Dieser Datentyp ist zugleich generisch und rekursiv, da der Typkonstruktor Cons als zweiten Parameter den Typen List selbst enthält.'),
+				expression: 'data List a = Nil | Cons a (List a)\n\n\n x = Cons 1 (Cons 2 (Cons 3 Nil))',
+				id: 3,
+				title: 'Generische Datentypen - Liste'
+			}
+			]),
+		id: 0,
+		title: 'Datentypen'
+	},
+	title: 'Weitere Datentypen'
+};
+var $author$project$Main$simpleDataTypesLecture = {
+	badge: {
+		id: 'simple-data-types',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Einfache Datentypen'
+	},
+	description: 'In dieser Lektion lernst du einfache Datentypen in Haskell kennen.',
+	exercises: _List_fromArray(
+		[
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'Ja', isCorrect: true},
+						{code: 'Nein', isCorrect: false},
+						{code: 'Weiß nicht', isCorrect: false},
+						{code: 'Wo ist meine Hose?', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Bist du bereit weiter zu machen?'),
+				expression: '42',
+				id: 19,
+				title: 'Verstanden?'
+			})
+		]),
+	id: 7,
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('In Haskell gibt es verschiedene einfache Datentypen wie `Int`, `Float`, `Bool` und `String`. Diese Datentypen sind die Bausteine für komplexere Datenstrukturen und ermöglichen es, verschiedene Arten von Werten zu repräsentieren.'),
+				expression: '',
+				id: 0,
+				title: 'Einfache Datentypen in Haskell'
+			},
+				{
+				description: $elm$core$Maybe$Just('Eine Ganzzahl ist ein einfacher Datentyp, der ganze Zahlen repräsentiert.'),
+				expression: 'x :: Int\nx = 42',
+				id: 0,
+				title: 'Ganzzahl'
+			},
+				{
+				description: $elm$core$Maybe$Just('Haskell kann einen Typ ableiten (in den meisten Fällen), auch wenn er nicht explizit angegeben wird. Das nennt sich Typinferenz.'),
+				expression: 'x = 42',
+				id: 1,
+				title: 'Ganzzahl'
+			},
+				{
+				description: $elm$core$Maybe$Just('Eine Gleitkommazahl ist ein Datentyp, der Fließkommazahlen repräsentiert.'),
+				expression: 'x :: Float\nx = 3.14',
+				id: 2,
+				title: 'Gleitkommazahl'
+			},
+				{
+				description: $elm$core$Maybe$Just('Strings sind Zeichenketten, die Text repräsentieren.'),
+				expression: 'x :: String\nx = \"Hallo Welt\"',
+				id: 3,
+				title: 'String'
+			},
+				{
+				description: $elm$core$Maybe$Just('Strings sind in Haskell Listen von Zeichen, die auch als `[Char]` dargestellt werden können. Das bedeutet, dass ein String in Haskell eine Liste von `Char`-Elementen ist.'),
+				expression: 'x :: [Char]\nx =  \"Hallo Welt\"',
+				id: 4,
+				title: 'String bzw. Liste von Zeichen'
+			},
+				{
+				description: $elm$core$Maybe$Just('Ein Boolescher Datentyp kann entweder `True` oder `False` sein.'),
+				expression: 'x :: Bool\nx = True',
+				id: 5,
+				title: 'Bool'
+			}
+			]),
+		id: 0,
+		title: 'Einfache Datentypen'
+	},
+	title: 'Einfache Datentypen'
+};
+var $author$project$Main$simpleHaskellProgramLecture = {
+	badge: {
+		id: 'simple-haskell-program',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Einfaches Haskell-Programm'
+	},
+	description: 'In dieser Lektion',
+	exercises: _List_fromArray(
+		[
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'IO ()', isCorrect: true},
+						{code: 'String', isCorrect: false},
+						{code: 'Int', isCorrect: false},
+						{code: 'SomeType', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Welchen Typ hat die folgende Funktion?'),
+				expression: 'main :: IO ()\nmain = do\n    putStrLn \"Hallo, Welt!\"',
+				id: 16,
+				title: 'Einfaches Haskell-Programm'
+			}),
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'In der main-Funktion', isCorrect: false},
+						{code: 'In den Klammern nach dem Modulnamen', isCorrect: true},
+						{code: 'In der Datei, die das Programm ausführt', isCorrect: false},
+						{code: 'In der Datei, die die Funktion importiert', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Wo müssen Funktionen eines Moduls stehen, damit sie in anderen Modulen verwendet werden können?'),
+				expression: 'module Main (main) where',
+				id: 17,
+				title: 'Einfaches Haskell-Programm'
+			}),
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'String -> IO ()', isCorrect: true},
+						{code: 'IO ()', isCorrect: false},
+						{code: 'String', isCorrect: false},
+						{code: 'Int', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Was ist der Typ der Funktion `putStrLn`?'),
+				expression: 'putStrLn :: String -> IO ()',
+				id: 18,
+				title: 'Einfaches Haskell-Programm'
+			})
+		]),
+	id: 6,
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{description: $elm$core$Maybe$Nothing, expression: 'module Main (main) where\n\nmain :: IO ()\nmain = do\n    putStrLn \"Hallo, Welt!\"', id: 0, title: 'module'},
+				{
+				description: $elm$core$Maybe$Just('Diese Zeile definiert ein Haskell-Modul namens `Main`, das die Funktion `main` exportiert. Das Modul ist der Einstiegspunkt für das Programm. In den Klammern sind all die Funktionen aufgelistet, die von diesem Modul exportiert werden und somit von anderen Modulen verwendet werden können.'),
+				expression: 'module Main (main) where',
+				id: 0,
+				title: 'module'
+			},
+				{
+				description: $elm$core$Maybe$Just('Die `main`-Funktion ist der Einstiegspunkt für das Programm. Sie hat den Typ `IO ()`, was bedeutet, dass innerhalb dieser Funktion Eingabe/Ausgabe-Operation verwendet werden.'),
+				expression: 'main :: IO ()',
+				id: 1,
+				title: 'main-Funktion'
+			},
+				{
+				description: $elm$core$Maybe$Just('Die `do`-Notation ermöglicht es, mehrere IO-Operationen in einer Sequenz auszuführen. In diesem Fall wird die Funktion `putStrLn` verwendet, um den Text \"Hallo, Welt!\" auf der Konsole auszugeben. Diese `do`-Notation ist eine spezielle Syntax in Haskell, die es ermöglicht, mehrere IO-Operationen in einer lesbaren Weise zu kombinieren und wird hier nicht weiter behandelt.'),
+				expression: 'main = do\n    putStrLn \"Hallo, Welt!\"',
+				id: 2,
+				title: 'main-Funktion'
+			},
+				{
+				description: $elm$core$Maybe$Just('Die Beispiele in dieser Anwendung werden außerhalb der main-Funktion defininiert und können dann in der main-Funktion oder in anderen Funktionen verwendet werden. In diesem Beispiel wird eine Funktion `add` definiert, die zwei Ganzzahlen addiert und das Ergebnis zurückgibt. Der Typ der Funktion ist `Int -> Int -> Int`, was bedeutet, dass sie zwei Ganzzahlen als Eingabe nimmt und eine Ganzzahl zurückgibt.'),
+				expression: 'add :: Int -> Int -> Int\nadd x y = x + y',
+				id: 3,
+				title: 'earn you a haskell'
+			}
+			]),
+		id: 0,
+		title: 'Einfaches Haskell-Programm'
+	},
+	title: 'Einfaches Haskell-Programm'
+};
+var $author$project$Main$foundations = {
+	description: 'Lerne die Grundlagen von Haskell kennen.',
+	id: 0,
+	lectures: _List_fromArray(
+		[$author$project$Main$simpleHaskellProgramLecture, $author$project$Main$simpleDataTypesLecture, $author$project$Main$dataTypesLecture]),
+	title: 'Grundlagen'
+};
+var $author$project$Main$coursesExamples = _List_fromArray(
+	[$author$project$Main$foundations, $author$project$Main$course1]);
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -6526,65 +6788,37 @@ var $author$project$Main$update = F2(
 					case 'CoursesOverview':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'CoursePage':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'LecturePage':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'RunningQuiz':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'FinishedQuiz':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					case 'WinningQuiz':
 						var user = model.a;
 						return _Utils_Tuple2(
-							A2(
-								$author$project$Main$CoursesOverview,
-								user,
-								_List_fromArray(
-									[$author$project$Main$course1])),
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6615,8 +6849,7 @@ var $author$project$Main$update = F2(
 								A2(
 									$author$project$Main$CoursesOverview,
 									A2($author$project$Main$User, name, _List_Nil),
-									_List_fromArray(
-										[$author$project$Main$course1])),
+									$author$project$Main$coursesExamples),
 								$elm$core$Platform$Cmd$none);
 						} else {
 							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -11533,13 +11766,6 @@ var $author$project$Main$view = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(lecture.learningContent.title)
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text(lecture.learningContent.description)
 										]))
 								])),
 							A2($author$project$Main$runningLearningContentView, lecture, i)

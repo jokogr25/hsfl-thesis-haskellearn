@@ -48,7 +48,6 @@ type alias LearningExample =
 type alias LearningContent =
     { id : Int
     , title : String
-    , description : String
     , examples : List LearningExample
     }
 
@@ -216,25 +215,25 @@ update msg model =
         GoToCoursesOverview ->
             case model of
                 CoursesOverview user _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 CoursePage user _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 LecturePage user _ _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 LearningContentPage user _ _ _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 RunningQuiz user _ _ _ _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 FinishedQuiz user _ _ _ _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 WinningQuiz user _ _ ->
-                    ( CoursesOverview user [ course1 ], Cmd.none )
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -266,7 +265,7 @@ update msg model =
                         Nothing ->
                             case maybeUsername of
                                 Just name ->
-                                    ( CoursesOverview (User name []) [ course1 ], Cmd.none )
+                                    ( CoursesOverview (User name []) coursesExamples, Cmd.none )
 
                                 Nothing ->
                                     ( model, Cmd.none )
@@ -627,10 +626,6 @@ view model =
                     [ h4
                         []
                         [ text lecture.learningContent.title
-                        ]
-                    , div
-                        []
-                        [ text lecture.learningContent.description
                         ]
                     ]
                 , runningLearningContentView lecture i
@@ -1597,6 +1592,12 @@ shuffle list =
 
 
 -- EXAMPLES
+--
+
+
+coursesExamples : List Course
+coursesExamples =
+    [ foundations, course1 ]
 
 
 course1 : Course
@@ -1604,7 +1605,13 @@ course1 =
     { id = 1
     , title = "Ausdrücke"
     , description = "Lerne etwas zu Ausdrücken in Haskell"
-    , lectures = [ lecture1, lecture2, lecture3, lecture4, lecture5 ]
+    , lectures =
+        [ lecture1
+        , lecture2
+        , lecture3
+        , lecture4
+        , lecture5
+        ]
     }
 
 
@@ -1621,8 +1628,13 @@ lecture2 =
     , learningContent =
         { id = 1
         , title = "Zweistellige Ausdrücke"
-        , description = "In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr. In dieser Lektion wirst du sehen, wie diese Operatoren in Haskell aussehen."
-        , examples = []
+        , examples =
+            [ { id = 1
+              , title = "Zweistelliger Ausdruck"
+              , expression = "x :: Int\nx = 1 + 2"
+              , description = Just "In Haskell gibt es viele Operatoren, die über zwei Ausdrücke gelegt werden können. Diese Operatoren sind z.B. +, -, *, /, ++, &&, || und viele mehr."
+              }
+            ]
         }
     , exercises =
         [ BinaryExpression
@@ -1752,12 +1764,11 @@ lecture3 =
     , learningContent =
         { id = 1
         , title = "Funktionen in Haskell"
-        , description = "Funktionen sind ein zentraler Bestandteil von Haskell. Sie ermöglichen es, Eingaben zu verarbeiten und Ausgaben zu erzeugen. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In dieser Lektion lernst du, wie Funktionen in Haskell definiert und verwendet werden."
         , examples =
             [ { id = 1
               , title = "Einfache Funktion"
               , expression = "add :: Int -> Int -> Int\nadd x y = x + y"
-              , description = Just "Diese Funktion nimmt zwei Ganzzahlen als Eingabe und gibt ihre Summe zurück."
+              , description = Just "Funktionen sind ein zentraler Bestandteil von Haskell. Funktionen können mehrere Argumente haben und verschiedene Typen zurückgeben. In diesem Beispiel wird eine Funktion `add` definiert, die zwei Ganzzahlen addiert und das Ergebnis zurückgibt."
               }
             ]
         }
@@ -1800,9 +1811,13 @@ lecture4 =
     , learningContent =
         { id = 1
         , title = "Guards in Haskell"
-        , description = "Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden."
         , examples =
-            [ { id = 1
+            [ { id = 0
+              , title = "Guard-Ausdrücke"
+              , expression = "absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x"
+              , description = Just "Guards sind eine Möglichkeit, Bedingungen in Haskell übersichtlich und lesbar zu gestalten. Sie ermöglichen es, verschiedene Fälle einer Funktion durch Bedingungen zu unterscheiden. Guards werden mit einem senkrechten Strich (|) eingeleitet und können mehrere Bedingungen enthalten, die nacheinander geprüft werden."
+              }
+            , { id = 1
               , title = "Einfacher Guard-Ausdruck"
               , expression = "absolute :: Int -> Int\nabsolute x\n    | x >= 0 = x\n    | otherwise = -x"
               , description = Just "Diese Funktion berechnet den absoluten Wert einer Zahl. Wenn die Zahl größer oder gleich 0 ist, wird sie direkt zurückgegeben. Andernfalls wird ihr negatives Pendant zurückgegeben."
@@ -1852,9 +1867,13 @@ lecture5 =
     , learningContent =
         { id = 1
         , title = "Pattern Matching in Haskell"
-        , description = "Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln."
         , examples =
             [ { id = 1
+              , title = "Einfaches Pattern Matching"
+              , expression = ""
+              , description = Just "Pattern Matching ist eine leistungsstarke Funktion in Haskell, die es ermöglicht, Werte anhand ihrer Struktur zu zerlegen und zu analysieren. Es wird häufig in Funktionen verwendet, um verschiedene Fälle zu behandeln."
+              }
+            , { id = 1
               , title = "Einfaches Pattern Matching"
               , expression = "f :: Int -> String\nf 0 = \"Null\"\nf 1 = \"Eins\"\nf _ = \"Andere Zahl\""
               , description = Just "In diesem Beispiel wird die Funktion `f` definiert, die eine Ganzzahl als Eingabe nimmt und einen String zurückgibt. Für die Eingabe `0` gibt sie \"Null\" zurück, für `1` \"Eins\" und für alle anderen Werte \"Andere Zahl\"."
@@ -1899,9 +1918,13 @@ lecture1 =
     , learningContent =
         { id = 1
         , title = "Einfache Ausdrücke bzw. Typen"
-        , description = "In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert.\"."
         , examples =
             [ { id = 1
+              , title = "Ausdrücke"
+              , expression = ""
+              , description = Just "In Haskell ist alles ein Ausdruck. Um Wikipedia zu zitieren: \"Ein Ausdruck ist in vielen Programmiersprachen ein Konstrukt, das gemäß einer gegebenen Semantik in Bezug auf einen Kontext ausgewertet werden kann, also einen Wert liefert.\"."
+              }
+            , { id = 1
               , title = "Ganzzahliger Ausdruck"
               , expression = "x :: Int\nx = 1"
               , description = Nothing
@@ -2111,3 +2134,264 @@ exercise7 =
               }
             ]
         }
+
+
+foundations : Course
+foundations =
+    { id = 0
+    , title = "Grundlagen"
+    , description = "Lerne die Grundlagen von Haskell kennen."
+    , lectures =
+        [ simpleHaskellProgramLecture
+        , simpleDataTypesLecture
+        , dataTypesLecture
+        ]
+    }
+
+
+dataTypesLecture : Lecture
+dataTypesLecture =
+    { id = 8
+    , title = "Weitere Datentypen"
+    , description = "In dieser Lektion lernst du Datentypen in Haskell kennen und wie man sie selbst definiert."
+    , badge =
+        { id = "data-types"
+        , name = "Datentypen"
+        , image = div [] []
+        }
+    , learningContent =
+        { id = 0
+        , title = "Datentypen"
+        , examples =
+            [ { id = 0
+              , title = "Datentypen in Haskell"
+              , expression = ""
+              , description = Just "Haskell erlaubt es, eigene Datentypen zu definieren. Diese können komplexe Strukturen repräsentieren und ermöglichen eine klare und präzise Modellierung von Daten."
+              }
+            , { id = 0
+              , title = "Auto-Datentyp"
+              , expression = "data Auto = Audi \n | BMW \n | Mercedes \n | Tesla \n\n\n x = Mercedes"
+              , description = Just "Das Schlüsselwort `data` leitet einen neuen Datentyp ein, gefolgt vom Namen. Daann folgenden die möglichen Werte (Typkonstruktoren) des Datentyps, die durch das Pipe-Zeichen (`|`) getrennt sind."
+              }
+            , { id = 1
+              , title = "Person-Datentyp mit Feldern"
+              , expression = "data Person = Person String Int\n\n\n joscha = Person \"Joscha\" 32"
+              , description = Just "Hier wird ein Datentyp `Person` mit einem Typkonstruktor definiert, der zwei Felder hat: einen `String` für den Namen und einen `Int` für das Alter. Der Ausdruck `joscha = Person \"Joscha\" 20` erstellt eine Instanz des Datentyps `Person` mit dem Namen \"Joscha\" und dem Alter 32."
+              }
+            , { id = 2
+              , title = "Generische Datentypen - Beispiel Maybe"
+              , expression = "data Maybe a = Nothing | Just a\n\n\n x = Just 42"
+              , description = Just "Hier wird ein generischer Datentyp `Maybe` definiert, der entweder den Wert `Nothing` oder einen Wert des Typs `a` enthalten kann. Der Ausdruck `x = Just 42` erstellt eine Instanz des Datentyps `Maybe Int`, die den Wert `42` enthält. Der Typ `Maybe` ist ein Beispiel für einen parametrisierten Datentyp, der es ermöglicht, verschiedene Typen zu verwenden."
+              }
+            , { id = 3
+              , title = "Generische Datentypen - Liste"
+              , expression = "data List a = Nil | Cons a (List a)\n\n\n x = Cons 1 (Cons 2 (Cons 3 Nil))"
+              , description = Just "Hier wird ein generischer Datentyp `List` definiert, der entweder leer (`Nil`) oder ein Element (`Cons a (List a)`) enthalten kann. Der Ausdruck `x = Cons 1 (Cons 2 (Cons 3 Nil))` erstellt eine Instanz des Datentyps `List Int`, die die Werte `1`, `2` und `3` enthält. Dieser Datentyp ist zugleich generisch und rekursiv, da der Typkonstruktor Cons als zweiten Parameter den Typen List selbst enthält."
+              }
+            ]
+        }
+    , exercises =
+        [ SingleExpression
+            { id = 20
+            , title = "Verstanden?"
+            , description = Just "Bist du bereit weiter zu machen?"
+            , expression = "42"
+            , answers =
+                [ { code = "Ja"
+                  , isCorrect = True
+                  }
+                , { code = "Nein"
+                  , isCorrect = False
+                  }
+                , { code = "Weiß nicht"
+                  , isCorrect = False
+                  }
+                , { code = "Wo ist meine Hose?"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        ]
+    }
+
+
+simpleDataTypesLecture : Lecture
+simpleDataTypesLecture =
+    { id = 7
+    , title = "Einfache Datentypen"
+    , description = "In dieser Lektion lernst du einfache Datentypen in Haskell kennen."
+    , badge =
+        { id = "simple-data-types"
+        , name = "Einfache Datentypen"
+        , image = div [] []
+        }
+    , learningContent =
+        { id = 0
+        , title = "Einfache Datentypen"
+        , examples =
+            [ { id = 0
+              , title = "Einfache Datentypen in Haskell"
+              , expression = ""
+              , description = Just "In Haskell gibt es verschiedene einfache Datentypen wie `Int`, `Float`, `Bool` und `String`. Diese Datentypen sind die Bausteine für komplexere Datenstrukturen und ermöglichen es, verschiedene Arten von Werten zu repräsentieren."
+              }
+            , { id = 0
+              , title = "Ganzzahl"
+              , expression = "x :: Int\nx = 42"
+              , description = Just "Eine Ganzzahl ist ein einfacher Datentyp, der ganze Zahlen repräsentiert."
+              }
+            , { id = 1
+              , title = "Ganzzahl"
+              , expression = "x = 42"
+              , description = Just "Haskell kann einen Typ ableiten (in den meisten Fällen), auch wenn er nicht explizit angegeben wird. Das nennt sich Typinferenz."
+              }
+            , { id = 2
+              , title = "Gleitkommazahl"
+              , expression = "x :: Float\nx = 3.14"
+              , description = Just "Eine Gleitkommazahl ist ein Datentyp, der Fließkommazahlen repräsentiert."
+              }
+            , { id = 3
+              , title = "String"
+              , expression = "x :: String\nx = \"Hallo Welt\""
+              , description = Just "Strings sind Zeichenketten, die Text repräsentieren."
+              }
+            , { id = 4
+              , title = "String bzw. Liste von Zeichen"
+              , expression = "x :: [Char]\nx =  \"Hallo Welt\""
+              , description = Just "Strings sind in Haskell Listen von Zeichen, die auch als `[Char]` dargestellt werden können. Das bedeutet, dass ein String in Haskell eine Liste von `Char`-Elementen ist."
+              }
+            , { id = 5
+              , title = "Bool"
+              , expression = "x :: Bool\nx = True"
+              , description = Just "Ein Boolescher Datentyp kann entweder `True` oder `False` sein."
+              }
+            ]
+        }
+    , exercises =
+        [ SingleExpression
+            { id = 19
+            , title = "Verstanden?"
+            , description = Just "Bist du bereit weiter zu machen?"
+            , expression = "42"
+            , answers =
+                [ { code = "Ja"
+                  , isCorrect = True
+                  }
+                , { code = "Nein"
+                  , isCorrect = False
+                  }
+                , { code = "Weiß nicht"
+                  , isCorrect = False
+                  }
+                , { code = "Wo ist meine Hose?"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        ]
+    }
+
+
+simpleHaskellProgramLecture : Lecture
+simpleHaskellProgramLecture =
+    { id = 6
+    , title = "Einfaches Haskell-Programm"
+    , description = "In dieser Lektion"
+    , badge =
+        { id = "simple-haskell-program"
+        , name = "Einfaches Haskell-Programm"
+        , image = div [] []
+        }
+    , learningContent =
+        { id = 0
+        , title = "Einfaches Haskell-Programm"
+        , examples =
+            [ { id = 0
+              , title = "module"
+              , expression = "module Main (main) where\n\nmain :: IO ()\nmain = do\n    putStrLn \"Hallo, Welt!\""
+              , description = Nothing
+              }
+            , { id = 0
+              , title = "module"
+              , expression = "module Main (main) where"
+              , description = Just "Diese Zeile definiert ein Haskell-Modul namens `Main`, das die Funktion `main` exportiert. Das Modul ist der Einstiegspunkt für das Programm. In den Klammern sind all die Funktionen aufgelistet, die von diesem Modul exportiert werden und somit von anderen Modulen verwendet werden können."
+              }
+            , { id = 1
+              , title = "main-Funktion"
+              , expression = "main :: IO ()"
+              , description = Just "Die `main`-Funktion ist der Einstiegspunkt für das Programm. Sie hat den Typ `IO ()`, was bedeutet, dass innerhalb dieser Funktion Eingabe/Ausgabe-Operation verwendet werden."
+              }
+            , { id = 2
+              , title = "main-Funktion"
+              , expression = "main = do\n    putStrLn \"Hallo, Welt!\""
+              , description = Just "Die `do`-Notation ermöglicht es, mehrere IO-Operationen in einer Sequenz auszuführen. In diesem Fall wird die Funktion `putStrLn` verwendet, um den Text \"Hallo, Welt!\" auf der Konsole auszugeben. Diese `do`-Notation ist eine spezielle Syntax in Haskell, die es ermöglicht, mehrere IO-Operationen in einer lesbaren Weise zu kombinieren und wird hier nicht weiter behandelt."
+              }
+            , { id = 3
+              , title = "earn you a haskell"
+              , expression = "add :: Int -> Int -> Int\nadd x y = x + y"
+              , description = Just "Die Beispiele in dieser Anwendung werden außerhalb der main-Funktion defininiert und können dann in der main-Funktion oder in anderen Funktionen verwendet werden. In diesem Beispiel wird eine Funktion `add` definiert, die zwei Ganzzahlen addiert und das Ergebnis zurückgibt. Der Typ der Funktion ist `Int -> Int -> Int`, was bedeutet, dass sie zwei Ganzzahlen als Eingabe nimmt und eine Ganzzahl zurückgibt."
+              }
+            ]
+        }
+    , exercises =
+        [ SingleExpression
+            { id = 16
+            , title = "Einfaches Haskell-Programm"
+            , description = Just "Welchen Typ hat die folgende Funktion?"
+            , expression = "main :: IO ()\nmain = do\n    putStrLn \"Hallo, Welt!\""
+            , answers =
+                [ { code = "IO ()"
+                  , isCorrect = True
+                  }
+                , { code = "String"
+                  , isCorrect = False
+                  }
+                , { code = "Int"
+                  , isCorrect = False
+                  }
+                , { code = "SomeType"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        , SingleExpression
+            { id = 17
+            , title = "Einfaches Haskell-Programm"
+            , description = Just "Wo müssen Funktionen eines Moduls stehen, damit sie in anderen Modulen verwendet werden können?"
+            , expression = "module Main (main) where"
+            , answers =
+                [ { code = "In der main-Funktion"
+                  , isCorrect = False
+                  }
+                , { code = "In den Klammern nach dem Modulnamen"
+                  , isCorrect = True
+                  }
+                , { code = "In der Datei, die das Programm ausführt"
+                  , isCorrect = False
+                  }
+                , { code = "In der Datei, die die Funktion importiert"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        , SingleExpression
+            { id = 18
+            , title = "Einfaches Haskell-Programm"
+            , description = Just "Was ist der Typ der Funktion `putStrLn`?"
+            , expression = "putStrLn :: String -> IO ()"
+            , answers =
+                [ { code = "String -> IO ()"
+                  , isCorrect = True
+                  }
+                , { code = "IO ()"
+                  , isCorrect = False
+                  }
+                , { code = "String"
+                  , isCorrect = False
+                  }
+                , { code = "Int"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        ]
+    }
