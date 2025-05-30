@@ -661,6 +661,7 @@ view model =
                             , placeholder "Gib deinen Namen ein"
                             , type_ "text"
                             , Html.Attributes.class "form-control form-control-lg"
+                            , Html.Attributes.autofocus True
                             ]
                             []
                         ]
