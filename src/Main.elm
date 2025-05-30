@@ -601,9 +601,9 @@ view model =
                         case get i w of
                             Just ( exercise, answer ) ->
                                 Html.footer
-                                    [ Html.Attributes.class "footer m-2" ]
+                                    [ Html.Attributes.class "footer m-2 mt-auto" ]
                                     [ div
-                                        [ Html.Attributes.class "m-2" ]
+                                        []
                                         [ text
                                             ("Du hast "
                                                 ++ String.fromInt (List.length answeredExercises - List.length w)
@@ -817,7 +817,7 @@ coursePage user course =
                                             , Html.small
                                                 [ Html.Attributes.class "muted" ]
                                                 [ if List.any (\b -> b == lecture.badge) user.badges then
-                                                    Img.badgeSvg
+                                                    Img.genericBadgeSvg
 
                                                   else
                                                     text ""
@@ -1214,7 +1214,7 @@ finishedExerciseView exercise answer =
     case exercise of
         SingleExpression singleExpressionModel ->
             div
-                [ Html.Attributes.class "card m-2" ]
+                [ Html.Attributes.class "card" ]
                 [ div
                     [ Html.Attributes.class "card-header text-center" ]
                     [ Html.h5
@@ -1248,7 +1248,7 @@ finishedExerciseView exercise answer =
 
         BinaryExpression binaryExpressionModel ->
             div
-                [ Html.Attributes.class "card m-2" ]
+                [ Html.Attributes.class "card" ]
                 [ div
                     [ Html.Attributes.class "card-title text-center" ]
                     [ h5
@@ -1281,7 +1281,7 @@ finishedExerciseView exercise answer =
         FunctionExpression functionExpressionModel ->
             div []
                 [ div
-                    [ Html.Attributes.class "card m-2" ]
+                    [ Html.Attributes.class "card" ]
                     [ div
                         [ Html.Attributes.class "card-header text-center" ]
                         [ h5
@@ -1315,7 +1315,7 @@ finishedExerciseView exercise answer =
         GuardExpression guardExpressionModel ->
             div []
                 [ div
-                    [ Html.Attributes.class "card m-2" ]
+                    [ Html.Attributes.class "card" ]
                     [ div
                         [ Html.Attributes.class "card-header text-center" ]
                         [ h5
@@ -1353,7 +1353,7 @@ finishedExerciseView exercise answer =
             div
                 []
                 [ div
-                    [ Html.Attributes.class "card m-2" ]
+                    [ Html.Attributes.class "card" ]
                     [ div
                         [ Html.Attributes.class "card-header text-center" ]
                         [ h5
@@ -1438,7 +1438,7 @@ header user course =
                                     [ Html.span
                                         [ Html.Attributes.class "badge badge-pill" ]
                                         [ text (String.fromInt (List.length us.badges))
-                                        , Img.badgeSvg
+                                        , Img.genericBadgeSvg
                                         ]
                                     ]
                         )

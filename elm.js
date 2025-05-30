@@ -7395,7 +7395,7 @@ var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $author$project$Images$Images$badgeSvg = A2(
+var $author$project$Images$Images$genericBadgeSvg = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
 		[
@@ -7601,7 +7601,7 @@ var $author$project$Main$coursePage = F2(
 																						function (b) {
 																							return _Utils_eq(b, lecture.badge);
 																						},
-																						user.badges) ? $author$project$Images$Images$badgeSvg : $elm$html$Html$text(''),
+																						user.badges) ? $author$project$Images$Images$genericBadgeSvg : $elm$html$Html$text(''),
 																						$elm$html$Html$text(
 																						$elm$core$String$fromInt(
 																							$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
@@ -10819,7 +10819,7 @@ var $author$project$Main$finishedExerciseView = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('card m-2')
+							$elm$html$Html$Attributes$class('card')
 						]),
 					_List_fromArray(
 						[
@@ -10879,7 +10879,7 @@ var $author$project$Main$finishedExerciseView = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('card m-2')
+							$elm$html$Html$Attributes$class('card')
 						]),
 					_List_fromArray(
 						[
@@ -10944,7 +10944,7 @@ var $author$project$Main$finishedExerciseView = F2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card m-2')
+									$elm$html$Html$Attributes$class('card')
 								]),
 							_List_fromArray(
 								[
@@ -11014,7 +11014,7 @@ var $author$project$Main$finishedExerciseView = F2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card m-2')
+									$elm$html$Html$Attributes$class('card')
 								]),
 							_List_fromArray(
 								[
@@ -11088,7 +11088,7 @@ var $author$project$Main$finishedExerciseView = F2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('card m-2')
+									$elm$html$Html$Attributes$class('card')
 								]),
 							_List_fromArray(
 								[
@@ -11346,7 +11346,7 @@ var $author$project$Main$header = F2(
 																$elm$html$Html$text(
 																$elm$core$String$fromInt(
 																	$elm$core$List$length(us.badges))),
-																$author$project$Images$Images$badgeSvg
+																$author$project$Images$Images$genericBadgeSvg
 															]))
 													]));
 										},
@@ -11865,16 +11865,13 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$footer,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('footer m-2')
+												$elm$html$Html$Attributes$class('footer m-2 mt-auto')
 											]),
 										_List_fromArray(
 											[
 												A2(
 												$elm$html$Html$div,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('m-2')
-													]),
+												_List_Nil,
 												_List_fromArray(
 													[
 														$elm$html$Html$text(

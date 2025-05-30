@@ -144,8 +144,8 @@ logo =
         ]
 
 
-badgeSvg : Html msg
-badgeSvg =
+genericBadgeSvg : Html msg
+genericBadgeSvg =
     svg
         [ viewBox "0 0 80 80"
         , height "2em"
