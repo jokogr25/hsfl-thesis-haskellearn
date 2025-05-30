@@ -2145,6 +2145,171 @@ foundations =
         [ simpleHaskellProgramLecture
         , simpleDataTypesLecture
         , dataTypesLecture
+        , operatorsLecture
+        , syntaxLecture
+        ]
+    }
+
+
+syntaxLecture : Lecture
+syntaxLecture =
+    { id = 9
+    , title = "Let-In und Where"
+    , description = "In dieser Lektion lernst du die Unterschiede und Anwendungsfälle von `let-in` und `where` in Haskell kennen."
+    , badge =
+        { id = "let-in-where"
+        , name = "Let-In und Where"
+        , image = div [] []
+        }
+    , learningContent =
+        { id = 1
+        , title = "Let-In und Where in Haskell"
+        , examples =
+            [ { id = 1
+              , title = "Let-In Beispiel"
+              , expression = "let x = 5\n    y = 6\nin x + y"
+              , description = Just "`let-in` wird verwendet, um lokale Bindungen innerhalb eines Ausdrucks zu definieren. In diesem Beispiel werden `x` und `y` innerhalb des `let`-Blocks definiert und im `in`-Block verwendet."
+              }
+            , { id = 2
+              , title = "Where Beispiel"
+              , expression = "f x = x + y\n  where y = 5"
+              , description = Just "`where` wird verwendet, um lokale Bindungen am Ende einer Funktion zu definieren. In diesem Beispiel wird `y` im `where`-Block definiert und in der Funktion `f` verwendet."
+              }
+            , { id = 3
+              , title = "Unterschiede zwischen Let-In und Where"
+              , expression = "let x = 5 in x * 2  -- Gültig nur innerhalb des Ausdrucks\nf x = x + y\n  where y = 5  -- Gültig für die gesamte Funktion"
+              , description = Just "`let-in` ist ein Ausdruck und kann überall verwendet werden, während `where` nur in Funktionsdefinitionen vorkommt. `let-in` ist nützlich für temporäre Berechnungen, während `where` für Klarheit in Funktionsdefinitionen sorgt."
+              }
+            ]
+        }
+    , exercises =
+        [ SingleExpression
+            { id = 21
+            , title = "Let-In Übung"
+            , description = Just "Was ist das Ergebnis des folgenden Ausdrucks?"
+            , expression = "let x = 3\n    y = 4\nin x * y"
+            , answers =
+                [ { code = "12"
+                  , isCorrect = True
+                  }
+                , { code = "7"
+                  , isCorrect = False
+                  }
+                , { code = "0"
+                  , isCorrect = False
+                  }
+                , { code = "Fehler"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        , SingleExpression
+            { id = 22
+            , title = "Where Übung"
+            , description = Just "Was ist das Ergebnis des Aufrufs der Funktion `f 2`?"
+            , expression = "f x = x + y\n  where y = 3"
+            , answers =
+                [ { code = "5"
+                  , isCorrect = True
+                  }
+                , { code = "2"
+                  , isCorrect = False
+                  }
+                , { code = "3"
+                  , isCorrect = False
+                  }
+                , { code = "Fehler"
+                  , isCorrect = False
+                  }
+                ]
+            }
+        , SingleExpression
+            { id = 23
+            , title = "Let-In und Where Vergleich"
+            , description = Just "Welcher der folgenden Aussagen ist korrekt?"
+            , expression = ""
+            , answers =
+                [ { code = "`let-in` kann überall verwendet werden, `where` nur in Funktionsdefinitionen."
+                  , isCorrect = True
+                  }
+                , { code = "`where` kann überall verwendet werden, `let-in` nur in Funktionsdefinitionen."
+                  , isCorrect = False
+                  }
+                , { code = "`let-in` und `where` sind identisch."
+                  , isCorrect = False
+                  }
+                , { code = "`let-in` ist schneller als `where`."
+                  , isCorrect = False
+                  }
+                ]
+            }
+        ]
+    }
+
+
+operatorsLecture : Lecture
+operatorsLecture =
+    { id = 6
+    , title = "Operatoren"
+    , description = "In dieser Lektion lernst du einige Operatoren in Haskell kennen."
+    , badge =
+        { id = "operators"
+        , name = "Operatoren"
+        , image = div [] []
+        }
+    , learningContent =
+        { id = 0
+        , title = "Operatoren in Haskell"
+        , examples =
+            [ { id = 0
+              , title = "Operatoren in Haskell"
+              , expression = ""
+              , description = Just "Haskell bietet eine Vielzahl von Operatoren, die auf verschiedene Datentypen angewendet werden können. Diese Operatoren ermöglichen es, Ausdrücke zu kombinieren und zu manipulieren."
+              }
+            , { id = 1
+              , title = "Plus-Operator (Addition)"
+              , expression = "1 + 1"
+              , description = Just "`+` nimmt zwei Zahlen und rechnet diese zusammen. Weitere arithmetische Operatoren wie `-`, `*` und `/` gibt es ebenfalls."
+              }
+            , { id = 2
+              , title = "Vergleichsoperatoren `<`, `>`, `==`"
+              , expression = "2 < 3"
+              , description = Just "Vergleichen Werte miteinander (in diesem Fall Zahlen) und liefert einen booleschen Wert zurück."
+              }
+            , { id = 3
+              , title = "++-Operator (Konkatenation)"
+              , expression = "[1, 2] ++ [3, 4]"
+              , description = Just "`++` nimmt zwei Listen und fügt diese zusammen. Da String gleichbedeutend ist mit [Char] (List von Char), kann `++` auch auf diese angewendet werden."
+              }
+            , { id = 4
+              , title = ":-Operator (cons)"
+              , expression = "1 : [2, 3]"
+              , description = Just "`:` ist ein spezieller Operator, der ein Element an den Anfang einer Liste anfügt. Er wird auch als `cons` bezeichnet."
+              }
+            , { id = 5
+              , title = "&&-Operator (und)"
+              , expression = "True && False"
+              , description = Just "`&&` nimmt zwei Boolesche Werte und gibt `True` zurück, wenn beide `True` sind. `||` als oder-Operator ist ebenfalls vorhanden."
+              }
+            , { id = 6
+              , title = "&&-Operator (und)"
+              , expression = "(1 < 3) && (5 < 6)"
+              , description = Just "Mit diesem Beispiel soll verdeutlicht werden, dass man Operatoren miteinander verknüpfen kann."
+              }
+            ]
+        }
+    , exercises =
+        [ SingleExpression
+            { id = 19
+            , title = "Verstanden?"
+            , description = Just "Bist du bereit weiter zu machen?"
+            , expression = "42"
+            , answers =
+                [ { code = "Ja"
+                  , isCorrect = True
+                  }
+                ]
+            }
         ]
     }
 

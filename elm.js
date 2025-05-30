@@ -6379,6 +6379,79 @@ var $author$project$Main$dataTypesLecture = {
 	},
 	title: 'Weitere Datentypen'
 };
+var $author$project$Main$operatorsLecture = {
+	badge: {
+		id: 'operators',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Operatoren'
+	},
+	description: 'In dieser Lektion lernst du einige Operatoren in Haskell kennen.',
+	exercises: _List_fromArray(
+		[
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: 'Ja', isCorrect: true}
+					]),
+				description: $elm$core$Maybe$Just('Bist du bereit weiter zu machen?'),
+				expression: '42',
+				id: 19,
+				title: 'Verstanden?'
+			})
+		]),
+	id: 6,
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('Haskell bietet eine Vielzahl von Operatoren, die auf verschiedene Datentypen angewendet werden können. Diese Operatoren ermöglichen es, Ausdrücke zu kombinieren und zu manipulieren.'),
+				expression: '',
+				id: 0,
+				title: 'Operatoren in Haskell'
+			},
+				{
+				description: $elm$core$Maybe$Just('`+` nimmt zwei Zahlen und rechnet diese zusammen. Weitere arithmetische Operatoren wie `-`, `*` und `/` gibt es ebenfalls.'),
+				expression: '1 + 1',
+				id: 1,
+				title: 'Plus-Operator (Addition)'
+			},
+				{
+				description: $elm$core$Maybe$Just('Vergleichen Werte miteinander (in diesem Fall Zahlen) und liefert einen booleschen Wert zurück.'),
+				expression: '2 < 3',
+				id: 2,
+				title: 'Vergleichsoperatoren `<`, `>`, `==`'
+			},
+				{
+				description: $elm$core$Maybe$Just('`++` nimmt zwei Listen und fügt diese zusammen. Da String gleichbedeutend ist mit [Char] (List von Char), kann `++` auch auf diese angewendet werden.'),
+				expression: '[1, 2] ++ [3, 4]',
+				id: 3,
+				title: '++-Operator (Konkatenation)'
+			},
+				{
+				description: $elm$core$Maybe$Just('`:` ist ein spezieller Operator, der ein Element an den Anfang einer Liste anfügt. Er wird auch als `cons` bezeichnet.'),
+				expression: '1 : [2, 3]',
+				id: 4,
+				title: ':-Operator (cons)'
+			},
+				{
+				description: $elm$core$Maybe$Just('`&&` nimmt zwei Boolesche Werte und gibt `True` zurück, wenn beide `True` sind. `||` als oder-Operator ist ebenfalls vorhanden.'),
+				expression: 'True && False',
+				id: 5,
+				title: '&&-Operator (und)'
+			},
+				{
+				description: $elm$core$Maybe$Just('Mit diesem Beispiel soll verdeutlicht werden, dass man Operatoren miteinander verknüpfen kann.'),
+				expression: '(1 < 3) && (5 < 6)',
+				id: 6,
+				title: '&&-Operator (und)'
+			}
+			]),
+		id: 0,
+		title: 'Operatoren in Haskell'
+	},
+	title: 'Operatoren'
+};
 var $author$project$Main$simpleDataTypesLecture = {
 	badge: {
 		id: 'simple-data-types',
@@ -6542,11 +6615,91 @@ var $author$project$Main$simpleHaskellProgramLecture = {
 	},
 	title: 'Einfaches Haskell-Programm'
 };
+var $author$project$Main$syntaxLecture = {
+	badge: {
+		id: 'let-in-where',
+		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
+		name: 'Let-In und Where'
+	},
+	description: 'In dieser Lektion lernst du die Unterschiede und Anwendungsfälle von `let-in` und `where` in Haskell kennen.',
+	exercises: _List_fromArray(
+		[
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: '12', isCorrect: true},
+						{code: '7', isCorrect: false},
+						{code: '0', isCorrect: false},
+						{code: 'Fehler', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Was ist das Ergebnis des folgenden Ausdrucks?'),
+				expression: 'let x = 3\n    y = 4\nin x * y',
+				id: 21,
+				title: 'Let-In Übung'
+			}),
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: '5', isCorrect: true},
+						{code: '2', isCorrect: false},
+						{code: '3', isCorrect: false},
+						{code: 'Fehler', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Was ist das Ergebnis des Aufrufs der Funktion `f 2`?'),
+				expression: 'f x = x + y\n  where y = 3',
+				id: 22,
+				title: 'Where Übung'
+			}),
+			$author$project$Main$SingleExpression(
+			{
+				answers: _List_fromArray(
+					[
+						{code: '`let-in` kann überall verwendet werden, `where` nur in Funktionsdefinitionen.', isCorrect: true},
+						{code: '`where` kann überall verwendet werden, `let-in` nur in Funktionsdefinitionen.', isCorrect: false},
+						{code: '`let-in` und `where` sind identisch.', isCorrect: false},
+						{code: '`let-in` ist schneller als `where`.', isCorrect: false}
+					]),
+				description: $elm$core$Maybe$Just('Welcher der folgenden Aussagen ist korrekt?'),
+				expression: '',
+				id: 23,
+				title: 'Let-In und Where Vergleich'
+			})
+		]),
+	id: 9,
+	learningContent: {
+		examples: _List_fromArray(
+			[
+				{
+				description: $elm$core$Maybe$Just('`let-in` wird verwendet, um lokale Bindungen innerhalb eines Ausdrucks zu definieren. In diesem Beispiel werden `x` und `y` innerhalb des `let`-Blocks definiert und im `in`-Block verwendet.'),
+				expression: 'let x = 5\n    y = 6\nin x + y',
+				id: 1,
+				title: 'Let-In Beispiel'
+			},
+				{
+				description: $elm$core$Maybe$Just('`where` wird verwendet, um lokale Bindungen am Ende einer Funktion zu definieren. In diesem Beispiel wird `y` im `where`-Block definiert und in der Funktion `f` verwendet.'),
+				expression: 'f x = x + y\n  where y = 5',
+				id: 2,
+				title: 'Where Beispiel'
+			},
+				{
+				description: $elm$core$Maybe$Just('`let-in` ist ein Ausdruck und kann überall verwendet werden, während `where` nur in Funktionsdefinitionen vorkommt. `let-in` ist nützlich für temporäre Berechnungen, während `where` für Klarheit in Funktionsdefinitionen sorgt.'),
+				expression: 'let x = 5 in x * 2  -- Gültig nur innerhalb des Ausdrucks\nf x = x + y\n  where y = 5  -- Gültig für die gesamte Funktion',
+				id: 3,
+				title: 'Unterschiede zwischen Let-In und Where'
+			}
+			]),
+		id: 1,
+		title: 'Let-In und Where in Haskell'
+	},
+	title: 'Let-In und Where'
+};
 var $author$project$Main$foundations = {
 	description: 'Lerne die Grundlagen von Haskell kennen.',
 	id: 0,
 	lectures: _List_fromArray(
-		[$author$project$Main$simpleHaskellProgramLecture, $author$project$Main$simpleDataTypesLecture, $author$project$Main$dataTypesLecture]),
+		[$author$project$Main$simpleHaskellProgramLecture, $author$project$Main$simpleDataTypesLecture, $author$project$Main$dataTypesLecture, $author$project$Main$operatorsLecture, $author$project$Main$syntaxLecture]),
 	title: 'Grundlagen'
 };
 var $author$project$Main$coursesExamples = _List_fromArray(
