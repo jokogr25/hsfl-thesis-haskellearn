@@ -382,9 +382,13 @@ update msg model =
                 LearningContentPage user course lecture i ->
                     let
                         nextIndex =
-                            min (List.length lecture.learningContent.examples - 1) (i + 1)
+                            min (List.length lecture.learningContent.examples) (i + 1)
                     in
-                    ( LearningContentPage user course lecture nextIndex, Cmd.none )
+                    if nextIndex >= List.length lecture.learningContent.examples then
+                        ( RunningQuiz user course lecture lecture.exercises [], Cmd.none )
+
+                    else
+                        ( LearningContentPage user course lecture nextIndex, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
