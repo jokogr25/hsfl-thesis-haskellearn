@@ -7375,6 +7375,15 @@ var $author$project$Main$AddBadge = function (a) {
 var $author$project$Main$EnteringName = function (a) {
 	return {$: 'EnteringName', a: a};
 };
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$autofocus = $elm$html$Html$Attributes$boolProperty('autofocus');
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -7867,14 +7876,6 @@ var $author$project$Main$coursesOverview = F2(
 						])),
 					$author$project$Main$foot
 				]));
-	});
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
 	});
 var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
 var $elm$html$Html$footer = _VirtualDom_node('footer');
@@ -11971,7 +11972,8 @@ var $author$project$Main$view = function (model) {
 													$elm$html$Html$Events$onInput($author$project$Main$EnteringName),
 													$elm$html$Html$Attributes$placeholder('Gib deinen Namen ein'),
 													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$class('form-control form-control-lg')
+													$elm$html$Html$Attributes$class('form-control form-control-lg'),
+													$elm$html$Html$Attributes$autofocus(true)
 												]),
 											_List_Nil)
 										])),

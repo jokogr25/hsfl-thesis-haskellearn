@@ -1416,7 +1416,8 @@ header : Maybe User -> Maybe Course -> Html Msg
 header user course =
     Html.header
         []
-        [ nav [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
+        [ nav
+            [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
             [ div
                 [ Html.Attributes.class "container-fluid" ]
                 [ a
