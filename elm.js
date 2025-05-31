@@ -7158,6 +7158,13 @@ var $author$project$Main$update = F2(
 				}
 			case 'Next':
 				switch (model.$) {
+					case 'LecturePage':
+						var user = model.a;
+						var course = model.b;
+						var lecture = model.c;
+						return _Utils_Tuple2(
+							A4($author$project$Main$LearningContentPage, user, course, lecture, 0),
+							$elm$core$Platform$Cmd$none);
 					case 'FinishedQuiz':
 						var user = model.a;
 						var course = model.b;
@@ -7192,6 +7199,12 @@ var $author$project$Main$update = F2(
 				}
 			case 'Prev':
 				switch (model.$) {
+					case 'LecturePage':
+						var user = model.a;
+						var course = model.b;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none);
 					case 'FinishedQuiz':
 						var user = model.a;
 						var course = model.b;
@@ -7212,13 +7225,20 @@ var $author$project$Main$update = F2(
 						var course = model.b;
 						var lecture = model.c;
 						var i = model.d;
-						return _Utils_Tuple2(
+						return (i <= 0) ? _Utils_Tuple2(
+							A2($author$project$Main$CoursePage, user, course),
+							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							A4(
 								$author$project$Main$LearningContentPage,
 								user,
 								course,
 								lecture,
 								A2($elm$core$Basics$max, 0, i - 1)),
+							$elm$core$Platform$Cmd$none);
+					case 'CoursePage':
+						var user = model.a;
+						return _Utils_Tuple2(
+							A2($author$project$Main$CoursesOverview, user, $author$project$Main$coursesExamples),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -10813,7 +10833,7 @@ var $author$project$Main$finishedLectureFooter = A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('btn btn-outline-warning'),
+					$elm$html$Html$Attributes$class('btn btn-lg btn-outline-warning'),
 					$elm$html$Html$Events$onClick($author$project$Main$ShuffleExercises)
 				]),
 			_List_fromArray(
