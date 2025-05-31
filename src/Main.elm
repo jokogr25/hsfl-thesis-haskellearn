@@ -380,7 +380,11 @@ update msg model =
                     )
 
                 LearningContentPage user course lecture i ->
-                    ( LearningContentPage user course lecture (i + 1), Cmd.none )
+                    let
+                        nextIndex =
+                            min (List.length lecture.learningContent.examples - 1) (i + 1)
+                    in
+                    ( LearningContentPage user course lecture nextIndex, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -953,6 +957,7 @@ runningLearningContentView lecture exampleIndex =
                     ]
                 ]
 
+        -- für den Fall, dass es keine Beispiele gibt
         Nothing ->
             Html.footer
                 [ Html.Attributes.class "mt-auto m-2"
