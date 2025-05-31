@@ -329,7 +329,11 @@ update msg model =
                             ( WinningQuiz user course lecture, Cmd.none )
 
                         else
-                            ( FinishedQuiz user course lecture newAnswers 0, Cmd.none )
+                            let
+                                wrongExercises =
+                                    List.filter (\( _, a ) -> not a.isCorrect) newAnswers
+                            in
+                            ( FinishedQuiz user course lecture wrongExercises 0, Cmd.none )
 
                     else
                         ( RunningQuiz user course lecture newRemainingExercises newAnswers
@@ -365,19 +369,12 @@ update msg model =
 
         Next ->
             case model of
-                FinishedQuiz user course lecture answeredExercises i ->
-                    ( if
-                        List.length
-                            (List.filter (\( _, a ) -> not a.isCorrect) answeredExercises)
-                            - 1
-                            == i
-                      then
-                        FinishedQuiz user course lecture answeredExercises i
-
-                      else
-                        FinishedQuiz user course lecture answeredExercises (i + 1)
-                    , Cmd.none
-                    )
+                FinishedQuiz user course lecture wrongExercises i ->
+                    let
+                        nextIndex =
+                            min (List.length wrongExercises - 1) (i + 1)
+                    in
+                    ( FinishedQuiz user course lecture wrongExercises nextIndex, Cmd.none )
 
                 LearningContentPage user course lecture i ->
                     let
@@ -395,8 +392,8 @@ update msg model =
 
         Prev ->
             case model of
-                FinishedQuiz user course lecture answeredExercises i ->
-                    ( FinishedQuiz user course lecture answeredExercises (max 0 (i - 1)), Cmd.none )
+                FinishedQuiz user course lecture wrongExercises i ->
+                    ( FinishedQuiz user course lecture wrongExercises (max 0 (i - 1)), Cmd.none )
 
                 LearningContentPage user course lecture i ->
                     ( LearningContentPage user course lecture (max 0 (i - 1)), Cmd.none )
@@ -595,13 +592,9 @@ view model =
                     ]
                 ]
 
-            FinishedQuiz user course _ answeredExercises i ->
+            FinishedQuiz user course lecture wrongExercises i ->
                 [ header (Just user) (Just course)
-                , let
-                    wrongExercises =
-                        List.filter (\( _, a ) -> not a.isCorrect) answeredExercises
-                  in
-                  case wrongExercises of
+                , case wrongExercises of
                     [] ->
                         text "FinishedLecture: Hier stimmt was nicht!"
 
@@ -614,9 +607,9 @@ view model =
                                         []
                                         [ text
                                             ("Du hast "
-                                                ++ String.fromInt (List.length answeredExercises - List.length w)
+                                                ++ String.fromInt (List.length lecture.exercises - List.length wrongExercises)
                                                 ++ " von "
-                                                ++ String.fromInt (List.length answeredExercises)
+                                                ++ String.fromInt (List.length lecture.exercises)
                                                 ++ " Aufgaben richtig gelöst."
                                             )
                                         ]
