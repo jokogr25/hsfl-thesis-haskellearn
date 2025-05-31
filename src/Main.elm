@@ -396,7 +396,14 @@ update msg model =
                     ( FinishedQuiz user course lecture wrongExercises (max 0 (i - 1)), Cmd.none )
 
                 LearningContentPage user course lecture i ->
-                    ( LearningContentPage user course lecture (max 0 (i - 1)), Cmd.none )
+                    if i <= 0 then
+                        ( CoursePage user course, Cmd.none )
+
+                    else
+                        ( LearningContentPage user course lecture (max 0 (i - 1)), Cmd.none )
+
+                CoursePage user _ ->
+                    ( CoursesOverview user coursesExamples, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
