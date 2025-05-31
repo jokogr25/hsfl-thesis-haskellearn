@@ -369,6 +369,9 @@ update msg model =
 
         Next ->
             case model of
+                LecturePage user course lecture ->
+                    ( LearningContentPage user course lecture 0, Cmd.none )
+
                 FinishedQuiz user course lecture wrongExercises i ->
                     let
                         nextIndex =
