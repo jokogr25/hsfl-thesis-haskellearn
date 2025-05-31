@@ -395,6 +395,9 @@ update msg model =
 
         Prev ->
             case model of
+                LecturePage user course _ ->
+                    ( CoursePage user course, Cmd.none )
+
                 FinishedQuiz user course lecture wrongExercises i ->
                     ( FinishedQuiz user course lecture wrongExercises (max 0 (i - 1)), Cmd.none )
 
@@ -1412,7 +1415,7 @@ finishedLectureFooter =
             [ text "<"
             ]
         , button
-            [ Html.Attributes.class "btn btn-outline-warning", onClick ShuffleExercises ]
+            [ Html.Attributes.class "btn btn-lg btn-outline-warning", onClick ShuffleExercises ]
             [ text "Quiz wiederholen" ]
         , button
             [ Html.Attributes.class "btn btn-lg text-white"
