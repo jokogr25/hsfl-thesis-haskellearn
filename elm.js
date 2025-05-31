@@ -6715,6 +6715,7 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var $elm$core$Basics$ge = _Utils_ge;
 var $elm$random$Random$Generate = function (a) {
 	return {$: 'Generate', a: a};
 };
@@ -6831,6 +6832,10 @@ var $elm$core$List$head = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
+var $elm$core$Basics$min = F2(
+	function (x, y) {
+		return (_Utils_cmp(x, y) < 0) ? x : y;
+	});
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -7090,49 +7095,64 @@ var $author$project$Main$update = F2(
 							[
 								_Utils_Tuple2(exercise, answer)
 							]));
-					return (!$elm$core$List$length(newRemainingExercises)) ? (A2(
-						$elm$core$List$all,
-						function (_v10) {
-							var a = _v10.b;
-							return a.isCorrect;
-						},
-						newAnswers) ? _Utils_Tuple2(
-						A3($author$project$Main$WinningQuiz, user, course, lecture),
-						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
-						A5($author$project$Main$FinishedQuiz, user, course, lecture, newAnswers, 0),
-						$elm$core$Platform$Cmd$none)) : _Utils_Tuple2(
-						A5($author$project$Main$RunningQuiz, user, course, lecture, newRemainingExercises, newAnswers),
-						function () {
-							var _v11 = $elm$core$List$head(newRemainingExercises);
-							if (_v11.$ === 'Just') {
-								var h = _v11.a;
-								return A2(
-									$elm$random$Random$generate,
-									$author$project$Main$ShuffleAnswers,
-									$author$project$Main$shuffle(
-										function () {
-											switch (h.$) {
-												case 'SingleExpression':
-													var m = h.a;
-													return m.answers;
-												case 'BinaryExpression':
-													var m = h.a;
-													return m.answers;
-												case 'FunctionExpression':
-													var m = h.a;
-													return m.answers;
-												case 'GuardExpression':
-													var m = h.a;
-													return m.answers;
-												default:
-													var m = h.a;
-													return m.answers;
-											}
-										}()));
-							} else {
-								return $elm$core$Platform$Cmd$none;
-							}
-						}());
+					if (!$elm$core$List$length(newRemainingExercises)) {
+						if (A2(
+							$elm$core$List$all,
+							function (_v10) {
+								var a = _v10.b;
+								return a.isCorrect;
+							},
+							newAnswers)) {
+							return _Utils_Tuple2(
+								A3($author$project$Main$WinningQuiz, user, course, lecture),
+								$elm$core$Platform$Cmd$none);
+						} else {
+							var wrongExercises = A2(
+								$elm$core$List$filter,
+								function (_v11) {
+									var a = _v11.b;
+									return !a.isCorrect;
+								},
+								newAnswers);
+							return _Utils_Tuple2(
+								A5($author$project$Main$FinishedQuiz, user, course, lecture, wrongExercises, 0),
+								$elm$core$Platform$Cmd$none);
+						}
+					} else {
+						return _Utils_Tuple2(
+							A5($author$project$Main$RunningQuiz, user, course, lecture, newRemainingExercises, newAnswers),
+							function () {
+								var _v12 = $elm$core$List$head(newRemainingExercises);
+								if (_v12.$ === 'Just') {
+									var h = _v12.a;
+									return A2(
+										$elm$random$Random$generate,
+										$author$project$Main$ShuffleAnswers,
+										$author$project$Main$shuffle(
+											function () {
+												switch (h.$) {
+													case 'SingleExpression':
+														var m = h.a;
+														return m.answers;
+													case 'BinaryExpression':
+														var m = h.a;
+														return m.answers;
+													case 'FunctionExpression':
+														var m = h.a;
+														return m.answers;
+													case 'GuardExpression':
+														var m = h.a;
+														return m.answers;
+													default:
+														var m = h.a;
+														return m.answers;
+												}
+											}()));
+								} else {
+									return $elm$core$Platform$Cmd$none;
+								}
+							}());
+					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
@@ -7142,27 +7162,30 @@ var $author$project$Main$update = F2(
 						var user = model.a;
 						var course = model.b;
 						var lecture = model.c;
-						var answeredExercises = model.d;
+						var wrongExercises = model.d;
 						var i = model.e;
+						var nextIndex = A2(
+							$elm$core$Basics$min,
+							$elm$core$List$length(wrongExercises) - 1,
+							i + 1);
 						return _Utils_Tuple2(
-							_Utils_eq(
-								$elm$core$List$length(
-									A2(
-										$elm$core$List$filter,
-										function (_v14) {
-											var a = _v14.b;
-											return !a.isCorrect;
-										},
-										answeredExercises)) - 1,
-								i) ? A5($author$project$Main$FinishedQuiz, user, course, lecture, answeredExercises, i) : A5($author$project$Main$FinishedQuiz, user, course, lecture, answeredExercises, i + 1),
+							A5($author$project$Main$FinishedQuiz, user, course, lecture, wrongExercises, nextIndex),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
 						var user = model.a;
 						var course = model.b;
 						var lecture = model.c;
 						var i = model.d;
-						return _Utils_Tuple2(
-							A4($author$project$Main$LearningContentPage, user, course, lecture, i + 1),
+						var nextIndex = A2(
+							$elm$core$Basics$min,
+							$elm$core$List$length(lecture.learningContent.examples),
+							i + 1);
+						return (_Utils_cmp(
+							nextIndex,
+							$elm$core$List$length(lecture.learningContent.examples)) > -1) ? _Utils_Tuple2(
+							A5($author$project$Main$RunningQuiz, user, course, lecture, lecture.exercises, _List_Nil),
+							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+							A4($author$project$Main$LearningContentPage, user, course, lecture, nextIndex),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -7173,7 +7196,7 @@ var $author$project$Main$update = F2(
 						var user = model.a;
 						var course = model.b;
 						var lecture = model.c;
-						var answeredExercises = model.d;
+						var wrongExercises = model.d;
 						var i = model.e;
 						return _Utils_Tuple2(
 							A5(
@@ -7181,7 +7204,7 @@ var $author$project$Main$update = F2(
 								user,
 								course,
 								lecture,
-								answeredExercises,
+								wrongExercises,
 								A2($elm$core$Basics$max, 0, i - 1)),
 							$elm$core$Platform$Cmd$none);
 					case 'LearningContentPage':
@@ -11837,7 +11860,8 @@ var $author$project$Main$view = function (model) {
 				case 'FinishedQuiz':
 					var user = model.a;
 					var course = model.b;
-					var answeredExercises = model.d;
+					var lecture = model.c;
+					var wrongExercises = model.d;
 					var i = model.e;
 					return _List_fromArray(
 						[
@@ -11846,13 +11870,6 @@ var $author$project$Main$view = function (model) {
 							$elm$core$Maybe$Just(user),
 							$elm$core$Maybe$Just(course)),
 							function () {
-							var wrongExercises = A2(
-								$elm$core$List$filter,
-								function (_v5) {
-									var a = _v5.b;
-									return !a.isCorrect;
-								},
-								answeredExercises);
 							if (!wrongExercises.b) {
 								return $elm$html$Html$text('FinishedLecture: Hier stimmt was nicht!');
 							} else {
@@ -11877,8 +11894,8 @@ var $author$project$Main$view = function (model) {
 													[
 														$elm$html$Html$text(
 														'Du hast ' + ($elm$core$String$fromInt(
-															$elm$core$List$length(answeredExercises) - $elm$core$List$length(w)) + (' von ' + ($elm$core$String$fromInt(
-															$elm$core$List$length(answeredExercises)) + ' Aufgaben richtig gelöst.'))))
+															$elm$core$List$length(lecture.exercises) - $elm$core$List$length(wrongExercises)) + (' von ' + ($elm$core$String$fromInt(
+															$elm$core$List$length(lecture.exercises)) + ' Aufgaben richtig gelöst.'))))
 													])),
 												A2($author$project$Main$finishedExerciseView, exercise, answer)
 											]));
