@@ -693,7 +693,8 @@ view model =
 
 coursesOverview : User -> List Course -> Html Msg
 coursesOverview user courses =
-    div [ Html.Attributes.class "m-1" ]
+    div
+        [ Html.Attributes.class "m-1" ]
         [ Html.h1
             [ Html.Attributes.class "display-5 text-center" ]
             [ text "Kursübersicht"
@@ -708,13 +709,12 @@ coursesOverview user courses =
             [ div
                 [ Html.Attributes.class "container" ]
                 [ div
-                    [ Html.Attributes.class
-                        "row"
+                    [ Html.Attributes.class "row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3"
                     ]
                     (List.map
                         (\course ->
                             div
-                                [ Html.Attributes.class "col" ]
+                                [ Html.Attributes.class "col-md-6" ]
                                 [ div
                                     [ Html.Attributes.class "card shadow-sm"
                                     , onClick (SelectCourse course)
@@ -784,26 +784,24 @@ coursesOverview user courses =
 
 coursePage : User -> Course -> Html Msg
 coursePage user course =
-    div []
+    div [ Html.Attributes.class "m-1" ]
         [ h4
             [ Html.Attributes.class "display-5 text-center" ]
             [ text course.title
             ]
         , div
-            [ Html.Attributes.class "album m-2" ]
+            [ Html.Attributes.class "album" ]
             [ div
-                []
+                [ Html.Attributes.class "container" ]
                 [ div
-                    [ Html.Attributes.class
-                        " row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                    [ Html.Attributes.class "row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3"
                     ]
                     (List.map
                         (\lecture ->
                             div
-                                [ Html.Attributes.class "col-md-4" ]
+                                [ Html.Attributes.class "col-md-6" ]
                                 [ div
-                                    [ Html.Attributes.class
-                                        "card shadow-sm m-2 h-100"
+                                    [ Html.Attributes.class "card shadow-sm h-100"
                                     , onClick (SelectLecture lecture)
                                     , Html.Attributes.style "cursor" "pointer"
                                     ]
@@ -1432,35 +1430,13 @@ header user course =
     Html.header
         [ Html.Attributes.class "sticky-top" ]
         [ nav
-            [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
+            [ Html.Attributes.class "navbar navbar-expand-sm bg-body-tertiary" ]
             [ div
                 [ Html.Attributes.class "container-fluid" ]
                 [ a
                     [ Html.Attributes.class "navbar-brand" ]
                     [ Img.logo
                     ]
-                , h5
-                    []
-                    [ text (Maybe.withDefault "" (Maybe.map .name user))
-                    ]
-                , Maybe.withDefault (text "")
-                    (Maybe.map
-                        (\us ->
-                            if List.length us.badges == 0 then
-                                text ""
-
-                            else
-                                div
-                                    [ Html.Attributes.class "bg-success rounded" ]
-                                    [ Html.span
-                                        [ Html.Attributes.class "badge badge-pill" ]
-                                        [ text (String.fromInt (List.length us.badges))
-                                        , Img.genericBadgeSvg
-                                        ]
-                                    ]
-                        )
-                        user
-                    )
                 , button
                     [ Html.Attributes.class "navbar-toggler"
                     , Html.Attributes.attribute "data-bs-toggle" "collapse"
@@ -1472,11 +1448,11 @@ header user course =
                         []
                     ]
                 , div
-                    [ Html.Attributes.class "collapse navbar-collapse"
+                    [ Html.Attributes.class "collapse navbar-collapse justify-content-between"
                     , Html.Attributes.id "navbarNav"
                     ]
                     [ Html.ul
-                        [ Html.Attributes.class "navbar-nav" ]
+                        [ Html.Attributes.class "navbar-nav mr-auto border-right pr-3" ]
                         [ case user of
                             Just _ ->
                                 Html.li
@@ -1499,6 +1475,7 @@ header user course =
                                         [ Html.Attributes.class "nav-link"
                                         , Html.Attributes.classList
                                             [ ( "nav-link", True )
+                                            , ( "active", True )
                                             ]
                                         , onClick (SelectCourse c)
                                         ]
@@ -1509,6 +1486,30 @@ header user course =
                             Nothing ->
                                 text ""
                         ]
+                    , case user of
+                        Just u ->
+                            div []
+                                [ h5
+                                    []
+                                    [ text u.name
+                                    ]
+                                , case u.badges of
+                                    [] ->
+                                        text ""
+
+                                    badges ->
+                                        div
+                                            [ Html.Attributes.class "bg-success btn-lg rounded" ]
+                                            [ Html.span
+                                                [ Html.Attributes.class "badge badge-pill" ]
+                                                [ text (String.fromInt (List.length badges))
+                                                , Img.genericBadgeSvg
+                                                ]
+                                            ]
+                                ]
+
+                        Nothing ->
+                            text ""
                     ]
                 ]
             ]
