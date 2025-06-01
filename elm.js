@@ -7540,7 +7540,10 @@ var $author$project$Main$coursePage = F2(
 	function (user, course) {
 		return A2(
 			$elm$html$Html$div,
-			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('m-1')
+				]),
 			_List_fromArray(
 				[
 					A2(
@@ -7557,20 +7560,23 @@ var $author$project$Main$coursePage = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('album m-2')
+							$elm$html$Html$Attributes$class('album')
 						]),
 					_List_fromArray(
 						[
 							A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('container')
+								]),
 							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class(' row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3')
+											$elm$html$Html$Attributes$class('row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3')
 										]),
 									A2(
 										$elm$core$List$map,
@@ -7579,7 +7585,7 @@ var $author$project$Main$coursePage = F2(
 												$elm$html$Html$div,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('col-md-4')
+														$elm$html$Html$Attributes$class('col-md-6')
 													]),
 												_List_fromArray(
 													[
@@ -7587,7 +7593,7 @@ var $author$project$Main$coursePage = F2(
 														$elm$html$Html$div,
 														_List_fromArray(
 															[
-																$elm$html$Html$Attributes$class('card shadow-sm m-2 h-100'),
+																$elm$html$Html$Attributes$class('card shadow-sm h-100'),
 																$elm$html$Html$Events$onClick(
 																$author$project$Main$SelectLecture(lecture)),
 																A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
@@ -7785,7 +7791,7 @@ var $author$project$Main$coursesOverview = F2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('row')
+											$elm$html$Html$Attributes$class('row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3')
 										]),
 									A2(
 										$elm$core$List$map,
@@ -7794,7 +7800,7 @@ var $author$project$Main$coursesOverview = F2(
 												$elm$html$Html$div,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('col')
+														$elm$html$Html$Attributes$class('col-md-6')
 													]),
 												_List_fromArray(
 													[
@@ -11297,27 +11303,8 @@ var $author$project$Images$Images$logo = A2(
 					_List_Nil)
 				]))
 		]));
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
 var $elm$html$Html$nav = _VirtualDom_node('nav');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Main$header = F2(
 	function (user, course) {
 		return A2(
@@ -11332,7 +11319,7 @@ var $author$project$Main$header = F2(
 					$elm$html$Html$nav,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('navbar navbar-expand-lg bg-body-tertiary')
+							$elm$html$Html$Attributes$class('navbar navbar-expand-sm bg-body-tertiary')
 						]),
 					_List_fromArray(
 						[
@@ -11352,52 +11339,6 @@ var $author$project$Main$header = F2(
 										]),
 									_List_fromArray(
 										[$author$project$Images$Images$logo])),
-									A2(
-									$elm$html$Html$h5,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text(
-											A2(
-												$elm$core$Maybe$withDefault,
-												'',
-												A2(
-													$elm$core$Maybe$map,
-													function ($) {
-														return $.name;
-													},
-													user)))
-										])),
-									A2(
-									$elm$core$Maybe$withDefault,
-									$elm$html$Html$text(''),
-									A2(
-										$elm$core$Maybe$map,
-										function (us) {
-											return (!$elm$core$List$length(us.badges)) ? $elm$html$Html$text('') : A2(
-												$elm$html$Html$div,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('bg-success rounded')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														$elm$html$Html$span,
-														_List_fromArray(
-															[
-																$elm$html$Html$Attributes$class('badge badge-pill')
-															]),
-														_List_fromArray(
-															[
-																$elm$html$Html$text(
-																$elm$core$String$fromInt(
-																	$elm$core$List$length(us.badges))),
-																$author$project$Images$Images$genericBadgeSvg
-															]))
-													]));
-										},
-										user)),
 									A2(
 									$elm$html$Html$button,
 									_List_fromArray(
@@ -11420,7 +11361,7 @@ var $author$project$Main$header = F2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('collapse navbar-collapse'),
+											$elm$html$Html$Attributes$class('collapse navbar-collapse justify-content-between'),
 											$elm$html$Html$Attributes$id('navbarNav')
 										]),
 									_List_fromArray(
@@ -11429,7 +11370,7 @@ var $author$project$Main$header = F2(
 											$elm$html$Html$ul,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('navbar-nav')
+													$elm$html$Html$Attributes$class('navbar-nav mr-auto border-right pr-3')
 												]),
 											_List_fromArray(
 												[
@@ -11478,7 +11419,8 @@ var $author$project$Main$header = F2(
 																			$elm$html$Html$Attributes$classList(
 																			_List_fromArray(
 																				[
-																					_Utils_Tuple2('nav-link', true)
+																					_Utils_Tuple2('nav-link', true),
+																					_Utils_Tuple2('active', true)
 																				])),
 																			$elm$html$Html$Events$onClick(
 																			$author$project$Main$SelectCourse(c))
@@ -11492,7 +11434,57 @@ var $author$project$Main$header = F2(
 														return $elm$html$Html$text('');
 													}
 												}()
-												]))
+												])),
+											function () {
+											if (user.$ === 'Just') {
+												var u = user.a;
+												return A2(
+													$elm$html$Html$div,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$h5,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text(u.name)
+																])),
+															function () {
+															var _v3 = u.badges;
+															if (!_v3.b) {
+																return $elm$html$Html$text('');
+															} else {
+																var badges = _v3;
+																return A2(
+																	$elm$html$Html$div,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('bg-success btn-lg rounded')
+																		]),
+																	_List_fromArray(
+																		[
+																			A2(
+																			$elm$html$Html$span,
+																			_List_fromArray(
+																				[
+																					$elm$html$Html$Attributes$class('badge badge-pill')
+																				]),
+																			_List_fromArray(
+																				[
+																					$elm$html$Html$text(
+																					$elm$core$String$fromInt(
+																						$elm$core$List$length(badges))),
+																					$author$project$Images$Images$genericBadgeSvg
+																				]))
+																		]));
+															}
+														}()
+														]));
+											} else {
+												return $elm$html$Html$text('');
+											}
+										}()
 										]))
 								]))
 						]))
@@ -11592,6 +11584,15 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var $author$project$Main$runningLearningContentView = F2(
 	function (lecture, exampleIndex) {
 		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
