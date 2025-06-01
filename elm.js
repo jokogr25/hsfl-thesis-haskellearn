@@ -11322,7 +11322,10 @@ var $author$project$Main$header = F2(
 	function (user, course) {
 		return A2(
 			$elm$html$Html$header,
-			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('sticky-top')
+				]),
 			_List_fromArray(
 				[
 					A2(

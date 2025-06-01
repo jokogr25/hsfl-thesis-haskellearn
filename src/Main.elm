@@ -1430,7 +1430,7 @@ finishedLectureFooter =
 header : Maybe User -> Maybe Course -> Html Msg
 header user course =
     Html.header
-        []
+        [ Html.Attributes.class "sticky-top" ]
         [ nav
             [ Html.Attributes.class "navbar navbar-expand-lg bg-body-tertiary" ]
             [ div
