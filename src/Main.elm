@@ -833,11 +833,19 @@ coursePage user course =
                                                     Img.genericBadgeSvg
 
                                                   else
-                                                    text ""
-                                                , text
-                                                    (String.fromInt (List.length lecture.exercises)
-                                                        ++ " Aufgaben"
-                                                    )
+                                                    text
+                                                        (let
+                                                            l =
+                                                                List.length lecture.exercises
+                                                         in
+                                                         String.fromInt l
+                                                            ++ (if l == 1 then
+                                                                    " Aufgabe"
+
+                                                                else
+                                                                    " Aufgaben"
+                                                               )
+                                                        )
                                                 ]
                                             ]
                                         ]
