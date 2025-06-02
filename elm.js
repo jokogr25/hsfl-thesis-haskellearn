@@ -7659,10 +7659,13 @@ var $author$project$Main$coursePage = F2(
 																						function (b) {
 																							return _Utils_eq(b, lecture.badge);
 																						},
-																						user.badges) ? $author$project$Images$Images$genericBadgeSvg : $elm$html$Html$text(''),
-																						$elm$html$Html$text(
-																						$elm$core$String$fromInt(
-																							$elm$core$List$length(lecture.exercises)) + ' Aufgaben')
+																						user.badges) ? $author$project$Images$Images$genericBadgeSvg : $elm$html$Html$text(
+																						function () {
+																							var l = $elm$core$List$length(lecture.exercises);
+																							return _Utils_ap(
+																								$elm$core$String$fromInt(l),
+																								(l === 1) ? ' Aufgabe' : ' Aufgaben');
+																						}())
 																					]))
 																			]))
 																	]))
@@ -11329,9 +11332,9 @@ var $author$project$Main$header = F2(
 								[
 									$elm$html$Html$Attributes$class('container-fluid')
 								]),
-							_List_fromArray(
-								[
-									A2(
+							A2(
+								$elm$core$List$cons,
+								A2(
 									$elm$html$Html$a,
 									_List_fromArray(
 										[
@@ -11339,154 +11342,150 @@ var $author$project$Main$header = F2(
 										]),
 									_List_fromArray(
 										[$author$project$Images$Images$logo])),
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('navbar-toggler'),
-											A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
-											A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('navbar-toggler-icon')
-												]),
-											_List_Nil)
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('collapse navbar-collapse justify-content-between'),
-											$elm$html$Html$Attributes$id('navbarNav')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$ul,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('navbar-nav mr-auto border-right pr-3')
-												]),
-											_List_fromArray(
-												[
-													function () {
-													if (user.$ === 'Just') {
-														return A2(
-															$elm$html$Html$li,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('nav-item')
-																]),
-															_List_fromArray(
-																[
-																	A2(
-																	$elm$html$Html$a,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('nav-link'),
-																			$elm$html$Html$Events$onClick($author$project$Main$GoToCoursesOverview)
-																		]),
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$text('Kursübersicht')
-																		]))
-																]));
-													} else {
-														return $elm$html$Html$text('');
-													}
-												}(),
-													function () {
-													if (course.$ === 'Just') {
-														var c = course.a;
-														return A2(
-															$elm$html$Html$li,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('nav-item')
-																]),
-															_List_fromArray(
-																[
-																	A2(
-																	$elm$html$Html$a,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('nav-link'),
-																			$elm$html$Html$Attributes$classList(
-																			_List_fromArray(
-																				[
-																					_Utils_Tuple2('nav-link', true),
-																					_Utils_Tuple2('active', true)
-																				])),
-																			$elm$html$Html$Events$onClick(
-																			$author$project$Main$SelectCourse(c))
-																		]),
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$text(c.title)
-																		]))
-																]));
-													} else {
-														return $elm$html$Html$text('');
-													}
-												}()
-												])),
-											function () {
-											if (user.$ === 'Just') {
-												var u = user.a;
-												return A2(
-													$elm$html$Html$div,
-													_List_Nil,
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$h5,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text(u.name)
-																])),
-															function () {
-															var _v3 = u.badges;
-															if (!_v3.b) {
-																return $elm$html$Html$text('');
-															} else {
-																var badges = _v3;
-																return A2(
-																	$elm$html$Html$div,
-																	_List_fromArray(
-																		[
-																			$elm$html$Html$Attributes$class('bg-success btn-lg rounded')
-																		]),
-																	_List_fromArray(
-																		[
-																			A2(
-																			$elm$html$Html$span,
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$Attributes$class('badge badge-pill')
-																				]),
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$text(
-																					$elm$core$String$fromInt(
-																						$elm$core$List$length(badges))),
-																					$author$project$Images$Images$genericBadgeSvg
-																				]))
-																		]));
-															}
-														}()
-														]));
-											} else {
-												return $elm$html$Html$text('');
-											}
-										}()
-										]))
-								]))
+								function () {
+									if (user.$ === 'Just') {
+										var u = user.a;
+										return _List_fromArray(
+											[
+												A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('navbar-toggler'),
+														A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'collapse'),
+														A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#navbarNav')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('navbar-toggler-icon')
+															]),
+														_List_Nil)
+													])),
+												A2(
+												$elm$html$Html$div,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('collapse navbar-collapse justify-content-between'),
+														$elm$html$Html$Attributes$id('navbarNav')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$ul,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('navbar-nav mr-auto border-right pr-3')
+															]),
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$li,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('nav-item')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		$elm$html$Html$a,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('nav-link'),
+																				$elm$html$Html$Events$onClick($author$project$Main$GoToCoursesOverview)
+																			]),
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$text('Kursübersicht')
+																			]))
+																	])),
+																function () {
+																if (course.$ === 'Just') {
+																	var c = course.a;
+																	return A2(
+																		$elm$html$Html$li,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('nav-item')
+																			]),
+																		_List_fromArray(
+																			[
+																				A2(
+																				$elm$html$Html$a,
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$Attributes$class('nav-link'),
+																						$elm$html$Html$Attributes$classList(
+																						_List_fromArray(
+																							[
+																								_Utils_Tuple2('nav-link', true),
+																								_Utils_Tuple2('active', true)
+																							])),
+																						$elm$html$Html$Events$onClick(
+																						$author$project$Main$SelectCourse(c))
+																					]),
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$text(c.title)
+																					]))
+																			]));
+																} else {
+																	return $elm$html$Html$text('');
+																}
+															}()
+															])),
+														A2(
+														$elm$html$Html$div,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$h5,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(u.name)
+																	])),
+																function () {
+																var _v2 = u.badges;
+																if (!_v2.b) {
+																	return $elm$html$Html$text('');
+																} else {
+																	var badges = _v2;
+																	return A2(
+																		$elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				$elm$html$Html$Attributes$class('bg-success btn-lg rounded')
+																			]),
+																		_List_fromArray(
+																			[
+																				A2(
+																				$elm$html$Html$span,
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$Attributes$class('badge badge-pill')
+																					]),
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$text(
+																						$elm$core$String$fromInt(
+																							$elm$core$List$length(badges))),
+																						$author$project$Images$Images$genericBadgeSvg
+																					]))
+																			]));
+																}
+															}()
+															]))
+													]))
+											]);
+									} else {
+										return _List_Nil;
+									}
+								}()))
 						]))
 				]));
 	});
