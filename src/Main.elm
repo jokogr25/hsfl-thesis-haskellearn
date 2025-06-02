@@ -1441,85 +1441,82 @@ header user course =
             [ Html.Attributes.class "navbar navbar-expand-sm bg-body-tertiary" ]
             [ div
                 [ Html.Attributes.class "container-fluid" ]
-                [ a
+                (a
                     [ Html.Attributes.class "navbar-brand" ]
                     [ Img.logo
                     ]
-                , button
-                    [ Html.Attributes.class "navbar-toggler"
-                    , Html.Attributes.attribute "data-bs-toggle" "collapse"
-                    , Html.Attributes.attribute "data-bs-target" "#navbarNav"
-                    ]
-                    [ Html.span
-                        [ Html.Attributes.class "navbar-toggler-icon"
-                        ]
-                        []
-                    ]
-                , div
-                    [ Html.Attributes.class "collapse navbar-collapse justify-content-between"
-                    , Html.Attributes.id "navbarNav"
-                    ]
-                    [ Html.ul
-                        [ Html.Attributes.class "navbar-nav mr-auto border-right pr-3" ]
-                        [ case user of
-                            Just _ ->
-                                Html.li
-                                    [ Html.Attributes.class "nav-item" ]
-                                    [ a
-                                        [ Html.Attributes.class "nav-link"
-                                        , onClick GoToCoursesOverview
-                                        ]
-                                        [ text "Kursübersicht"
-                                        ]
+                    :: (case user of
+                            Just u ->
+                                [ button
+                                    [ Html.Attributes.class "navbar-toggler"
+                                    , Html.Attributes.attribute "data-bs-toggle" "collapse"
+                                    , Html.Attributes.attribute "data-bs-target" "#navbarNav"
                                     ]
-
-                            Nothing ->
-                                text ""
-                        , case course of
-                            Just c ->
-                                Html.li
-                                    [ Html.Attributes.class "nav-item" ]
-                                    [ a
-                                        [ Html.Attributes.class "nav-link"
-                                        , Html.Attributes.classList
-                                            [ ( "nav-link", True )
-                                            , ( "active", True )
-                                            ]
-                                        , onClick (SelectCourse c)
+                                    [ Html.span
+                                        [ Html.Attributes.class "navbar-toggler-icon"
                                         ]
-                                        [ text c.title
-                                        ]
+                                        []
                                     ]
-
-                            Nothing ->
-                                text ""
-                        ]
-                    , case user of
-                        Just u ->
-                            div []
-                                [ h5
-                                    []
-                                    [ text u.name
+                                , div
+                                    [ Html.Attributes.class "collapse navbar-collapse justify-content-between"
+                                    , Html.Attributes.id "navbarNav"
                                     ]
-                                , case u.badges of
-                                    [] ->
-                                        text ""
-
-                                    badges ->
-                                        div
-                                            [ Html.Attributes.class "bg-success btn-lg rounded" ]
-                                            [ Html.span
-                                                [ Html.Attributes.class "badge badge-pill" ]
-                                                [ text (String.fromInt (List.length badges))
-                                                , Img.genericBadgeSvg
+                                    [ Html.ul
+                                        [ Html.Attributes.class "navbar-nav mr-auto border-right pr-3" ]
+                                        [ Html.li
+                                            [ Html.Attributes.class "nav-item" ]
+                                            [ a
+                                                [ Html.Attributes.class "nav-link"
+                                                , onClick GoToCoursesOverview
+                                                ]
+                                                [ text "Kursübersicht"
                                                 ]
                                             ]
+                                        , case course of
+                                            Just c ->
+                                                Html.li
+                                                    [ Html.Attributes.class "nav-item" ]
+                                                    [ a
+                                                        [ Html.Attributes.class "nav-link"
+                                                        , Html.Attributes.classList
+                                                            [ ( "nav-link", True )
+                                                            , ( "active", True )
+                                                            ]
+                                                        , onClick (SelectCourse c)
+                                                        ]
+                                                        [ text c.title
+                                                        ]
+                                                    ]
+
+                                            Nothing ->
+                                                text ""
+                                        ]
+                                    , div []
+                                        [ h5
+                                            []
+                                            [ text u.name
+                                            ]
+                                        , case u.badges of
+                                            [] ->
+                                                text ""
+
+                                            badges ->
+                                                div
+                                                    [ Html.Attributes.class "bg-success btn-lg rounded" ]
+                                                    [ Html.span
+                                                        [ Html.Attributes.class "badge badge-pill" ]
+                                                        [ text (String.fromInt (List.length badges))
+                                                        , Img.genericBadgeSvg
+                                                        ]
+                                                    ]
+                                        ]
+                                    ]
                                 ]
 
-                        Nothing ->
-                            text ""
-                    ]
-                ]
+                            Nothing ->
+                                []
+                       )
+                )
             ]
         ]
 
