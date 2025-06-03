@@ -11890,7 +11890,7 @@ var $author$project$Main$view = function (model) {
 												A2($author$project$Main$finishedExerciseView, exercise, answer)
 											]));
 								} else {
-									return $elm$html$Html$text('WARUM IST DAS HIER NULL?!');
+									return $elm$html$Html$text('');
 								}
 							}
 						}()

@@ -631,7 +631,7 @@ view model =
                                     ]
 
                             Nothing ->
-                                text "WARUM IST DAS HIER NULL?!"
+                                text ""
                 ]
 
             LearningContentPage user course lecture i ->
