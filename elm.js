@@ -5929,7 +5929,6 @@ var $author$project$Main$checkUsername = function (name) {
 		return false;
 	}
 };
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$exercise1 = $author$project$Main$SingleExpression(
 	{
 		answers: _List_fromArray(
@@ -6029,11 +6028,7 @@ var $author$project$Main$exercise7 = $author$project$Main$SingleExpression(
 		title: 'Maybeausdruck'
 	});
 var $author$project$Main$lecture1 = {
-	badge: {
-		id: 'singleexpression',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Single Expression'
-	},
+	badge: {id: 'singleexpression', image: $elm$core$Maybe$Nothing, name: 'Single Expression'},
 	description: 'In dieser Lektion wird dein Wissen über Typen von einfachen Ausdrücken getestet.',
 	exercises: _List_fromArray(
 		[$author$project$Main$exercise1, $author$project$Main$exercise2, $author$project$Main$exercise3, $author$project$Main$exercise4, $author$project$Main$exercise5, $author$project$Main$exercise6, $author$project$Main$exercise7]),
@@ -6065,11 +6060,7 @@ var $author$project$Main$lecture1 = {
 	title: 'Typen von einfachen Ausdrücken'
 };
 var $author$project$Main$lecture2 = {
-	badge: {
-		id: 'binaryexpression',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Zweistellige Ausdrücke'
-	},
+	badge: {id: 'binaryexpression', image: $elm$core$Maybe$Nothing, name: 'Zweistellige Ausdrücke'},
 	description: 'Diese Lektion beinhaltet Aufgaben mit zweistelligen Ausdrücken, die über einfache Operatoren miteinander verbunden sind.',
 	exercises: _List_fromArray(
 		[
@@ -6171,11 +6162,7 @@ var $author$project$Main$lecture2 = {
 	title: 'Typen von zweistelligen Ausdrücken'
 };
 var $author$project$Main$lecture3 = {
-	badge: {
-		id: '',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Funktionen'
-	},
+	badge: {id: '', image: $elm$core$Maybe$Nothing, name: 'Funktionen'},
 	description: 'In dieser Lektion wird dein Wissen über Funktionen getestet.',
 	exercises: _List_fromArray(
 		[
@@ -6213,11 +6200,7 @@ var $author$project$Main$lecture3 = {
 	title: 'Funktionen'
 };
 var $author$project$Main$lecture4 = {
-	badge: {
-		id: 'guards',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Guards'
-	},
+	badge: {id: 'guards', image: $elm$core$Maybe$Nothing, name: 'Guards'},
 	description: 'In dieser Lektion wird dein Wissen über Guards getestet.',
 	exercises: _List_fromArray(
 		[
@@ -6262,11 +6245,7 @@ var $author$project$Main$lecture4 = {
 	title: 'Guards'
 };
 var $author$project$Main$lecture5 = {
-	badge: {
-		id: 'pattern-matching',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Pattern Matching'
-	},
+	badge: {id: 'pattern-matching', image: $elm$core$Maybe$Nothing, name: 'Pattern Matching'},
 	description: 'In dieser Lektion wird dein Wissen über Pattern Matching getestet.',
 	exercises: _List_fromArray(
 		[
@@ -6316,11 +6295,7 @@ var $author$project$Main$course1 = {
 	title: 'Ausdrücke'
 };
 var $author$project$Main$dataTypesLecture = {
-	badge: {
-		id: 'data-types',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Datentypen'
-	},
+	badge: {id: 'data-types', image: $elm$core$Maybe$Nothing, name: 'Datentypen'},
 	description: 'In dieser Lektion lernst du Datentypen in Haskell kennen und wie man sie selbst definiert.',
 	exercises: _List_fromArray(
 		[
@@ -6380,11 +6355,7 @@ var $author$project$Main$dataTypesLecture = {
 	title: 'Weitere Datentypen'
 };
 var $author$project$Main$operatorsLecture = {
-	badge: {
-		id: 'operators',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Operatoren'
-	},
+	badge: {id: 'operators', image: $elm$core$Maybe$Nothing, name: 'Operatoren'},
 	description: 'In dieser Lektion lernst du einige Operatoren in Haskell kennen.',
 	exercises: _List_fromArray(
 		[
@@ -6453,11 +6424,7 @@ var $author$project$Main$operatorsLecture = {
 	title: 'Operatoren'
 };
 var $author$project$Main$simpleDataTypesLecture = {
-	badge: {
-		id: 'simple-data-types',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Einfache Datentypen'
-	},
+	badge: {id: 'simple-data-types', image: $elm$core$Maybe$Nothing, name: 'Einfache Datentypen'},
 	description: 'In dieser Lektion lernst du einfache Datentypen in Haskell kennen.',
 	exercises: _List_fromArray(
 		[
@@ -6529,11 +6496,7 @@ var $author$project$Main$simpleDataTypesLecture = {
 	title: 'Einfache Datentypen'
 };
 var $author$project$Main$simpleHaskellProgramLecture = {
-	badge: {
-		id: 'simple-haskell-program',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Einfaches Haskell-Programm'
-	},
+	badge: {id: 'simple-haskell-program', image: $elm$core$Maybe$Nothing, name: 'Einfaches Haskell-Programm'},
 	description: 'In dieser Lektion wird ein einfaches Haskell-Programm vorgestellt.',
 	exercises: _List_fromArray(
 		[
@@ -6616,11 +6579,7 @@ var $author$project$Main$simpleHaskellProgramLecture = {
 	title: 'Einfaches Haskell-Programm'
 };
 var $author$project$Main$syntaxLecture = {
-	badge: {
-		id: 'let-in-where',
-		image: A2($elm$html$Html$div, _List_Nil, _List_Nil),
-		name: 'Let-In und Where'
-	},
+	badge: {id: 'let-in-where', image: $elm$core$Maybe$Nothing, name: 'Let-In und Where'},
 	description: 'In dieser Lektion lernst du die Unterschiede und Anwendungsfälle von `let-in` und `where` in Haskell kennen.',
 	exercises: _List_fromArray(
 		[
@@ -7440,6 +7399,7 @@ var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('
 var $author$project$Main$SelectLecture = function (a) {
 	return {$: 'SelectLecture', a: a};
 };
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
@@ -7447,72 +7407,74 @@ var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $author$project$Images$Images$genericBadgeSvg = A2(
-	$elm$svg$Svg$svg,
-	_List_fromArray(
-		[
-			$elm$svg$Svg$Attributes$viewBox('0 0 80 80'),
-			$elm$svg$Svg$Attributes$height('2em')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#59C5EF'),
-					$elm$svg$Svg$Attributes$d('M30.432 39.985 20.474 57.2l8.428-1.008 7.57-13.088z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#2BA0BF'),
-					$elm$svg$Svg$Attributes$d('m36.472 43.104-7.57 13.088L32.229 64l10.282-17.777z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#59C5EF'),
-					$elm$svg$Svg$Attributes$d('M39.107 49.022 47.771 64l3.327-7.808-5.679-9.819z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#2BA0BF'),
-					$elm$svg$Svg$Attributes$d('m51.73 43.723-6.311 2.65 5.679 9.819 8.428 1.008z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#FFBD66'),
-					$elm$svg$Svg$Attributes$d('m57.38 32.571-.916-.664a1.72 1.72 0 0 1-.457-2.294l.592-.964a1.72 1.72 0 0 0-1.067-2.574l-1.1-.263a1.723 1.723 0 0 1-1.3-1.945l.178-1.116a1.71 1.71 0 0 0-.482-1.488 1.711 1.711 0 0 0-1.488-.483l-1.117.178a1.721 1.721 0 0 1-1.945-1.3l-.262-1.1a1.72 1.72 0 0 0-2.575-1.067l-.963.593a1.72 1.72 0 0 1-2.294-.456l-.664-.916a1.721 1.721 0 0 0-2.787 0l-.664.916a1.72 1.72 0 0 1-2.294.456l-.964-.592a1.72 1.72 0 0 0-2.574 1.066l-.263 1.1a1.722 1.722 0 0 1-1.945 1.3l-1.117-.178a1.72 1.72 0 0 0-1.986 1.546l-.003.035c-.008.126-.003.257.018.388l.179 1.117a1.72 1.72 0 0 1-1.3 1.945l-1.1.263a1.72 1.72 0 0 0-1.066 2.574l.592.964a1.721 1.721 0 0 1-.457 2.295l-.916.663a1.72 1.72 0 0 0 0 2.786l.916.664a1.72 1.72 0 0 1 .457 2.294l-.592.964a1.72 1.72 0 0 0 1.066 2.574l1.1.264a1.721 1.721 0 0 1 1.3 1.944l-.179 1.116a1.711 1.711 0 0 0 .483 1.488v.002c.371.371.91.574 1.488.482l1.117-.179a1.72 1.72 0 0 1 1.945 1.3l.262 1.1a1.72 1.72 0 0 0 2.575 1.066l.964-.592a1.721 1.721 0 0 1 2.294.457l.664.915c.687.948 2.1.948 2.787 0l.664-.915a1.721 1.721 0 0 1 2.294-.457l.964.592a1.72 1.72 0 0 0 2.574-1.066l.263-1.1a1.722 1.722 0 0 1 1.945-1.3l1.117.179c.132.021.262.026.388.018l.035-.002a1.722 1.722 0 0 0 1.546-1.986l-.178-1.117a1.72 1.72 0 0 1 1.3-1.945l1.1-.263a1.72 1.72 0 0 0 1.067-2.574l-.592-.964a1.72 1.72 0 0 1 .457-2.294l.916-.664a1.72 1.72 0 0 0 0-2.786z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#FDDC85'),
-					$elm$svg$Svg$Attributes$d('M51.604 33.845c0-6.339-5.138-11.478-11.477-11.478-6.338 0-11.477 5.139-11.477 11.478 0 6.339 5.138 11.476 11.477 11.476s11.477-5.137 11.477-11.476z')
-				]),
-			_List_Nil),
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$fill('#FFBD66'),
-					$elm$svg$Svg$Attributes$d('m40.128 25.373 2.467 4.998 5.517.802-3.993 3.892.943 5.494-4.934-2.594-4.934 2.594.942-5.494-3.992-3.892 5.516-.802z')
-				]),
-			_List_Nil)
-		]));
+var $author$project$Images$Images$genericBadgeSvg = function (h) {
+	return A2(
+		$elm$svg$Svg$svg,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$viewBox('0 0 80 80'),
+				$elm$svg$Svg$Attributes$height(h)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#59C5EF'),
+						$elm$svg$Svg$Attributes$d('M30.432 39.985 20.474 57.2l8.428-1.008 7.57-13.088z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#2BA0BF'),
+						$elm$svg$Svg$Attributes$d('m36.472 43.104-7.57 13.088L32.229 64l10.282-17.777z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#59C5EF'),
+						$elm$svg$Svg$Attributes$d('M39.107 49.022 47.771 64l3.327-7.808-5.679-9.819z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#2BA0BF'),
+						$elm$svg$Svg$Attributes$d('m51.73 43.723-6.311 2.65 5.679 9.819 8.428 1.008z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#FFBD66'),
+						$elm$svg$Svg$Attributes$d('m57.38 32.571-.916-.664a1.72 1.72 0 0 1-.457-2.294l.592-.964a1.72 1.72 0 0 0-1.067-2.574l-1.1-.263a1.723 1.723 0 0 1-1.3-1.945l.178-1.116a1.71 1.71 0 0 0-.482-1.488 1.711 1.711 0 0 0-1.488-.483l-1.117.178a1.721 1.721 0 0 1-1.945-1.3l-.262-1.1a1.72 1.72 0 0 0-2.575-1.067l-.963.593a1.72 1.72 0 0 1-2.294-.456l-.664-.916a1.721 1.721 0 0 0-2.787 0l-.664.916a1.72 1.72 0 0 1-2.294.456l-.964-.592a1.72 1.72 0 0 0-2.574 1.066l-.263 1.1a1.722 1.722 0 0 1-1.945 1.3l-1.117-.178a1.72 1.72 0 0 0-1.986 1.546l-.003.035c-.008.126-.003.257.018.388l.179 1.117a1.72 1.72 0 0 1-1.3 1.945l-1.1.263a1.72 1.72 0 0 0-1.066 2.574l.592.964a1.721 1.721 0 0 1-.457 2.295l-.916.663a1.72 1.72 0 0 0 0 2.786l.916.664a1.72 1.72 0 0 1 .457 2.294l-.592.964a1.72 1.72 0 0 0 1.066 2.574l1.1.264a1.721 1.721 0 0 1 1.3 1.944l-.179 1.116a1.711 1.711 0 0 0 .483 1.488v.002c.371.371.91.574 1.488.482l1.117-.179a1.72 1.72 0 0 1 1.945 1.3l.262 1.1a1.72 1.72 0 0 0 2.575 1.066l.964-.592a1.721 1.721 0 0 1 2.294.457l.664.915c.687.948 2.1.948 2.787 0l.664-.915a1.721 1.721 0 0 1 2.294-.457l.964.592a1.72 1.72 0 0 0 2.574-1.066l.263-1.1a1.722 1.722 0 0 1 1.945-1.3l1.117.179c.132.021.262.026.388.018l.035-.002a1.722 1.722 0 0 0 1.546-1.986l-.178-1.117a1.72 1.72 0 0 1 1.3-1.945l1.1-.263a1.72 1.72 0 0 0 1.067-2.574l-.592-.964a1.72 1.72 0 0 1 .457-2.294l.916-.664a1.72 1.72 0 0 0 0-2.786z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#FDDC85'),
+						$elm$svg$Svg$Attributes$d('M51.604 33.845c0-6.339-5.138-11.478-11.477-11.478-6.338 0-11.477 5.139-11.477 11.478 0 6.339 5.138 11.476 11.477 11.476s11.477-5.137 11.477-11.476z')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$fill('#FFBD66'),
+						$elm$svg$Svg$Attributes$d('m40.128 25.373 2.467 4.998 5.517.802-3.993 3.892.943 5.494-4.934-2.594-4.934 2.594.942-5.494-3.992-3.892 5.516-.802z')
+					]),
+				_List_Nil)
+			]));
+};
 var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -7536,6 +7498,15 @@ var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var $author$project$Main$coursePage = F2(
 	function (user, course) {
 		return A2(
@@ -7665,7 +7636,7 @@ var $author$project$Main$coursePage = F2(
 																						function (b) {
 																							return _Utils_eq(b, lecture.badge);
 																						},
-																						user.badges) ? $author$project$Images$Images$genericBadgeSvg : $elm$html$Html$text(
+																						user.badges) ? A3($elm$core$Maybe$withDefault, $author$project$Images$Images$genericBadgeSvg, lecture.badge.image, '2em') : $elm$html$Html$text(
 																						function () {
 																							var l = $elm$core$List$length(lecture.exercises);
 																							return _Utils_ap(
@@ -11484,7 +11455,7 @@ var $author$project$Main$header = F2(
 																						$elm$html$Html$text(
 																						$elm$core$String$fromInt(
 																							$elm$core$List$length(badges))),
-																						$author$project$Images$Images$genericBadgeSvg
+																						$author$project$Images$Images$genericBadgeSvg('2em')
 																					]))
 																			]));
 																}
@@ -11593,15 +11564,6 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Main$runningLearningContentView = F2(
 	function (lecture, exampleIndex) {
 		var _v0 = A2($author$project$Main$get, exampleIndex, lecture.learningContent.examples);
@@ -11824,13 +11786,7 @@ var $author$project$Main$view = function (model) {
 								var e = _v1.a;
 								return $author$project$Main$exerciseView(e);
 							} else {
-								return A2(
-									$elm$html$Html$div,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Hier gehörst du nicht hin!')
-										]));
+								return $elm$html$Html$text('');
 							}
 						}()
 						]);
@@ -11873,7 +11829,7 @@ var $author$project$Main$view = function (model) {
 									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen.')
+											$elm$html$Html$text('Herzlichen Glückwunsch, ' + (user.name + '! Du hast die Lektion erfolgreich abgeschlossen.'))
 										])),
 									A2(
 									$elm$html$Html$button,
@@ -11886,7 +11842,8 @@ var $author$project$Main$view = function (model) {
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Zurück zum Kurs')
+											$elm$html$Html$text('Belohnung einsacken'),
+											A3($elm$core$Maybe$withDefault, $author$project$Images$Images$genericBadgeSvg, lecture.badge.image, '3em')
 										]))
 								]))
 						]);

@@ -129,7 +129,7 @@ type alias Answer =
 type alias Badge =
     { id : String
     , name : String
-    , image : Html Msg
+    , image : Maybe (String -> Html Msg)
     }
 
 
@@ -601,7 +601,7 @@ view model =
                         , onClick (AddBadge lecture.badge)
                         ]
                         [ text "Belohnung einsacken"
-                        , Img.genericBadgeSvg "3em"
+                        , Maybe.withDefault Img.genericBadgeSvg lecture.badge.image "3em"
                         ]
                     ]
                 ]
@@ -833,7 +833,7 @@ coursePage user course =
                                             , Html.small
                                                 [ Html.Attributes.class "muted" ]
                                                 [ if List.any (\b -> b == lecture.badge) user.badges then
-                                                    Img.genericBadgeSvg "2em"
+                                                    Maybe.withDefault Img.genericBadgeSvg lecture.badge.image "2em"
 
                                                   else
                                                     text
@@ -1645,7 +1645,7 @@ lecture2 =
     , badge =
         { id = "binaryexpression"
         , name = "Zweistellige Ausdrücke"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -1781,7 +1781,7 @@ lecture3 =
     , badge =
         { id = ""
         , name = "Funktionen"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -1828,7 +1828,7 @@ lecture4 =
     , badge =
         { id = "guards"
         , name = "Guards"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -1884,7 +1884,7 @@ lecture5 =
     , badge =
         { id = "pattern-matching"
         , name = "Pattern Matching"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -1935,7 +1935,7 @@ lecture1 =
     , badge =
         { id = "singleexpression"
         , name = "Single Expression"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -2181,7 +2181,7 @@ syntaxLecture =
     , badge =
         { id = "let-in-where"
         , name = "Let-In und Where"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 1
@@ -2277,7 +2277,7 @@ operatorsLecture =
     , badge =
         { id = "operators"
         , name = "Operatoren"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 0
@@ -2344,7 +2344,7 @@ dataTypesLecture =
     , badge =
         { id = "data-types"
         , name = "Datentypen"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 0
@@ -2410,7 +2410,7 @@ simpleDataTypesLecture =
     , badge =
         { id = "simple-data-types"
         , name = "Einfache Datentypen"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 0
@@ -2486,7 +2486,7 @@ simpleHaskellProgramLecture =
     , badge =
         { id = "simple-haskell-program"
         , name = "Einfaches Haskell-Programm"
-        , image = div [] []
+        , image = Nothing
         }
     , learningContent =
         { id = 0
