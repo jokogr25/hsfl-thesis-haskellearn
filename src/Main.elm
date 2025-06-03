@@ -579,7 +579,7 @@ view model =
                         exerciseView e
 
                     Nothing ->
-                        div [] [ text "Hier gehörst du nicht hin!" ]
+                        text ""
                 ]
 
             WinningQuiz user course lecture ->
@@ -594,13 +594,14 @@ view model =
                     [ Html.Attributes.class "footer mt-auto m-2" ]
                     [ Html.p
                         []
-                        [ text "Herzlichen Glückwunsch! Du hast die Lektion erfolgreich abgeschlossen." ]
+                        [ text ("Herzlichen Glückwunsch, " ++ user.name ++ "! Du hast die Lektion erfolgreich abgeschlossen.") ]
                     , button
                         [ Html.Attributes.class "btn btn-lg text-white w-100"
                         , Html.Attributes.style "background-color" "#6f42c1"
                         , onClick (AddBadge lecture.badge)
                         ]
-                        [ text "Zurück zum Kurs"
+                        [ text "Belohnung einsacken"
+                        , Img.genericBadgeSvg "3em"
                         ]
                     ]
                 ]
@@ -832,7 +833,7 @@ coursePage user course =
                                             , Html.small
                                                 [ Html.Attributes.class "muted" ]
                                                 [ if List.any (\b -> b == lecture.badge) user.badges then
-                                                    Img.genericBadgeSvg
+                                                    Img.genericBadgeSvg "2em"
 
                                                   else
                                                     text
@@ -1512,7 +1513,7 @@ header user course =
                                                     [ Html.span
                                                         [ Html.Attributes.class "badge badge-pill" ]
                                                         [ text (String.fromInt (List.length badges))
-                                                        , Img.genericBadgeSvg
+                                                        , Img.genericBadgeSvg "2em"
                                                         ]
                                                     ]
                                         ]

@@ -144,11 +144,11 @@ logo =
         ]
 
 
-genericBadgeSvg : Html msg
-genericBadgeSvg =
+genericBadgeSvg : String -> Html msg
+genericBadgeSvg h =
     svg
         [ viewBox "0 0 80 80"
-        , height "2em"
+        , height h
         ]
         [ path [ fill "#59C5EF", d "M30.432 39.985 20.474 57.2l8.428-1.008 7.57-13.088z" ] []
         , path [ fill "#2BA0BF", d "m36.472 43.104-7.57 13.088L32.229 64l10.282-17.777z" ] []
