@@ -1207,7 +1207,7 @@ highlightedInlineView expression =
 finishedExerciseAnswerView : List Answer -> Answer -> Html Msg
 finishedExerciseAnswerView answers studentAnswer =
     div
-        [ Html.Attributes.class "card-footer btn-toolbar d-flex gap-2" ]
+        [ Html.Attributes.class "btn-toolbar d-flex gap-2" ]
         (List.map
             (\answer ->
                 if answer == studentAnswer then

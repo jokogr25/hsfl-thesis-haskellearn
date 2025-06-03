@@ -10793,7 +10793,7 @@ var $author$project$Main$finishedExerciseAnswerView = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('card-footer btn-toolbar d-flex gap-2')
+					$elm$html$Html$Attributes$class('btn-toolbar d-flex gap-2')
 				]),
 			A2(
 				$elm$core$List$map,
