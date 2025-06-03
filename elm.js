@@ -11234,6 +11234,7 @@ var $author$project$Main$get = F2(
 	});
 var $author$project$Main$GoToCoursesOverview = {$: 'GoToCoursesOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$h6 = _VirtualDom_node('h6');
 var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$li = _VirtualDom_node('li');
@@ -11452,7 +11453,7 @@ var $author$project$Main$header = F2(
 														_List_fromArray(
 															[
 																A2(
-																$elm$html$Html$h5,
+																$elm$html$Html$h6,
 																_List_Nil,
 																_List_fromArray(
 																	[

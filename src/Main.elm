@@ -1498,7 +1498,7 @@ header user course =
                                                 text ""
                                         ]
                                     , div []
-                                        [ h5
+                                        [ Html.h6
                                             []
                                             [ text u.name
                                             ]
