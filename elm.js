@@ -7645,7 +7645,13 @@ var $author$project$Main$coursePage = F2(
 																			]),
 																		_List_fromArray(
 																			[
-																				A2($elm$html$Html$div, _List_Nil, _List_Nil),
+																				A2(
+																				$elm$html$Html$small,
+																				_List_fromArray(
+																					[
+																						$elm$html$Html$Attributes$class('muted')
+																					]),
+																				_List_Nil),
 																				A2(
 																				$elm$html$Html$small,
 																				_List_fromArray(
@@ -7663,8 +7669,11 @@ var $author$project$Main$coursePage = F2(
 																						function () {
 																							var l = $elm$core$List$length(lecture.exercises);
 																							return _Utils_ap(
-																								$elm$core$String$fromInt(l),
-																								(l === 1) ? ' Aufgabe' : ' Aufgaben');
+																								$elm$core$String$fromInt(
+																									$elm$core$List$length(lecture.learningContent.examples)) + ' Beispiele | ',
+																								_Utils_ap(
+																									$elm$core$String$fromInt(l),
+																									(l === 1) ? ' Aufgabe' : ' Aufgaben'));
 																						}())
 																					]))
 																			]))

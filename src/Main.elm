@@ -826,7 +826,9 @@ coursePage user course =
                                         [ Html.Attributes.class "card-footer" ]
                                         [ div
                                             [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
-                                            [ div [] []
+                                            [ Html.small
+                                                [ Html.Attributes.class "muted" ]
+                                                []
                                             , Html.small
                                                 [ Html.Attributes.class "muted" ]
                                                 [ if List.any (\b -> b == lecture.badge) user.badges then
@@ -838,12 +840,16 @@ coursePage user course =
                                                             l =
                                                                 List.length lecture.exercises
                                                          in
-                                                         String.fromInt l
-                                                            ++ (if l == 1 then
-                                                                    " Aufgabe"
+                                                         (String.fromInt (List.length lecture.learningContent.examples)
+                                                            ++ " Beispiele | "
+                                                         )
+                                                            ++ (String.fromInt l
+                                                                    ++ (if l == 1 then
+                                                                            " Aufgabe"
 
-                                                                else
-                                                                    " Aufgaben"
+                                                                        else
+                                                                            " Aufgaben"
+                                                                       )
                                                                )
                                                         )
                                                 ]
