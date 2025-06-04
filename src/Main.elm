@@ -794,7 +794,8 @@ progressBarView progress height =
         , Html.Attributes.style "height" height
         ]
         [ div
-            [ Html.Attributes.class "progress-bar progress-bar bg-success"
+            [ Html.Attributes.class "progress-bar progress-bar"
+            , Html.Attributes.style "background-color" "#6f42c1"
             , Html.Attributes.attribute "role" "progressbar"
             , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
             , Html.Attributes.attribute "aria-valuemin" "0"
@@ -1537,7 +1538,9 @@ header user course =
 
                                             badges ->
                                                 div
-                                                    [ Html.Attributes.class "bg-success btn-lg rounded" ]
+                                                    [ Html.Attributes.class "btn-lg rounded"
+                                                    , Html.Attributes.style "background-color" "#6f42c1"
+                                                    ]
                                                     [ Html.span
                                                         [ Html.Attributes.class "badge badge-pill" ]
                                                         [ text (String.fromInt (List.length badges))
