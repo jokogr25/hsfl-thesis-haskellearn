@@ -576,7 +576,24 @@ view model =
                     ]
                 , case List.head remainingExercises of
                     Just e ->
-                        exerciseView e
+                        Html.footer
+                            [ Html.Attributes.class "mt-auto m-2" ]
+                            [ if List.length lecture.exercises == 1 then
+                                text ""
+
+                              else
+                                let
+                                    l =
+                                        List.length lecture.exercises
+
+                                    progress =
+                                        (l - List.length remainingExercises)
+                                            * 100
+                                            // l
+                                in
+                                progressBarView progress "1em"
+                            , exerciseView e
+                            ]
 
                     Nothing ->
                         text ""
@@ -771,7 +788,7 @@ coursesOverview user courses =
 progressBarView : Int -> String -> Html Msg
 progressBarView progress height =
     div
-        [ Html.Attributes.class "progress"
+        [ Html.Attributes.class "progress mb-1"
         , Html.Attributes.style "height" height
         ]
         [ div
@@ -919,7 +936,14 @@ runningLearningContentView lecture exampleIndex =
         Just example ->
             Html.footer
                 [ Html.Attributes.class "mt-auto m-2" ]
-                [ div
+                [ let
+                    progress =
+                        exampleIndex
+                            * 100
+                            // List.length lecture.learningContent.examples
+                  in
+                  progressBarView progress "1em"
+                , div
                     [ Html.Attributes.class "card"
                     ]
                     [ div
@@ -1000,162 +1024,159 @@ runningLearningContentView lecture exampleIndex =
 
 exerciseView : Exercise -> Html Msg
 exerciseView exercise =
-    Html.footer
-        [ Html.Attributes.class "mt-auto m-2" ]
-        [ div
-            [ Html.Attributes.class "card" ]
-            (case exercise of
-                SingleExpression singleExpression ->
-                    [ div
-                        [ Html.Attributes.class "card-header text-center" ]
-                        [ text singleExpression.title
-                        ]
-                    , div
-                        [ Html.Attributes.class "card-body" ]
-                        [ div
-                            [ Html.Attributes.class "card-title" ]
-                            [ text
-                                (case singleExpression.description of
-                                    Just d ->
-                                        d
-
-                                    Nothing ->
-                                        ""
-                                )
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-content" ]
-                            (highlightedExpressionView singleExpression.expression Nothing)
-                        ]
-                    , runningExerciseAnswerView exercise singleExpression.answers
+    div
+        [ Html.Attributes.class "card" ]
+        (case exercise of
+            SingleExpression singleExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text singleExpression.title
                     ]
-
-                BinaryExpression binaryExpression ->
+                , div
+                    [ Html.Attributes.class "card-body" ]
                     [ div
-                        [ Html.Attributes.class "card-header text-center" ]
-                        [ text binaryExpression.title
-                        ]
-                    , div
-                        [ Html.Attributes.class "card-body" ]
-                        [ div
-                            [ Html.Attributes.class "card-title" ]
-                            [ text
-                                (case binaryExpression.description of
-                                    Just d ->
-                                        d
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case singleExpression.description of
+                                Just d ->
+                                    d
 
-                                    Nothing ->
-                                        ""
-                                )
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-content" ]
-                            (highlightedExpressionView
-                                (String.join
-                                    " "
-                                    [ binaryExpression.leftExpression
-                                    , binaryExpression.operator
-                                    , binaryExpression.rightExpression
-                                    ]
-                                )
-                                Nothing
+                                Nothing ->
+                                    ""
                             )
                         ]
-                    , runningExerciseAnswerView exercise binaryExpression.answers
-                    ]
-
-                FunctionExpression functionExpression ->
-                    [ div
-                        [ Html.Attributes.class "card-header text-center" ]
-                        [ text functionExpression.title
-                        ]
                     , div
-                        [ Html.Attributes.class "card-body" ]
-                        [ div
-                            [ Html.Attributes.class "card-title" ]
-                            [ text
-                                (case functionExpression.description of
-                                    Just d ->
-                                        d
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView singleExpression.expression Nothing)
+                    ]
+                , runningExerciseAnswerView exercise singleExpression.answers
+                ]
 
-                                    Nothing ->
-                                        ""
-                                )
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-content" ]
-                            (highlightedExpressionView
-                                (functionExpression.functionName
-                                    ++ " "
-                                    ++ String.join " " functionExpression.arguments
-                                )
-                                Nothing
+            BinaryExpression binaryExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text binaryExpression.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case binaryExpression.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
                             )
                         ]
-                    , runningExerciseAnswerView exercise functionExpression.answers
-                    ]
-
-                GuardExpression guardExpression ->
-                    [ div
-                        [ Html.Attributes.class "card-header text-center" ]
-                        [ text guardExpression.title
-                        ]
                     , div
-                        [ Html.Attributes.class "card-body" ]
-                        [ div
-                            [ Html.Attributes.class "card-title" ]
-                            [ text
-                                (case guardExpression.description of
-                                    Just d ->
-                                        d
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView
+                            (String.join
+                                " "
+                                [ binaryExpression.leftExpression
+                                , binaryExpression.operator
+                                , binaryExpression.rightExpression
+                                ]
+                            )
+                            Nothing
+                        )
+                    ]
+                , runningExerciseAnswerView exercise binaryExpression.answers
+                ]
 
-                                    Nothing ->
-                                        ""
-                                )
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-content" ]
-                            (highlightedExpressionView
-                                (guardExpression.functionName
-                                    ++ " "
-                                    ++ String.join " " guardExpression.arguments
-                                    ++ guardExpression.expression
-                                )
-                                Nothing
+            FunctionExpression functionExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text functionExpression.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case functionExpression.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
                             )
                         ]
-                    , runningExerciseAnswerView exercise guardExpression.answers
-                    ]
-
-                PatternMatchingExpression patternMatchingExpression ->
-                    [ div
-                        [ Html.Attributes.class "card-header text-center" ]
-                        [ text patternMatchingExpression.title
-                        ]
                     , div
-                        [ Html.Attributes.class "card-body" ]
-                        [ div
-                            [ Html.Attributes.class "card-title" ]
-                            [ text
-                                (case patternMatchingExpression.description of
-                                    Just d ->
-                                        d
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView
+                            (functionExpression.functionName
+                                ++ " "
+                                ++ String.join " " functionExpression.arguments
+                            )
+                            Nothing
+                        )
+                    ]
+                , runningExerciseAnswerView exercise functionExpression.answers
+                ]
 
-                                    Nothing ->
-                                        ""
-                                )
-                            ]
-                        , div
-                            [ Html.Attributes.class "card-content" ]
-                            (highlightedExpressionView
-                                (String.join "\n" patternMatchingExpression.patterns)
-                                Nothing
+            GuardExpression guardExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text guardExpression.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case guardExpression.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
                             )
                         ]
-                    , runningExerciseAnswerView exercise patternMatchingExpression.answers
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView
+                            (guardExpression.functionName
+                                ++ " "
+                                ++ String.join " " guardExpression.arguments
+                                ++ guardExpression.expression
+                            )
+                            Nothing
+                        )
                     ]
-            )
-        ]
+                , runningExerciseAnswerView exercise guardExpression.answers
+                ]
+
+            PatternMatchingExpression patternMatchingExpression ->
+                [ div
+                    [ Html.Attributes.class "card-header text-center" ]
+                    [ text patternMatchingExpression.title
+                    ]
+                , div
+                    [ Html.Attributes.class "card-body" ]
+                    [ div
+                        [ Html.Attributes.class "card-title" ]
+                        [ text
+                            (case patternMatchingExpression.description of
+                                Just d ->
+                                    d
+
+                                Nothing ->
+                                    ""
+                            )
+                        ]
+                    , div
+                        [ Html.Attributes.class "card-content" ]
+                        (highlightedExpressionView
+                            (String.join "\n" patternMatchingExpression.patterns)
+                            Nothing
+                        )
+                    ]
+                , runningExerciseAnswerView exercise patternMatchingExpression.answers
+                ]
+        )
 
 
 runningExerciseAnswerView : Exercise -> List Answer -> Html Msg
