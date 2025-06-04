@@ -745,20 +745,7 @@ coursesOverview user courses =
                                             ]
                                         ]
                                         [ if progress < 100 then
-                                            div
-                                                [ Html.Attributes.class "progress"
-                                                , Html.Attributes.style "height" "2em"
-                                                ]
-                                                [ div
-                                                    [ Html.Attributes.class "progress-bar progress-bar bg-success"
-                                                    , Html.Attributes.attribute "role" "progressbar"
-                                                    , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
-                                                    , Html.Attributes.attribute "aria-valuemin" "0"
-                                                    , Html.Attributes.attribute "aria-valuemax" "100"
-                                                    , Html.Attributes.style "width" (String.fromInt progress ++ "%")
-                                                    ]
-                                                    []
-                                                ]
+                                            progressBarView progress "2em"
 
                                           else
                                             div
@@ -778,6 +765,24 @@ coursesOverview user courses =
                 ]
             ]
         , foot
+        ]
+
+
+progressBarView : Int -> String -> Html Msg
+progressBarView progress height =
+    div
+        [ Html.Attributes.class "progress"
+        , Html.Attributes.style "height" height
+        ]
+        [ div
+            [ Html.Attributes.class "progress-bar progress-bar bg-success"
+            , Html.Attributes.attribute "role" "progressbar"
+            , Html.Attributes.attribute "aria-valuenow" (String.fromInt progress)
+            , Html.Attributes.attribute "aria-valuemin" "0"
+            , Html.Attributes.attribute "aria-valuemax" "100"
+            , Html.Attributes.style "width" (String.fromInt progress ++ "%")
+            ]
+            []
         ]
 
 

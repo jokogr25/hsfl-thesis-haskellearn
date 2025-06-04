@@ -7670,14 +7670,6 @@ var $author$project$Main$coursePage = F2(
 var $author$project$Main$SelectCourse = function (a) {
 	return {$: 'SelectCourse', a: a};
 };
-var $elm$virtual_dom$VirtualDom$attribute = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_attribute,
-			_VirtualDom_noOnOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlUri(value));
-	});
-var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Images$Images$checkSvg = A2(
@@ -7722,6 +7714,45 @@ var $author$project$Main$foot = A2(
 		]));
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $author$project$Main$progressBarView = F2(
+	function (progress, height) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('progress'),
+					A2($elm$html$Html$Attributes$style, 'height', height)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('progress-bar progress-bar bg-success'),
+							A2($elm$html$Html$Attributes$attribute, 'role', 'progressbar'),
+							A2(
+							$elm$html$Html$Attributes$attribute,
+							'aria-valuenow',
+							$elm$core$String$fromInt(progress)),
+							A2($elm$html$Html$Attributes$attribute, 'aria-valuemin', '0'),
+							A2($elm$html$Html$Attributes$attribute, 'aria-valuemax', '100'),
+							A2(
+							$elm$html$Html$Attributes$style,
+							'width',
+							$elm$core$String$fromInt(progress) + '%')
+						]),
+					_List_Nil)
+				]));
+	});
 var $author$project$Main$coursesOverview = F2(
 	function (user, courses) {
 		return A2(
@@ -7853,34 +7884,7 @@ var $author$project$Main$coursesOverview = F2(
 																		]),
 																	_List_fromArray(
 																		[
-																			(progress < 100) ? A2(
-																			$elm$html$Html$div,
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$Attributes$class('progress'),
-																					A2($elm$html$Html$Attributes$style, 'height', '2em')
-																				]),
-																			_List_fromArray(
-																				[
-																					A2(
-																					$elm$html$Html$div,
-																					_List_fromArray(
-																						[
-																							$elm$html$Html$Attributes$class('progress-bar progress-bar bg-success'),
-																							A2($elm$html$Html$Attributes$attribute, 'role', 'progressbar'),
-																							A2(
-																							$elm$html$Html$Attributes$attribute,
-																							'aria-valuenow',
-																							$elm$core$String$fromInt(progress)),
-																							A2($elm$html$Html$Attributes$attribute, 'aria-valuemin', '0'),
-																							A2($elm$html$Html$Attributes$attribute, 'aria-valuemax', '100'),
-																							A2(
-																							$elm$html$Html$Attributes$style,
-																							'width',
-																							$elm$core$String$fromInt(progress) + '%')
-																						]),
-																					_List_Nil)
-																				])) : A2(
+																			(progress < 100) ? A2($author$project$Main$progressBarView, progress, '2em') : A2(
 																			$elm$html$Html$div,
 																			_List_fromArray(
 																				[
