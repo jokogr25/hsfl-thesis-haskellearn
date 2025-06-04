@@ -744,8 +744,8 @@ coursesOverview user courses =
                                             [ ( "d-none", progress == 0 )
                                             ]
                                         ]
-                                        (if progress < 100 then
-                                            [ div
+                                        [ if progress < 100 then
+                                            div
                                                 [ Html.Attributes.class "progress"
                                                 , Html.Attributes.style "height" "2em"
                                                 ]
@@ -759,10 +759,9 @@ coursesOverview user courses =
                                                     ]
                                                     []
                                                 ]
-                                            ]
 
-                                         else
-                                            [ div
+                                          else
+                                            div
                                                 [ Html.Attributes.class "d-flex justify-content-between align-items-center" ]
                                                 [ div [] []
                                                 , div
@@ -770,8 +769,7 @@ coursesOverview user courses =
                                                     [ Img.checkSvg
                                                     ]
                                                 ]
-                                            ]
-                                        )
+                                        ]
                                     ]
                                 ]
                         )

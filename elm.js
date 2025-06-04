@@ -7851,9 +7851,9 @@ var $author$project$Main$coursesOverview = F2(
 																					_Utils_Tuple2('d-none', !progress)
 																				]))
 																		]),
-																	(progress < 100) ? _List_fromArray(
+																	_List_fromArray(
 																		[
-																			A2(
+																			(progress < 100) ? A2(
 																			$elm$html$Html$div,
 																			_List_fromArray(
 																				[
@@ -7880,10 +7880,7 @@ var $author$project$Main$coursesOverview = F2(
 																							$elm$core$String$fromInt(progress) + '%')
 																						]),
 																					_List_Nil)
-																				]))
-																		]) : _List_fromArray(
-																		[
-																			A2(
+																				])) : A2(
 																			$elm$html$Html$div,
 																			_List_fromArray(
 																				[
