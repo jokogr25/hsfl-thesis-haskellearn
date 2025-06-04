@@ -1654,7 +1654,7 @@ course1 : Course
 course1 =
     { id = 1
     , title = "Ausdrücke"
-    , description = "Lerne etwas zu Ausdrücken in Haskell"
+    , description = "Lerne unterschiedliche Arten von Ausdrücken in Haskell kennen."
     , lectures =
         [ lecture1
         , lecture2
