@@ -591,7 +591,9 @@ view model =
                                             * 100
                                             // l
                                 in
-                                progressBarView progress "1em"
+                                div
+                                    [ Html.Attributes.class "mb-1" ]
+                                    [ progressBarView progress "1em" ]
                             , exerciseView e
                             ]
 
@@ -788,7 +790,7 @@ coursesOverview user courses =
 progressBarView : Int -> String -> Html Msg
 progressBarView progress height =
     div
-        [ Html.Attributes.class "progress mb-1"
+        [ Html.Attributes.class "progress"
         , Html.Attributes.style "height" height
         ]
         [ div
@@ -936,14 +938,7 @@ runningLearningContentView lecture exampleIndex =
         Just example ->
             Html.footer
                 [ Html.Attributes.class "mt-auto m-2" ]
-                [ let
-                    progress =
-                        exampleIndex
-                            * 100
-                            // List.length lecture.learningContent.examples
-                  in
-                  progressBarView progress "1em"
-                , div
+                [ div
                     [ Html.Attributes.class "card"
                     ]
                     [ div
@@ -1005,6 +1000,15 @@ runningLearningContentView lecture exampleIndex =
                                 text ""
                         ]
                     ]
+                , let
+                    progress =
+                        (exampleIndex + 1)
+                            * 100
+                            // List.length lecture.learningContent.examples
+                  in
+                  div
+                    [ Html.Attributes.class "mt-1" ]
+                    [ progressBarView progress "1em" ]
                 ]
 
         -- für den Fall, dass es keine Beispiele gibt
@@ -2417,9 +2421,6 @@ dataTypesLecture =
                 , { code = "Weiß nicht"
                   , isCorrect = False
                   }
-                , { code = "Wo ist meine Hose?"
-                  , isCorrect = False
-                  }
                 ]
             }
         ]
@@ -2491,9 +2492,6 @@ simpleDataTypesLecture =
                   , isCorrect = False
                   }
                 , { code = "Weiß nicht"
-                  , isCorrect = False
-                  }
-                , { code = "Wo ist meine Hose?"
                   , isCorrect = False
                   }
                 ]
