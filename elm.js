@@ -7700,16 +7700,6 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $author$project$Main$foot = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('footer fixed-bottom text-center')
-		]),
-	_List_fromArray(
-		[
-			$elm$html$Html$text('Copyright © 2025')
-		]));
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$virtual_dom$VirtualDom$attribute = F2(
@@ -7905,8 +7895,7 @@ var $author$project$Main$coursesOverview = F2(
 										},
 										courses))
 								]))
-						])),
-					$author$project$Main$foot
+						]))
 				]));
 	});
 var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
