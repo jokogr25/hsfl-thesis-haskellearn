@@ -578,7 +578,8 @@ view model =
                     Just e ->
                         Html.footer
                             [ Html.Attributes.class "mt-auto m-2" ]
-                            [ if List.length lecture.exercises == 1 then
+                            [ exerciseView e
+                            , if List.length lecture.exercises == 1 then
                                 text ""
 
                               else
@@ -587,14 +588,13 @@ view model =
                                         List.length lecture.exercises
 
                                     progress =
-                                        (l - List.length remainingExercises)
+                                        (l - List.length remainingExercises + 1)
                                             * 100
                                             // l
                                 in
                                 div
-                                    [ Html.Attributes.class "mb-1" ]
+                                    [ Html.Attributes.class "mt-1" ]
                                     [ progressBarView progress "1em" ]
-                            , exerciseView e
                             ]
 
                     Nothing ->

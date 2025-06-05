@@ -11781,25 +11781,25 @@ var $author$project$Main$view = function (model) {
 										]),
 									_List_fromArray(
 										[
+											$author$project$Main$exerciseView(e),
 											function () {
 											if ($elm$core$List$length(lecture.exercises) === 1) {
 												return $elm$html$Html$text('');
 											} else {
 												var l = $elm$core$List$length(lecture.exercises);
-												var progress = (((l - $elm$core$List$length(remainingExercises)) * 100) / l) | 0;
+												var progress = ((((l - $elm$core$List$length(remainingExercises)) + 1) * 100) / l) | 0;
 												return A2(
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('mb-1')
+															$elm$html$Html$Attributes$class('mt-1')
 														]),
 													_List_fromArray(
 														[
 															A2($author$project$Main$progressBarView, progress, '1em')
 														]));
 											}
-										}(),
-											$author$project$Main$exerciseView(e)
+										}()
 										]));
 							} else {
 								return $elm$html$Html$text('');
