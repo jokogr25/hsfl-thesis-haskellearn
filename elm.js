@@ -6288,7 +6288,7 @@ var $author$project$Main$lecture5 = {
 	title: 'Pattern Matching'
 };
 var $author$project$Main$course1 = {
-	description: 'Lerne etwas zu Ausdrücken in Haskell',
+	description: 'Lerne unterschiedliche Arten von Ausdrücken in Haskell kennen.',
 	id: 1,
 	lectures: _List_fromArray(
 		[$author$project$Main$lecture1, $author$project$Main$lecture2, $author$project$Main$lecture3, $author$project$Main$lecture4, $author$project$Main$lecture5]),
@@ -6305,8 +6305,7 @@ var $author$project$Main$dataTypesLecture = {
 					[
 						{code: 'Ja', isCorrect: true},
 						{code: 'Nein', isCorrect: false},
-						{code: 'Weiß nicht', isCorrect: false},
-						{code: 'Wo ist meine Hose?', isCorrect: false}
+						{code: 'Weiß nicht', isCorrect: false}
 					]),
 				description: $elm$core$Maybe$Just('Bist du bereit weiter zu machen?'),
 				expression: '42',
@@ -6434,8 +6433,7 @@ var $author$project$Main$simpleDataTypesLecture = {
 					[
 						{code: 'Ja', isCorrect: true},
 						{code: 'Nein', isCorrect: false},
-						{code: 'Weiß nicht', isCorrect: false},
-						{code: 'Wo ist meine Hose?', isCorrect: false}
+						{code: 'Weiß nicht', isCorrect: false}
 					]),
 				description: $elm$core$Maybe$Just('Bist du bereit weiter zu machen?'),
 				expression: '42',
@@ -7737,7 +7735,8 @@ var $author$project$Main$progressBarView = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('progress-bar progress-bar bg-success'),
+							$elm$html$Html$Attributes$class('progress-bar progress-bar'),
+							A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1'),
 							A2($elm$html$Html$Attributes$attribute, 'role', 'progressbar'),
 							A2(
 							$elm$html$Html$Attributes$attribute,
@@ -7911,7 +7910,6 @@ var $author$project$Main$coursesOverview = F2(
 				]));
 	});
 var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
-var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$code = _VirtualDom_node('code');
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$HCode = function (a) {
 	return {$: 'HCode', a: a};
@@ -10469,295 +10467,286 @@ var $author$project$Main$runningExerciseAnswerView = F2(
 	});
 var $author$project$Main$exerciseView = function (exercise) {
 	return A2(
-		$elm$html$Html$footer,
+		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('mt-auto m-2')
+				$elm$html$Html$Attributes$class('card')
 			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('card')
-					]),
-				function () {
-					switch (exercise.$) {
-						case 'SingleExpression':
-							var singleExpression = exercise.a;
-							return _List_fromArray(
+		function () {
+			switch (exercise.$) {
+				case 'SingleExpression':
+					var singleExpression = exercise.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-header text-center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(singleExpression.title)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-body')
+								]),
+							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-header text-center')
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(singleExpression.title)
+											$elm$html$Html$text(
+											function () {
+												var _v1 = singleExpression.description;
+												if (_v1.$ === 'Just') {
+													var d = _v1.a;
+													return d;
+												} else {
+													return '';
+												}
+											}())
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-body')
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													function () {
-														var _v1 = singleExpression.description;
-														if (_v1.$ === 'Just') {
-															var d = _v1.a;
-															return d;
-														} else {
-															return '';
-														}
-													}())
-												])),
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-content')
-												]),
-											A2($author$project$Main$highlightedExpressionView, singleExpression.expression, $elm$core$Maybe$Nothing))
-										])),
-									A2($author$project$Main$runningExerciseAnswerView, exercise, singleExpression.answers)
-								]);
-						case 'BinaryExpression':
-							var binaryExpression = exercise.a;
-							return _List_fromArray(
+									A2($author$project$Main$highlightedExpressionView, singleExpression.expression, $elm$core$Maybe$Nothing))
+								])),
+							A2($author$project$Main$runningExerciseAnswerView, exercise, singleExpression.answers)
+						]);
+				case 'BinaryExpression':
+					var binaryExpression = exercise.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-header text-center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(binaryExpression.title)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-body')
+								]),
+							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-header text-center')
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(binaryExpression.title)
+											$elm$html$Html$text(
+											function () {
+												var _v2 = binaryExpression.description;
+												if (_v2.$ === 'Just') {
+													var d = _v2.a;
+													return d;
+												} else {
+													return '';
+												}
+											}())
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-body')
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$div,
+									A2(
+										$author$project$Main$highlightedExpressionView,
+										A2(
+											$elm$core$String$join,
+											' ',
 											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													function () {
-														var _v2 = binaryExpression.description;
-														if (_v2.$ === 'Just') {
-															var d = _v2.a;
-															return d;
-														} else {
-															return '';
-														}
-													}())
-												])),
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-content')
-												]),
-											A2(
-												$author$project$Main$highlightedExpressionView,
-												A2(
-													$elm$core$String$join,
-													' ',
-													_List_fromArray(
-														[binaryExpression.leftExpression, binaryExpression.operator, binaryExpression.rightExpression])),
-												$elm$core$Maybe$Nothing))
-										])),
-									A2($author$project$Main$runningExerciseAnswerView, exercise, binaryExpression.answers)
-								]);
-						case 'FunctionExpression':
-							var functionExpression = exercise.a;
-							return _List_fromArray(
+												[binaryExpression.leftExpression, binaryExpression.operator, binaryExpression.rightExpression])),
+										$elm$core$Maybe$Nothing))
+								])),
+							A2($author$project$Main$runningExerciseAnswerView, exercise, binaryExpression.answers)
+						]);
+				case 'FunctionExpression':
+					var functionExpression = exercise.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-header text-center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(functionExpression.title)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-body')
+								]),
+							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-header text-center')
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(functionExpression.title)
+											$elm$html$Html$text(
+											function () {
+												var _v3 = functionExpression.description;
+												if (_v3.$ === 'Just') {
+													var d = _v3.a;
+													return d;
+												} else {
+													return '';
+												}
+											}())
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-body')
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													function () {
-														var _v3 = functionExpression.description;
-														if (_v3.$ === 'Just') {
-															var d = _v3.a;
-															return d;
-														} else {
-															return '';
-														}
-													}())
-												])),
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-content')
-												]),
-											A2(
-												$author$project$Main$highlightedExpressionView,
-												functionExpression.functionName + (' ' + A2($elm$core$String$join, ' ', functionExpression._arguments)),
-												$elm$core$Maybe$Nothing))
-										])),
-									A2($author$project$Main$runningExerciseAnswerView, exercise, functionExpression.answers)
-								]);
-						case 'GuardExpression':
-							var guardExpression = exercise.a;
-							return _List_fromArray(
+									A2(
+										$author$project$Main$highlightedExpressionView,
+										functionExpression.functionName + (' ' + A2($elm$core$String$join, ' ', functionExpression._arguments)),
+										$elm$core$Maybe$Nothing))
+								])),
+							A2($author$project$Main$runningExerciseAnswerView, exercise, functionExpression.answers)
+						]);
+				case 'GuardExpression':
+					var guardExpression = exercise.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-header text-center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(guardExpression.title)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-body')
+								]),
+							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-header text-center')
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(guardExpression.title)
+											$elm$html$Html$text(
+											function () {
+												var _v4 = guardExpression.description;
+												if (_v4.$ === 'Just') {
+													var d = _v4.a;
+													return d;
+												} else {
+													return '';
+												}
+											}())
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-body')
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													function () {
-														var _v4 = guardExpression.description;
-														if (_v4.$ === 'Just') {
-															var d = _v4.a;
-															return d;
-														} else {
-															return '';
-														}
-													}())
-												])),
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-content')
-												]),
-											A2(
-												$author$project$Main$highlightedExpressionView,
-												guardExpression.functionName + (' ' + (A2($elm$core$String$join, ' ', guardExpression._arguments) + guardExpression.expression)),
-												$elm$core$Maybe$Nothing))
-										])),
-									A2($author$project$Main$runningExerciseAnswerView, exercise, guardExpression.answers)
-								]);
-						default:
-							var patternMatchingExpression = exercise.a;
-							return _List_fromArray(
+									A2(
+										$author$project$Main$highlightedExpressionView,
+										guardExpression.functionName + (' ' + (A2($elm$core$String$join, ' ', guardExpression._arguments) + guardExpression.expression)),
+										$elm$core$Maybe$Nothing))
+								])),
+							A2($author$project$Main$runningExerciseAnswerView, exercise, guardExpression.answers)
+						]);
+				default:
+					var patternMatchingExpression = exercise.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-header text-center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(patternMatchingExpression.title)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('card-body')
+								]),
+							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-header text-center')
+											$elm$html$Html$Attributes$class('card-title')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(patternMatchingExpression.title)
+											$elm$html$Html$text(
+											function () {
+												var _v5 = patternMatchingExpression.description;
+												if (_v5.$ === 'Just') {
+													var d = _v5.a;
+													return d;
+												} else {
+													return '';
+												}
+											}())
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('card-body')
+											$elm$html$Html$Attributes$class('card-content')
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													function () {
-														var _v5 = patternMatchingExpression.description;
-														if (_v5.$ === 'Just') {
-															var d = _v5.a;
-															return d;
-														} else {
-															return '';
-														}
-													}())
-												])),
-											A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('card-content')
-												]),
-											A2(
-												$author$project$Main$highlightedExpressionView,
-												A2($elm$core$String$join, '\n', patternMatchingExpression.patterns),
-												$elm$core$Maybe$Nothing))
-										])),
-									A2($author$project$Main$runningExerciseAnswerView, exercise, patternMatchingExpression.answers)
-								]);
-					}
-				}())
-			]));
+									A2(
+										$author$project$Main$highlightedExpressionView,
+										A2($elm$core$String$join, '\n', patternMatchingExpression.patterns),
+										$elm$core$Maybe$Nothing))
+								])),
+							A2($author$project$Main$runningExerciseAnswerView, exercise, patternMatchingExpression.answers)
+						]);
+			}
+		}());
 };
 var $author$project$Main$finishedExerciseAnswerView = F2(
 	function (answers, studentAnswer) {
@@ -11178,6 +11167,7 @@ var $author$project$Main$finishedExerciseView = F2(
 						]));
 		}
 	});
+var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$core$List$drop = F2(
 	function (n, list) {
 		drop:
@@ -11206,7 +11196,6 @@ var $author$project$Main$get = F2(
 	});
 var $author$project$Main$GoToCoursesOverview = {$: 'GoToCoursesOverview'};
 var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$html$Html$h6 = _VirtualDom_node('h6');
 var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$li = _VirtualDom_node('li');
@@ -11368,7 +11357,8 @@ var $author$project$Main$header = F2(
 																$elm$html$Html$li,
 																_List_fromArray(
 																	[
-																		$elm$html$Html$Attributes$class('nav-item')
+																		$elm$html$Html$Attributes$class('nav-item'),
+																		A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
 																	]),
 																_List_fromArray(
 																	[
@@ -11391,7 +11381,8 @@ var $author$project$Main$header = F2(
 																		$elm$html$Html$li,
 																		_List_fromArray(
 																			[
-																				$elm$html$Html$Attributes$class('nav-item')
+																				$elm$html$Html$Attributes$class('nav-item'),
+																				A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
 																			]),
 																		_List_fromArray(
 																			[
@@ -11425,27 +11416,22 @@ var $author$project$Main$header = F2(
 														_List_fromArray(
 															[
 																A2(
-																$elm$html$Html$h6,
-																_List_Nil,
+																$elm$html$Html$div,
 																_List_fromArray(
 																	[
-																		$elm$html$Html$text(u.name)
-																	])),
-																function () {
-																var _v2 = u.badges;
-																if (!_v2.b) {
-																	return $elm$html$Html$text('');
-																} else {
-																	var badges = _v2;
-																	return A2(
-																		$elm$html$Html$div,
-																		_List_fromArray(
-																			[
-																				$elm$html$Html$Attributes$class('bg-success btn-lg rounded')
-																			]),
-																		_List_fromArray(
-																			[
-																				A2(
+																		$elm$html$Html$Attributes$class('btn-lg rounded text-white p-1'),
+																		A2($elm$html$Html$Attributes$style, 'background-color', '#6f42c1')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(u.name),
+																		function () {
+																		var _v2 = u.badges;
+																		if (!_v2.b) {
+																			return $elm$html$Html$text('');
+																		} else {
+																			var badges = _v2;
+																			return A2(
 																				$elm$html$Html$span,
 																				_List_fromArray(
 																					[
@@ -11457,10 +11443,10 @@ var $author$project$Main$header = F2(
 																						$elm$core$String$fromInt(
 																							$elm$core$List$length(badges))),
 																						$author$project$Images$Images$genericBadgeSvg('2em')
-																					]))
-																			]));
-																}
-															}()
+																					]));
+																		}
+																	}()
+																	]))
 															]))
 													]))
 											]);
@@ -11684,7 +11670,20 @@ var $author$project$Main$runningLearningContentView = F2(
 										}
 									}()
 									]))
-							]))
+							])),
+						function () {
+						var progress = (((exampleIndex + 1) * 100) / $elm$core$List$length(lecture.learningContent.examples)) | 0;
+						return A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('mt-1')
+								]),
+							_List_fromArray(
+								[
+									A2($author$project$Main$progressBarView, progress, '1em')
+								]));
+					}()
 					]));
 		} else {
 			return A2(
@@ -11785,7 +11784,34 @@ var $author$project$Main$view = function (model) {
 							var _v1 = $elm$core$List$head(remainingExercises);
 							if (_v1.$ === 'Just') {
 								var e = _v1.a;
-								return $author$project$Main$exerciseView(e);
+								return A2(
+									$elm$html$Html$footer,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('mt-auto m-2')
+										]),
+									_List_fromArray(
+										[
+											function () {
+											if ($elm$core$List$length(lecture.exercises) === 1) {
+												return $elm$html$Html$text('');
+											} else {
+												var l = $elm$core$List$length(lecture.exercises);
+												var progress = (((l - $elm$core$List$length(remainingExercises)) * 100) / l) | 0;
+												return A2(
+													$elm$html$Html$div,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('mb-1')
+														]),
+													_List_fromArray(
+														[
+															A2($author$project$Main$progressBarView, progress, '1em')
+														]));
+											}
+										}(),
+											$author$project$Main$exerciseView(e)
+										]));
 							} else {
 								return $elm$html$Html$text('');
 							}
