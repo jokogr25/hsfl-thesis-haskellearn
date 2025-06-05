@@ -1500,7 +1500,9 @@ header user course =
                                     [ Html.ul
                                         [ Html.Attributes.class "navbar-nav mr-auto border-right pr-3" ]
                                         [ Html.li
-                                            [ Html.Attributes.class "nav-item" ]
+                                            [ Html.Attributes.class "nav-item"
+                                            , Html.Attributes.style "cursor" "pointer"
+                                            ]
                                             [ a
                                                 [ Html.Attributes.class "nav-link"
                                                 , onClick GoToCoursesOverview
@@ -1511,7 +1513,9 @@ header user course =
                                         , case course of
                                             Just c ->
                                                 Html.li
-                                                    [ Html.Attributes.class "nav-item" ]
+                                                    [ Html.Attributes.class "nav-item"
+                                                    , Html.Attributes.style "cursor" "pointer"
+                                                    ]
                                                     [ a
                                                         [ Html.Attributes.class "nav-link"
                                                         , Html.Attributes.classList
@@ -1527,26 +1531,24 @@ header user course =
                                             Nothing ->
                                                 text ""
                                         ]
-                                    , div []
-                                        [ Html.h6
-                                            []
-                                            [ text u.name
+                                    , div
+                                        []
+                                        [ div
+                                            [ Html.Attributes.class "btn-lg rounded text-white p-1"
+                                            , Html.Attributes.style "background-color" "#6f42c1"
                                             ]
-                                        , case u.badges of
-                                            [] ->
-                                                text ""
+                                            [ text u.name
+                                            , case u.badges of
+                                                [] ->
+                                                    text ""
 
-                                            badges ->
-                                                div
-                                                    [ Html.Attributes.class "btn-lg rounded"
-                                                    , Html.Attributes.style "background-color" "#6f42c1"
-                                                    ]
-                                                    [ Html.span
+                                                badges ->
+                                                    Html.span
                                                         [ Html.Attributes.class "badge badge-pill" ]
                                                         [ text (String.fromInt (List.length badges))
                                                         , Img.genericBadgeSvg "2em"
                                                         ]
-                                                    ]
+                                            ]
                                         ]
                                     ]
                                 ]
