@@ -783,7 +783,6 @@ coursesOverview user courses =
                     )
                 ]
             ]
-        , foot
         ]
 
 
@@ -1559,13 +1558,6 @@ header user course =
                 )
             ]
         ]
-
-
-foot : Html Msg
-foot =
-    div
-        [ Html.Attributes.class "footer fixed-bottom text-center" ]
-        [ text "Copyright © 2025" ]
 
 
 checkUsername : Maybe String -> Bool
